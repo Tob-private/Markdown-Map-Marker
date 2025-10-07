@@ -85,6 +85,8 @@ for (const type of calloutTypes) {
     }
   });
   return (
-    <div dangerouslySetInnerHTML={{ __html: cleanHTML }}></div>
+    <>
+      <main dangerouslySetInnerHTML={{ __html: cleanHTML }} className="prose"></main>
+    </>
   );
 }
