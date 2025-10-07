@@ -1,16 +1,21 @@
 # This is an h1 heading
+
 ## This is an h2 heading
+
 ### This is an h3 heading
+
 #### This is an h4 heading
+
 ##### This is an h5 heading
+
 ###### This is an h6 heading
 
 [[Lathernia |This is a link to the Lathernia note]]
 [This is a link to the Obsidian TTRPG Tutorials website](https://obsidianttrpgtutorials.com/Obsidian+TTRPG+Tutorials/Getting+Started/Getting+Started)
 
 **This text is bold**
-*This text is italics*
-***This text is bold and italics***
+_This text is italics_
+**_This text is bold and italics_**
 <u>This text is underlined</u>
 ==This text is highlighted==
 ~~This text is strikethrough~~
@@ -19,14 +24,17 @@
 > The blockquote continues here
 
 ###### Bullet List (h6)
+
 - Item 1
 - Item 2
 
 ###### Numbered List (h6)
+
 1. Item 1
 2. Item 2
 
 ###### Checkbox List (h6)
+
 - [ ] Item 1
 - [ ] Item 2
 
@@ -42,8 +50,7 @@ This is how to embed a note
 
 How to use a table
 
-| Column  header 1 | Column header  2 | Column header  3 |
+| Column header 1  | Column header 2  | Column header 3  |
 | ---------------- | ---------------- | ---------------- |
 | Row 1 - Column 1 | Row 1 - Column 2 | Row 1 - Column 3 |
 | Row 2 - Column 1 | Row 2 - Column 2 | Row 2 - Column 3 |
-
