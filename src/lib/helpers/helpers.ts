@@ -1,6 +1,12 @@
 import { allowedExtentions } from "../data/fileExtensions";
 
-export function getImgFromObsidianSyntax(line: string) {
+export function checkObsidianSyntax(mdContent: string) {
+  const blocks = mdContent.split("\n\n").map(checkBlockForMultiline);
+
+  return blocks.join("\n\n");
+}
+
+function getImgFromObsidianSyntax(line: string) {
   if (
     !(
       line.includes("![[") &&
@@ -27,12 +33,6 @@ export function getImgFromObsidianSyntax(line: string) {
   //   console.dir({ alt, filename });
 
   return `${before}![${alt}](${filename})${after}`;
-}
-
-export function checkObsidianSyntax(mdContent: string) {
-  const blocks = mdContent.split("\n\n").map(checkBlockForMultiline);
-
-  return blocks.join("\n\n");
 }
 
 function checkBlockForMultiline(block: string) {
