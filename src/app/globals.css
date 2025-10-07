@@ -59,3 +59,12 @@ li:has(> input[type="checkbox"]) {
 blockquote#text{
   display: none;
 }
+
+.callout {
+  background-color: #10253d;
+  color: var(--background);
+}
+
+.callout-title {
+  color: #027AFF;
+}

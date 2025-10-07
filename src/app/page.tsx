@@ -22,6 +22,7 @@ export default async function Home() {
       generatePageNameFromLabel: (label: string) => label.trim(),
       baseURL: "/notes/",
     });
+
   const cleanHTML = sanitizeHtml(md.render(mdContent), {
     allowedTags: sanitizeHtml.defaults.allowedTags.concat(["input", "img"]),
     allowedAttributes: {
@@ -29,6 +30,8 @@ export default async function Home() {
       input: ["type", "checked"],
       div: ["class"],
       img: ["src", "alt", "title"],
+      p: ["class"],
+      blockquote: ["class"],
     },
   });
 
