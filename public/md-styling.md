@@ -13,6 +13,10 @@
 ***This text is bold and italics***
 <u>This text is underlined</u>
 ==This text is highlighted==
+~~This text is strikethrough~~
+
+> This is a blockquote
+> The blockquote continues here
 
 ###### Bullet List (h6)
 - Item 1
