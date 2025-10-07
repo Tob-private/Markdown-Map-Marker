@@ -55,3 +55,7 @@ li:has(> input[type="checkbox"]) {
   list-style-type: none;
   margin-left: -26px;
 }
+
+blockquote#text{
+  display: none;
+}

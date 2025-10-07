@@ -11,13 +11,17 @@
 ###### This is an h6 heading
 
 [[Lathernia | This is a link to the Lathernia note]]
+
 [This is a link to the Obsidian TTRPG Tutorials website](https://obsidianttrpgtutorials.com/Obsidian+TTRPG+Tutorials/Getting+Started/Getting+Started)
 
-**This text is bold**
-_This text is italics_
-**_This text is bold and italics_**
-<u>This text is underlined</u>
-==This text is highlighted==
+> asdasd
+> adasadfgfff
+
+**This text is bold**  
+_This text is italics_  
+**_This text is bold and italics_**  
+<u>This text is underlined</u>  
+==This text is highlighted==  
 ~~This text is strikethrough~~
 
 > This is a blockquote
@@ -39,7 +43,7 @@ _This text is italics_
 - [ ] Item 2
 
 This is how to add images
-![[lathernia.png]]
+![[lathernia.png | Lathernia map]]
 
 This is how to embed a note
 ![[Halrani]]
