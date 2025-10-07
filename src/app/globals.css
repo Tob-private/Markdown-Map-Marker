@@ -49,19 +49,7 @@ a {
   }
 }
 
-.callout-note {
-  border-left: 4px solid #00aaff;
-  background: #087ebd;
-  padding: 0.75em 1em;
-  margin: 1em 0;
-  border-radius: 6px;
-}
-
-.callout-title {
-  font-weight: bold;
-  color: #00aaff;
-  margin-bottom: 0.5em;
-}
+/* Obsidian MD Styling */
 
 li:has(> input[type="checkbox"]) {
   list-style-type: none;

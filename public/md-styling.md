@@ -10,7 +10,7 @@
 
 ###### This is an h6 heading
 
-[[Lathernia |This is a link to the Lathernia note]]
+[[Lathernia | This is a link to the Lathernia note]]
 [This is a link to the Obsidian TTRPG Tutorials website](https://obsidianttrpgtutorials.com/Obsidian+TTRPG+Tutorials/Getting+Started/Getting+Started)
 
 **This text is bold**

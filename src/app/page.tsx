@@ -39,9 +39,20 @@ function preprocessCallouts(src: string): string {
   return processed.join("\n");
 }
 
+// Function to preprocess Obsidian embeds
+function preprocessObsidianEmbeds(src: string): string {
+  // Convert ![[filename.ext]] to ![filename](filename.ext)
+  // Only matches if there is a file extension
+  return src.replace(/!\[\[([^\]]+\.[^\]]+)\]\]/g, (match, file) => {
+    const alt = file.replace(/\.[^/.]+$/, ""); // Remove extension for alt text
+    return `![${alt}](${file})`;
+  });
+}
+
 export default async function Home() {
   const rawContent = await readFile("public/md-styling.md", "utf-8");
   const mdContent = preprocessCallouts(rawContent);
+  const embeddedContent = preprocessObsidianEmbeds(mdContent); // Preprocess embeds
 
   const md = new MarkdownIt({
     html: true,
@@ -62,6 +73,8 @@ export default async function Home() {
       render(tokens: Token[], idx: number) {
         const token = tokens[idx];
         if (token.nesting === 1) {
+          console.log(token);
+
           // opening tag
           return `<div class="callout callout-${type}"><div class="callout-title">${type.toUpperCase()}</div>\n`;
         } else {
@@ -72,12 +85,13 @@ export default async function Home() {
     });
   }
 
-  const cleanHTML = sanitizeHtml(md.render(mdContent), {
-    allowedTags: sanitizeHtml.defaults.allowedTags.concat(["input"]),
+  const cleanHTML = sanitizeHtml(md.render(embeddedContent), {
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat(["input", "img"]),
     allowedAttributes: {
       ...sanitizeHtml.defaults.allowedAttributes,
       input: ["type", "checked"],
       div: ["class"],
+      img: ["src", "alt", "title"],
     },
   });
 
@@ -85,7 +99,7 @@ export default async function Home() {
     <>
       <main
         dangerouslySetInnerHTML={{ __html: cleanHTML }}
-        className="prose"
+        className="prose prose-stone"
       ></main>
     </>
   );
