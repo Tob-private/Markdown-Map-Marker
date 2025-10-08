@@ -48,8 +48,28 @@ export const testSupabase = async (path: string) => {
       md_path: obsidianFile.path,
     };
 
-    if (!mdFiles.data?.includes(obsidianFile.name)) {
+    const files = mdFiles.data ?? [];
+
+    const hasFileWithSameName = files.some(
+      (el) => el.filename === obsidianFile.name
+    );
+
+    const needsUpdate = files.some(
+      (el) =>
+        (el.filename === obsidianFile.name &&
+          el.md_path !== obsidianFile.path) ||
+        (el.filename !== obsidianFile.name && el.md_path === obsidianFile.path)
+    );
+
+    if (!hasFileWithSameName) {
+      // Insert new file
       await supabase.from("md_files").insert(md_file);
+    } else if (needsUpdate) {
+      // Update existing file
+      await supabase
+        .from("md_files")
+        .update(md_file)
+        .eq("filename", obsidianFile.name);
     }
   });
 };
