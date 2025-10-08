@@ -18,11 +18,16 @@ function getImgFromObsidianSyntax(line: string) {
     return line;
 
   const imgStart = line.indexOf("![[");
-  const imgEnd = line.indexOf("]]");
+  const imgEnd = line.indexOf("]]") + 2;
 
-  const substringedLine = line.substring(imgStart, imgEnd + 2);
+  const substringedLine = line.substring(imgStart, imgEnd);
 
-  if (!substringedLine.includes("|")) return line;
+  if (!substringedLine.includes("|")) {
+    console.error("Image requires an alt text", substringedLine);
+    throw new Error(
+      "Image requires alt text. Insert one using this syntax: ![[image.png | alt text]]"
+    );
+  }
 
   const [before, after] = line.split(substringedLine);
 
