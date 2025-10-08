@@ -54,7 +54,7 @@ export const testSupabase = async (path: string) => {
       (el) => el.filename === obsidianFile.name
     );
 
-    const needsUpdate = files.some(
+    const fileNeedsUpdate = files.find(
       (el) =>
         (el.filename === obsidianFile.name &&
           el.md_path !== obsidianFile.path) ||
@@ -64,12 +64,12 @@ export const testSupabase = async (path: string) => {
     if (!hasFileWithSameName) {
       // Insert new file
       await supabase.from("md_files").insert(md_file);
-    } else if (needsUpdate) {
+    } else if (fileNeedsUpdate) {
       // Update existing file
       await supabase
         .from("md_files")
         .update(md_file)
-        .eq("filename", obsidianFile.name);
+        .eq("id", fileNeedsUpdate.id);
     }
   });
 };
