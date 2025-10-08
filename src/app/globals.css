@@ -58,7 +58,8 @@ li:has(> input[type="checkbox"]) {
 
 blockquote {
   border-left: 3px solid #eeeeee;
-  padding: 0.5rem 1rem 1.5rem;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
 }
 
 .callout {

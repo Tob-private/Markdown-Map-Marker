@@ -61,10 +61,6 @@ This is how to embed a note
 > asdkjasödjasölk d
 > asdasdad
 
-> [!sssss] This should be an error
-> asdkjasödjasölk d
-> asdasdad
-
 How to use a table
 
 | Column header 1  | Column header 2  | Column header 3  |
