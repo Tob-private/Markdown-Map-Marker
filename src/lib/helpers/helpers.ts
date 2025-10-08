@@ -35,7 +35,7 @@ function getImgFromObsidianSyntax(line: string) {
   const [value2] = value1.split("]]");
   const [filename, alt] = value2.split(" | ");
 
-  return `${beforeImg}![${alt}](Markdown%20Map%20Marker/assets/${filename})${afterImg}`;
+  return `${beforeImg}![${alt}]${encodeURI(`(Markdown Map Marker/assets/${filename})`)}${afterImg}`;
 }
 
 function checkBlockForSyntax(block: string) {
