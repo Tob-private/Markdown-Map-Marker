@@ -14,8 +14,6 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 export const testSupabase = async (path: string) => {
   const mdFiles = await supabase.from("md_files").select();
 
-  //   if (mdFiles.data?.length === 0) {
-
   const obsidianDirectory = directoryTree(path, {
     extensions: /\.md$/,
     attributes: ["extension"],
