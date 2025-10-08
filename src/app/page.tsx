@@ -7,7 +7,10 @@ import sanitizeHtml from "sanitize-html";
 import { parseObsidianSyntax } from "@/lib/helpers/helpers";
 
 export default async function Home() {
-  const rawContent = await readFile("public/md-styling.md", "utf-8");
+  const rawContent = await readFile(
+    "public/Markdown Map Marker/md-styling.md",
+    "utf-8"
+  );
   const mdContent = parseObsidianSyntax(rawContent);
 
   const md = new MarkdownIt({
