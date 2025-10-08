@@ -49,9 +49,21 @@ This is how to add images
 This is how to embed a note
 ![[Halrani]]
 
-> [!NOTE] This a callout box
+> [!NOTE] This a note box
 > This some content of the box
 > Another line of the box
+
+> [!warning] This a warning box
+> This some content of the box
+> Another line of the box
+
+> [!summary] This is an alias for the abstract box
+> asdkjasödjasölk d
+> asdasdad
+
+> [!sssss] This should be an error
+> asdkjasödjasölk d
+> asdasdad
 
 How to use a table
 

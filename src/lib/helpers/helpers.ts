@@ -1,3 +1,4 @@
+import { callouts } from "../data/callouts";
 import { allowedExtentions } from "../data/fileExtensions";
 
 export function checkObsidianSyntax(mdContent: string) {
@@ -52,10 +53,11 @@ function checkBlockForSyntax(block: string) {
   for (let i = 0; i < multilines.length; i++) {
     const line = multilines[i];
 
-    if (i === 0 && line.startsWith("> [!NOTE] ")) {
+    if (i === 0 && line.startsWith("> [!")) {
+      const { blockquote, title } = handleCalloutType(line);
       isCallout = true;
-      output.push("<blockquote class='callout not-prose'>");
-      output.push(`<p class="callout-title">${line.substring(10)}</p>`);
+      output.push(blockquote);
+      output.push(title);
     } else if (line.startsWith("> ")) {
       output.push(`<p>${line.substring(2)}</p>`);
     } else if (line.trim() !== "") {
@@ -72,4 +74,29 @@ function checkBlockForSyntax(block: string) {
   multilines = output;
 
   return multilines.join("");
+}
+
+function handleCalloutType(line: string): {
+  blockquote: string;
+  title: string;
+} {
+  const startInx = line.indexOf("[!") + 2;
+  const endInx = line.indexOf("]");
+  const calloutType = line.slice(startInx, endInx);
+
+  const calloutObj = callouts.find(
+    (callout) =>
+      callout.name === calloutType.toLowerCase() ||
+      callout.aliases?.includes(calloutType.toLowerCase())
+  );
+
+  if (calloutObj === undefined) {
+    console.error("Reading callout type:", calloutType);
+    throw new Error("Callout type not recognized");
+  }
+
+  const blockquote = `<blockquote class='callout not-prose callout-${calloutObj.name}'>`;
+  const title = `<p class="callout-title">${line.substring(endInx + 1)}</p>`;
+
+  return { blockquote, title };
 }
