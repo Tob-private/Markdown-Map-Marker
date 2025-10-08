@@ -1,0 +1,1 @@
+The southernmost city in Lathernia, Ozir houses to the west of the city a port that sends boats to and from the various territories to the south, as well as the ferry to and from Lakrith. Ozir is also famed for its many vineyards, exporting fine wines across the continent.

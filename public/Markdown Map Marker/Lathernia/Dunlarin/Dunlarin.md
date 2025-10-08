@@ -1,0 +1,1 @@
+Located toward the northwest of the Crater, Dunlarin exists surrounded by forest, and is as such a major export of lumber, herbs and agricultural products.
