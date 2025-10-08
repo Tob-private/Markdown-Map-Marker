@@ -1,0 +1,1 @@
+Found in the east end of the Exchange district and just north of the Springs, the Library is the main source of information and training facilities for students, researchers and mages alike. Followers of gods like Vikal are commonly found here.

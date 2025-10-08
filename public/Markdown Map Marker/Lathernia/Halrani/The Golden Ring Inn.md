@@ -1,0 +1,1 @@
+Located on the lakeside toward the south of the Springs, the Gold Ring often houses the rich, powerful and influential, such as upper-class merchants, aristocrats and politicians, local celebrities and wealthy adventurers.

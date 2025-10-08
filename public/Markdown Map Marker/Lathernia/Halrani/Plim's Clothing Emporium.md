@@ -1,0 +1,1 @@
+A sprawling shop in the southern Exchange District full of fancy clothing and various accessories with the proprietor, Plim, always present to take in commissions for ridiculous prices.

@@ -1,0 +1,1 @@
+Located next to the Old Gryphon, the Tannery is the largest clothes and leatherwork shop in the city. Here, you’ll find all of the clothes you’ll ever need, plus some furniture, leather goods and trinkets. Adventurers may also find leather armour pieces here.

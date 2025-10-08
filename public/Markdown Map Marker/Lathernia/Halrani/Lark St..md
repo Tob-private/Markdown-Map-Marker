@@ -1,0 +1,1 @@
+Toward the south of the Outer Crescent lies a street that has gradually built up quite a reputation for back alley deals and criminal activity, to the extent that it is deemed the only street in the city too dangerous to guards to warrant regular patrolling. This street also houses a number of the criminal organisations based in Halrani.

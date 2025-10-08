@@ -1,0 +1,1 @@
+Found toward the north of the Exchange District, this is the place for adventurers to come to for weapons, armour and various metal items, as well as stocking housewares, metal goods and trinkets, and even some jewelry.
