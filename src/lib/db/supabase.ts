@@ -1,6 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
 import directoryTree from "directory-tree";
-// require("dotenv").config();
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_KEY;
