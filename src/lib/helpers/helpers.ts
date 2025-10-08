@@ -29,13 +29,13 @@ function getImgFromObsidianSyntax(line: string) {
     );
   }
 
-  const [before, after] = line.split(substringedLine);
+  const [beforeImg, afterImg] = line.split(substringedLine);
 
   const [, value1] = substringedLine.trim().split("![[");
   const [value2] = value1.split("]]");
   const [filename, alt] = value2.split(" | ");
 
-  return `${before}![${alt}](${filename})${after}`;
+  return `${beforeImg}![${alt}](Markdown%20Map%20Marker/assets/${filename})${afterImg}`;
 }
 
 function checkBlockForSyntax(block: string) {
