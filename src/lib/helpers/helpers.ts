@@ -20,17 +20,14 @@ function getImgFromObsidianSyntax(line: string) {
   const imgEnd = line.indexOf("]]");
 
   const substringedLine = line.substring(imgStart, imgEnd + 2);
-  //   console.log(substringedLine);
 
   if (!substringedLine.includes("|")) return line;
 
   const [before, after] = line.split(substringedLine);
-  //   console.dir({ before, after });
 
   const [, value1] = substringedLine.trim().split("![[");
   const [value2] = value1.split("]]");
   const [filename, alt] = value2.split(" | ");
-  //   console.dir({ alt, filename });
 
   return `${before}![${alt}](${filename})${after}`;
 }
@@ -41,13 +38,13 @@ function checkBlockForSyntax(block: string) {
 
   // Check for multiline syntax. Since all other multilines are handled
   let multilines: string[] = [];
-  for (let line of lines) {
-    line = getImgFromObsidianSyntax(line);
-    if (line.startsWith("> ")) {
-      multilines.push(line);
+  for (let i = 0; i < lines.length; i++) {
+    lines[i] = getImgFromObsidianSyntax(lines[i]);
+    if (lines[i].startsWith("> ")) {
+      multilines.push(lines[i]);
     }
   }
-  if (multilines.length < 1) return block;
+  if (multilines.length < 1) return lines.join("\n"); // Cant just return block, since then imgs wont be parsed correctly
 
   const output = [];
   let isCallout = false;

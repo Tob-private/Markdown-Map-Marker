@@ -17,11 +17,11 @@
 > asdasd
 > adasadfgfff
 
-**This text is bold**  
-_This text is italics_  
-**_This text is bold and italics_**  
-<u>This text is underlined</u>  
-==This text is highlighted==  
+**This text is bold**
+_This text is italics_
+**_This text is bold and italics_**
+<u>This text is underlined</u>
+==This text is highlighted==
 ~~This text is strikethrough~~
 
 > This is a blockquote
