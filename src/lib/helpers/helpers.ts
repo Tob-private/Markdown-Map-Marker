@@ -1,7 +1,7 @@
 import { callouts } from "../data/callouts";
 import { allowedExtentions } from "../data/fileExtensions";
 
-export function checkObsidianSyntax(mdContent: string) {
+export function parseObsidianSyntax(mdContent: string) {
   const blocks = mdContent.split("\n\n").map(checkBlockForSyntax);
 
   return blocks.join("\n\n");

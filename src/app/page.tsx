@@ -4,11 +4,11 @@ import mark from "markdown-it-mark";
 import taskLists from "markdown-it-task-lists";
 import wikiLinks from "markdown-it-wikilinks";
 import sanitizeHtml from "sanitize-html";
-import { checkObsidianSyntax } from "@/lib/helpers/helpers";
+import { parseObsidianSyntax } from "@/lib/helpers/helpers";
 
 export default async function Home() {
   const rawContent = await readFile("public/md-styling.md", "utf-8");
-  const mdContent = checkObsidianSyntax(rawContent);
+  const mdContent = parseObsidianSyntax(rawContent);
 
   const md = new MarkdownIt({
     html: true,
