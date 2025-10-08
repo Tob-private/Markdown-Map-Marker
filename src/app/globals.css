@@ -56,15 +56,18 @@ li:has(> input[type="checkbox"]) {
   margin-left: -26px;
 }
 
-blockquote#text{
-  display: none;
+blockquote {
+  border-left: 3px solid #eeeeee;
+  padding: 0.5rem 1rem 1.5rem;
 }
 
 .callout {
   background-color: #10253d;
   color: var(--background);
+  padding: 0.5rem 1rem 1.5rem;
 }
 
 .callout-title {
-  color: #027AFF;
+  color: #027aff;
+  font-weight: 600;
 }

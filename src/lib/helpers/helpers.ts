@@ -57,7 +57,7 @@ function checkBlockForSyntax(block: string) {
 
     if (i === 0 && line.startsWith("> [!NOTE] ")) {
       isCallout = true;
-      output.push("<blockquote class='callout'>");
+      output.push("<blockquote class='callout not-prose'>");
       output.push(`<p class="callout-title">${line.substring(10)}</p>`);
     } else if (line.startsWith("> ")) {
       output.push(`<p>${line.substring(2)}</p>`);
@@ -68,7 +68,7 @@ function checkBlockForSyntax(block: string) {
 
   if (isCallout) output.push("</blockquote>\n");
   else {
-    output.unshift("<blockquote>");
+    output.unshift("<blockquote class='not-prose'>");
     output.push("</blockquote>\n");
   }
 
