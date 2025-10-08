@@ -1,5 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
-import directoryTree from "directory-tree";
+import directoryTree, { type DirectoryTree } from "directory-tree";
+
+type DirTree = DirectoryTree<Record<string, any>>;
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_KEY;
@@ -9,6 +11,17 @@ if (!SUPABASE_URL || !SUPABASE_KEY) {
 }
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const flatten = <T extends { children?: T[] }>(routes: T[]) => {
+  return routes.reduce((acc, r) => {
+    if (r.children && r.children.length) {
+      acc = acc.concat(flatten(r.children));
+    } else {
+      acc.push(r);
+    }
+    return acc;
+  }, [] as T[]);
+};
 
 export const testSupabase = async (path: string) => {
   const mdFiles = await supabase.from("md_files").select();
@@ -22,8 +35,10 @@ export const testSupabase = async (path: string) => {
     throw new Error("Obsidian directory is undefined");
   }
 
-  const filteredDirectory = obsidianDirectory.children.filter(
-    (child) => child.extension && child.extension == ".md"
+  const flattenedDirectory = flatten<DirTree>(obsidianDirectory.children);
+
+  const filteredDirectory = flattenedDirectory.filter(
+    (child) => child.extension && child.extension === ".md" && !child.children
   );
 
   filteredDirectory.forEach(async (obsidianFile) => {
