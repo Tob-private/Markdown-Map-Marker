@@ -12,7 +12,7 @@ export default async function Home() {
 
   return (
     <>
-      <main className="prose">
+      <main>
         <MdWrapper rawMd={rawContent} />
       </main>
     </>

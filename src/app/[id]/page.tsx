@@ -18,7 +18,7 @@ export default async function Page({
   const rawContent = await readFile(mdFile.md_path, "utf-8");
 
   return (
-    <main className="prose prose-stone">
+    <main className="">
       <MdWrapper rawMd={rawContent} />
     </main>
   );
