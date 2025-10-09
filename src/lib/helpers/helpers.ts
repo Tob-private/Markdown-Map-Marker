@@ -1,4 +1,3 @@
-import { dir } from "console";
 import { callouts } from "../data/callouts";
 import { allowedExtentions } from "../data/fileExtensions";
 import { getMdFileByIdentifier } from "../db/supabase";
@@ -132,8 +131,6 @@ async function handleNoteSyntax(line: string): Promise<string> {
     const [note, linkText] = link.split(" | ");
 
     const mdFile = await getMdFileByIdentifier("filename", note + ".md");
-
-    dir({ mdFile });
 
     return `${before}[${linkText}](/${mdFile.id})${after}`;
   }
