@@ -1,8 +1,9 @@
 import { createClient, PostgrestSingleResponse } from "@supabase/supabase-js";
 import directoryTree, { type DirectoryTree } from "directory-tree";
 import { MdFile } from "../types/supabase";
+import { dir } from "console";
 
-type DirTree = DirectoryTree<Record<string, any>>;
+type DirTree<TAny> = DirectoryTree<Record<string, TAny>>;
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_KEY;
@@ -38,7 +39,9 @@ export const supabaseSetup = async (path: string) => {
     throw new Error("Obsidian directory is undefined");
   }
 
-  const flattenedDirectory = flatten<DirTree>(obsidianDirectory.children);
+  const flattenedDirectory = flatten<DirTree<string>>(
+    obsidianDirectory.children
+  );
 
   const filteredDirectory = flattenedDirectory.filter(
     (child) => child.extension && child.extension === ".md" && !child.children
@@ -94,3 +97,33 @@ export const supabaseSetup = async (path: string) => {
     }
   });
 };
+
+export async function getMdFileById(id: string): Promise<MdFile> {
+  const { data, error } = await supabase
+    .from("md_files")
+    .select()
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    dir({ error });
+  }
+
+  return data;
+}
+export async function getMdFileByIdentifier(
+  identifier: string,
+  value: string
+): Promise<MdFile> {
+  const { data, error } = await supabase
+    .from("md_files")
+    .select()
+    .like(identifier, value)
+    .single();
+
+  if (error) {
+    dir({ error });
+  }
+
+  return data;
+}
