@@ -24,7 +24,7 @@ const flatten = <T extends { children?: T[] }>(routes: T[]) => {
   }, [] as T[]);
 };
 
-export const testSupabase = async (path: string) => {
+export const supabaseSetup = async (path: string) => {
   const { data }: PostgrestSingleResponse<MdFile[]> = await supabase
     .from("md_files")
     .select();

@@ -5,7 +5,7 @@ import taskLists from "markdown-it-task-lists";
 import wikiLinks from "markdown-it-wikilinks";
 import sanitizeHtml from "sanitize-html";
 import { parseObsidianSyntax } from "@/lib/helpers/helpers";
-import { testSupabase } from "@/lib/db/supabase";
+import { supabaseSetup } from "@/lib/db/supabase";
 
 export default async function Home() {
   const rawContent = await readFile(
@@ -39,7 +39,7 @@ export default async function Home() {
     },
   });
 
-  testSupabase("public/Markdown Map Marker/");
+  supabaseSetup("public/Markdown Map Marker/");
 
   return (
     <>
