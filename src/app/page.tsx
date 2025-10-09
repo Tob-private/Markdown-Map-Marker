@@ -11,10 +11,8 @@ export default async function Home() {
   // supabaseSetup("public/Markdown Map Marker/");
 
   return (
-    <>
-      <main>
-        <MdWrapper rawMd={rawContent} />
-      </main>
-    </>
+    <main>
+      <MdWrapper rawMd={rawContent} />
+    </main>
   );
 }
