@@ -384,3 +384,7 @@ hr {
     color: #9e9e9e;
   }
 }
+
+.leaflet-map {
+  height: 200px;
+}

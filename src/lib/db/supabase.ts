@@ -2,6 +2,7 @@ import { createClient, PostgrestSingleResponse } from "@supabase/supabase-js";
 import directoryTree, { type DirectoryTree } from "directory-tree";
 import { MdFile } from "../types/supabase";
 import { dir } from "console";
+import { flatten } from "../helpers/helpers";
 
 type DirTree<TAny> = DirectoryTree<Record<string, TAny>>;
 
@@ -13,17 +14,6 @@ if (!SUPABASE_URL || !SUPABASE_KEY) {
 }
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-const flatten = <T extends { children?: T[] }>(routes: T[]) => {
-  return routes.reduce((acc, r) => {
-    if (r.children && r.children.length) {
-      acc = acc.concat(flatten(r.children));
-    } else {
-      acc.push(r);
-    }
-    return acc;
-  }, [] as T[]);
-};
 
 export const supabaseSetup = async (path: string) => {
   const { data }: PostgrestSingleResponse<MdFile[]> = await supabase

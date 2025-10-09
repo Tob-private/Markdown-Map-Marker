@@ -3,7 +3,7 @@ import mark from "markdown-it-mark";
 import taskLists from "markdown-it-task-lists";
 import wikiLinks from "markdown-it-wikilinks";
 import sanitizeHtml from "sanitize-html";
-import { parseObsidianSyntax } from "@/lib/helpers/helpers";
+import { parseObsidianSyntax } from "@/lib/helpers/md-helpers";
 
 export default async function MdWrapper({ rawMd }: { rawMd: string }) {
   const mdContent = await parseObsidianSyntax(rawMd);
@@ -26,7 +26,7 @@ export default async function MdWrapper({ rawMd }: { rawMd: string }) {
     allowedAttributes: {
       ...sanitizeHtml.defaults.allowedAttributes,
       input: ["type", "checked"],
-      div: ["class"],
+      div: ["class", "id"],
       img: ["src", "alt", "title"],
       p: ["class"],
       blockquote: ["class"],
