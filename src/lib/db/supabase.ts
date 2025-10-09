@@ -1,6 +1,7 @@
 import { createClient, PostgrestSingleResponse } from "@supabase/supabase-js";
 import directoryTree, { type DirectoryTree } from "directory-tree";
 import { MdFile } from "../types/supabase";
+import { dir } from "console";
 
 type DirTree = DirectoryTree<Record<string, any>>;
 
@@ -94,3 +95,19 @@ export const supabaseSetup = async (path: string) => {
     }
   });
 };
+
+export async function getMdFileByIdentifier<TIdentifier>(
+  identifier: string,
+  value: string
+): Promise<MdFile> {
+  const { data, error } = await supabase
+    .from("md_files")
+    .select()
+    .like(identifier, value)
+    .single();
+
+  if (error) {
+    dir({ error });
+  }
+  return data;
+}

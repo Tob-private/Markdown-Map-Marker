@@ -12,7 +12,7 @@ export default async function Home() {
     "public/Markdown Map Marker/md-styling.md",
     "utf-8"
   );
-  const mdContent = parseObsidianSyntax(rawContent);
+  const mdContent = await parseObsidianSyntax(rawContent);
 
   const md = new MarkdownIt({
     html: true,
@@ -39,7 +39,7 @@ export default async function Home() {
     },
   });
 
-  supabaseSetup("public/Markdown Map Marker/");
+  // supabaseSetup("public/Markdown Map Marker/");
 
   return (
     <>
