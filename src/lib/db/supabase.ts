@@ -1,4 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, PostgrestSingleResponse } from "@supabase/supabase-js";
 import directoryTree, { type DirectoryTree } from "directory-tree";
 import { MdFile } from "../types/supabase";
 
@@ -25,8 +25,10 @@ const flatten = <T extends { children?: T[] }>(routes: T[]) => {
 };
 
 export const testSupabase = async (path: string) => {
-  const mdFiles = await supabase.from("md_files").select();
-
+  const { data }: PostgrestSingleResponse<MdFile[]> = await supabase
+    .from("md_files")
+    .select();
+  const mdFiles = data ?? [];
   const obsidianDirectory = directoryTree(path, {
     extensions: /\.md$/,
     attributes: ["extension"],
@@ -42,6 +44,26 @@ export const testSupabase = async (path: string) => {
     (child) => child.extension && child.extension === ".md" && !child.children
   );
 
+  const localFileNames = filteredDirectory.map((file) => file.name);
+
+  const missingFiles = mdFiles.filter(
+    (dbFile) => !localFileNames.includes(dbFile.filename)
+  );
+
+  if (missingFiles.length > 0) {
+    const { error: deleteError } = await supabase
+      .from("md_files")
+      .delete()
+      .in(
+        "id",
+        missingFiles.map((f) => f.id)
+      );
+
+    if (deleteError) {
+      console.error("Error while deleting old files:", deleteError);
+    }
+  }
+
   filteredDirectory.forEach(async (obsidianFile) => {
     const md_file = {
       updated_at: new Date(),
@@ -49,13 +71,11 @@ export const testSupabase = async (path: string) => {
       md_path: obsidianFile.path,
     };
 
-    const files: MdFile[] = mdFiles.data ?? [];
-
-    const hasFileWithSameName = files.some(
+    const hasFileWithSameName = mdFiles.some(
       (el) => el.filename === obsidianFile.name
     );
 
-    const fileNeedsUpdate: MdFile | undefined = files.find(
+    const fileNeedsUpdate: MdFile | undefined = mdFiles.find(
       (el) =>
         (el.filename === obsidianFile.name &&
           el.md_path !== obsidianFile.path) ||
