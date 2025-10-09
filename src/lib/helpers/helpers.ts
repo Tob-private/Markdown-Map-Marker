@@ -1,3 +1,4 @@
+import { readFile } from "fs/promises";
 import { callouts } from "../data/callouts";
 import { allowedExtentions } from "../data/fileExtensions";
 import { getMdFileByIdentifier } from "../db/supabase";
@@ -15,15 +16,15 @@ export async function parseObsidianSyntax(mdContent: string) {
 async function checkBlockForSyntax(block: string) {
   const lines = block.split("\n");
   if (lines.length === 1) {
-    lines[0] = getImgFromObsidianSyntax(lines[0]);
     lines[0] = await handleNoteSyntax(lines[0]);
+    lines[0] = getImgFromObsidianSyntax(lines[0]);
   }
 
   // Check for multiline syntax. Since all other multilines are handled
   let multilines: string[] = [];
   for (let i = 0; i < lines.length; i++) {
-    lines[i] = getImgFromObsidianSyntax(lines[i]);
     lines[i] = await handleNoteSyntax(lines[i]);
+    lines[i] = getImgFromObsidianSyntax(lines[i]);
     if (lines[i].startsWith("> ")) {
       multilines.push(lines[i]);
     }
@@ -35,8 +36,8 @@ async function checkBlockForSyntax(block: string) {
 
   for (let i = 0; i < multilines.length; i++) {
     const line = multilines[i];
-    lines[i] = getImgFromObsidianSyntax(lines[i]);
     lines[i] = await handleNoteSyntax(lines[i]);
+    lines[i] = getImgFromObsidianSyntax(lines[i]);
 
     if (i === 0 && line.startsWith("> [!")) {
       const { blockquote, title } = handleCalloutType(line);
@@ -118,12 +119,25 @@ function handleCalloutType(line: string): {
 }
 
 async function handleNoteSyntax(line: string): Promise<string> {
+  if (
+    line.includes("![[") &&
+    line.includes("]]") &&
+    allowedExtentions.some((ext) => line.includes(ext))
+  )
+    return line;
+
   if (line.includes("![[") && line.includes("]]")) {
     // Embeded note
-    const startInx = line.indexOf("![[");
-    const endInx = line.indexOf("]]") + 2;
-    const embededNote = line.substring(startInx, endInx);
-    console.log(embededNote);
+    const [before, rest] = line.split("![[");
+    const [link, after] = rest.split("]]");
+    const [note, linktext] = link.split(" | ");
+    const mdFile = await getMdFileByIdentifier("filename", note + ".md");
+
+    const rawMd = await readFile(mdFile.md_path, "utf-8");
+
+    const embededStyle = handleEmbededStyle(rawMd);
+
+    return `>#### ${linktext ?? note}\n ${embededStyle}`;
   } else if (line.includes("[[") && line.includes("]]")) {
     // Note link
     const [before, rest] = line.split("[[");
@@ -135,4 +149,11 @@ async function handleNoteSyntax(line: string): Promise<string> {
     return `${before}[${linkText}](/${mdFile.id})${after}`;
   }
   return line;
+}
+
+function handleEmbededStyle(md: string) {
+  return md
+    .split("\n")
+    .map((line) => `> ${line}`)
+    .join("\n");
 }
