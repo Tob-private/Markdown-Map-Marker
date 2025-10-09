@@ -1,0 +1,1 @@
+Found to the south of the Crater, the Sultans’ Hills house thin forested areas and a lot of elevated terrain such as hills, valleys and cliffs. Some villages and small towns as well as large towns like Ancerin and Ozir can be found in this area, often near the winding rivers in the valleys.

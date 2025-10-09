@@ -1,0 +1,1 @@
+Located in the far east of the Crater, Sanbul (or Zanbuli to its locals) is a notably large town famed for its game market and Zanbuli hot curry. The cities of Sanbul and Almenstine (beyond the Crater) are considered the gateways from west to east, major trading hubs, and melting pots of wildly different cultures.

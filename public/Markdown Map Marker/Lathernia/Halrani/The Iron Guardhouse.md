@@ -1,0 +1,1 @@
+Adjacent to the Iron Palace lies the main base of operations for the Iron Guard, the primary city guard and policing force in Halrani.

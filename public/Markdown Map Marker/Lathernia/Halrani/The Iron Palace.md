@@ -1,0 +1,1 @@
+Located in the centre of the Springs, this building serves as a temple to Anvalt among other gods, and also as a courthouse where major cases are brought to trial.

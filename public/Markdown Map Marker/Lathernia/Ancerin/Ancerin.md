@@ -1,0 +1,1 @@
+Located in the Sultans' Hills south of the Crater, Ancerin houses a vast area of farmland outside its large town, providing a great source of agricultural goods for the country.

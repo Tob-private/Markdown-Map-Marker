@@ -1,0 +1,1 @@
+A small building in its own right, the property houses half an acre of burial ground in the far northeast of the Outer Crescent. Priests of Morith conduct funerals, burials and the occasional seance when needed.

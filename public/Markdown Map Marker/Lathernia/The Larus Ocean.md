@@ -1,0 +1,1 @@
+The sandy coast of the Larus Ocean stretches from the west to the south of the country and beyond, a border between the greater continent and a vast seascape leading to the rest of the world in any southwesterly direction.
