@@ -1,0 +1,1 @@
+To the northeast of the Crater and beyond, the Broken Flats are aptly named for their patches of forest and abundance of chasms, cracks and cliff faces. Not many large civilisations emerge in this area due to the lack of much of a sustainable food and water source.
