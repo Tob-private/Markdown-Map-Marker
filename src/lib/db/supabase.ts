@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import directoryTree, { type DirectoryTree } from "directory-tree";
+import { MdFile } from "../types/supabase";
 
 type DirTree = DirectoryTree<Record<string, any>>;
 
@@ -48,13 +49,13 @@ export const testSupabase = async (path: string) => {
       md_path: obsidianFile.path,
     };
 
-    const files = mdFiles.data ?? [];
+    const files: MdFile[] = mdFiles.data ?? [];
 
     const hasFileWithSameName = files.some(
       (el) => el.filename === obsidianFile.name
     );
 
-    const fileNeedsUpdate = files.find(
+    const fileNeedsUpdate: MdFile | undefined = files.find(
       (el) =>
         (el.filename === obsidianFile.name &&
           el.md_path !== obsidianFile.path) ||
