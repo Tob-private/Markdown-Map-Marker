@@ -30,7 +30,7 @@ export async function generateMaps(
   const map = L.map(imgId, {
     crs: L.CRS.Simple,
     minZoom: -1,
-    maxZoom: 4,
+    maxZoom: 2,
     zoomSnap: 0.1,
   });
 
