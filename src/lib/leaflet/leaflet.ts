@@ -1,4 +1,4 @@
-import L, { type LatLngBounds } from "leaflet";
+import L from "leaflet";
 
 export async function generateMaps(
   mapImg: HTMLImageElement,
@@ -37,7 +37,7 @@ export async function generateMaps(
   const { width: imageWidth, height: imageHeight } = dimensions;
 
   // Define bounds: top-left [0,0] to bottom-right [height, width]
-  const bounds: LatLngBounds = L.latLngBounds([
+  const bounds: L.LatLngBounds = L.latLngBounds([
     [0, 0],
     [imageHeight, imageWidth],
   ]);
