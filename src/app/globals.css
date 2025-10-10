@@ -384,3 +384,13 @@ hr {
     color: #9e9e9e;
   }
 }
+
+/* ============== */
+/* Leaflet styles */
+/* ============== */
+
+.map {
+  height: 700px;
+  width: 100%;
+  border-radius: 8px;
+}
