@@ -152,7 +152,7 @@ function handleCalloutType(line: string): {
   }
 
   const blockquote = `<blockquote class='callout not-prose callout-${calloutObj.name}'>`;
-  const title = `<p class="callout-title">${line.substring(endInx + 1)}</p>`;
+  const title = `<p class="callout-title"><i data-lucide="${calloutObj.icon}"></i> ${line.substring(endInx + 1)}</p>`;
 
   return { blockquote, title };
 }
