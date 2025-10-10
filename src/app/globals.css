@@ -385,6 +385,12 @@ hr {
   }
 }
 
-.leaflet-map {
-  height: 200px;
+.map {
+  height: 500px;
+  width: 100%;
+  border-radius: 8px;
 }
+
+/* ============== */
+/* Leaflet styles */
+/* ============== */

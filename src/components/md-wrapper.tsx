@@ -4,6 +4,7 @@ import taskLists from "markdown-it-task-lists";
 import wikiLinks from "markdown-it-wikilinks";
 import sanitizeHtml from "sanitize-html";
 import { parseObsidianSyntax } from "@/lib/helpers/md-helpers";
+import LeafletMapGenerator from "./leaflet-map-generator";
 
 export default async function MdWrapper({ rawMd }: { rawMd: string }) {
   const mdContent = await parseObsidianSyntax(rawMd);
@@ -27,10 +28,16 @@ export default async function MdWrapper({ rawMd }: { rawMd: string }) {
       ...sanitizeHtml.defaults.allowedAttributes,
       input: ["type", "checked"],
       div: ["class", "id"],
-      img: ["src", "alt", "title"],
+      img: ["src", "id", "class"],
       p: ["class"],
       blockquote: ["class"],
     },
   });
-  return <div dangerouslySetInnerHTML={{ __html: cleanHTML }}></div>;
+
+  return (
+    <>
+      <div dangerouslySetInnerHTML={{ __html: cleanHTML }}></div>
+      <LeafletMapGenerator />
+    </>
+  );
 }

@@ -4,7 +4,7 @@ import { allowedExtentions } from "../data/fileExtensions";
 import { getMdFileByIdentifier } from "../db/supabase";
 import directoryTree, { DirectoryTree } from "directory-tree";
 import { flatten } from "./helpers";
-import { dir } from "console";
+import { randomUUID } from "crypto";
 
 type DirTree<TAny> = DirectoryTree<Record<string, TAny>>;
 
@@ -113,11 +113,13 @@ function getImgFromObsidianSyntax(line: string) {
   const [filename, alt] = value2.split(" | ");
 
   if (mapFileNames.includes(filename)) {
-    const map = mapFileNames.find((map) => map == filename);
+    const map = filteredDirectory.find((map) => map.name == filename);
     if (!map) {
       throw new Error("Map not found");
     }
-    return `<div class="map" id="${map}"  style={{ height: "500px", width: "100%", borderRadius: "8px" }}></div>`;
+    const mapPath = map.path.slice(7);
+
+    return `<img src="${mapPath}" id="${randomUUID()}" class="map"/>`;
   } else {
     if (!substringedLine.includes("|")) {
       console.error("Image requires an alt text", substringedLine);

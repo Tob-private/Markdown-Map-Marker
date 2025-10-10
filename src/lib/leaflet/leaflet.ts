@@ -1,42 +1,53 @@
-import L, { type LatLngBoundsLiteral } from "leaflet";
+import L, { type LatLngBounds } from "leaflet";
 
-export async function generateMaps() {
+export async function generateMaps(
+  mapImg: HTMLImageElement,
+  dimensions: { width: number; height: number },
+  imgId: string
+) {
   if (typeof window === "undefined") return;
 
-  const mapDiv = document.getElementById("halrani.jpg");
+  // Prevent reinitialization
+  const mapDiv = document.getElementById(imgId);
   if (!mapDiv) {
-    console.warn("Map container not found");
-    return;
+    throw new Error("Map container not found");
+  }
+  if (mapDiv.classList.contains("leaflet-container")) {
+    return; // Map already initialized
   }
 
-  // Prevent reinitialization
-  if (mapDiv.classList.contains("leaflet-container")) return;
+  let mapPath = mapImg.getAttribute("src");
+  if (!mapPath) throw new Error("Map src not set");
 
-  // Create the map with CRS.Simple for image coordinates
-  const map = L.map(mapDiv, {
+  if (mapPath.startsWith("/public/")) {
+    mapPath = mapPath.replace(/^\/public/, "");
+  }
+
+  // Remove original image from DOM
+  mapImg.remove();
+
+  // Create Leaflet map using CRS.Simple (image coordinates)
+  const map = L.map(imgId, {
     crs: L.CRS.Simple,
-    minZoom: -1, // allow zooming out
+    minZoom: -1,
     maxZoom: 4,
-    zoomSnap: 0.25,
+    zoomSnap: 0.1,
   });
 
-  // Define the image URL (adjust path if needed)
-  const imageUrl = "Markdown Map Marker/assets/maps/halrani.jpg";
+  const { width: imageWidth, height: imageHeight } = dimensions;
 
-  // Define the image size in "map units" (pixel coordinates)
-  // e.g. if halrani.jpg is 2000x1500 pixels
-  const imageWidth = 2000;
-  const imageHeight = 1500;
-
-  // Define map bounds: top-left (0,0) to bottom-right (height, width)
-  const bounds: LatLngBoundsLiteral = [
+  // Define bounds: top-left [0,0] to bottom-right [height, width]
+  const bounds: LatLngBounds = L.latLngBounds([
     [0, 0],
     [imageHeight, imageWidth],
-  ];
+  ]);
 
-  // Add the image overlay
-  L.imageOverlay(imageUrl, bounds).addTo(map);
+  // Add image overlay to map
+  L.imageOverlay(mapPath, bounds).addTo(map);
 
-  // Fit map view to image bounds
+  // Fit map view to bounds
   map.fitBounds(bounds);
+
+  // Optional: restrict panning outside the image
+  map.setMaxBounds(bounds);
 }
