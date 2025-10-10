@@ -27,6 +27,7 @@ export default async function MdWrapper({ rawMd }: { rawMd: string }) {
     allowedAttributes: {
       ...sanitizeHtml.defaults.allowedAttributes,
       input: ["type", "checked"],
+      i: ["data-lucide"],
       div: ["class", "id"],
       img: ["src", "id", "class", "alt"],
       p: ["class"],

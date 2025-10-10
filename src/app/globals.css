@@ -224,6 +224,8 @@ hr {
     color 0.3s ease;
 }
 .callout-title {
+  display: flex;
+  gap: 10px;
   font-weight: 600;
   margin-bottom: 0.5em;
 }
