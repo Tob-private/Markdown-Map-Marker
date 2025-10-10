@@ -112,6 +112,9 @@ function getImgFromObsidianSyntax(line: string) {
   const [value2] = value1.split("]]");
   const [filename, alt] = value2.split(" | ");
 
+  if (line.startsWith(">")) {
+    return `${beforeImg}![[Image of ${filename}]]${afterImg}`;
+  }
   if (mapFileNames.includes(filename)) {
     const map = filteredDirectory.find((map) => map.name == filename);
     if (!map) {
