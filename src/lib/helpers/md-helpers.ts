@@ -153,7 +153,7 @@ async function handleBlockquotes(
   blockquoteLines: string[],
   lines: string[]
 ): Promise<string[]> {
-  const output = ["<blockquote>"];
+  const output = [];
   let prevLine = "";
 
   for (let i = 0; i < blockquoteLines.length; i++) {
@@ -172,6 +172,9 @@ async function handleBlockquotes(
     ) {
       output.push("</blockquote>\n");
     }
+    if (i === 0 && !line.split("> ").join("").startsWith("[!")) {
+      output.push("<blockquote>");
+    }
 
     if (i === 0 && line.split("> ").join("").startsWith("[!")) {
       const { blockquote, title } = handleCalloutType(line);
@@ -188,9 +191,9 @@ async function handleBlockquotes(
   // For each opened blockquote, we need to close each one
   let endTagsNeeded = 0;
   output.forEach((line) => {
-    if (line === "<blockquote>") {
+    if (line.includes("<blockquote")) {
       endTagsNeeded++;
-    } else if (line === "</blockquote>") {
+    } else if (line.includes("</blockquote>")) {
       endTagsNeeded--;
     }
   });
