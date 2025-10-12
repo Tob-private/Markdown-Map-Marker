@@ -25,46 +25,20 @@ async function checkBlockForSyntax(block: string) {
     lines[0] = getImgFromObsidianSyntax(lines[0]);
   }
 
-  // Check for multiline syntax. Since all other multilines are handled
-  let multilines: string[] = [];
+  // Check for multiline syntax. Since all other blockquoteLines are handled
+  let blockquoteLines: string[] = [];
   for (let i = 0; i < lines.length; i++) {
     lines[i] = await handleNoteSyntax(lines[i]);
     lines[i] = getImgFromObsidianSyntax(lines[i]);
     if (lines[i].startsWith("> ")) {
-      multilines.push(lines[i]);
+      blockquoteLines.push(lines[i]);
     }
   }
-  if (multilines.length < 1) return lines.join("\n"); // Cant just return block, since then imgs wont be parsed correctly
+  if (blockquoteLines.length < 1) return lines.join("\n"); // Cant just return block, since then imgs wont be parsed correctly
 
-  const output = [];
-  let isCallout = false;
+  blockquoteLines = await handleBlockquotes(blockquoteLines, lines);
 
-  for (let i = 0; i < multilines.length; i++) {
-    const line = multilines[i];
-    lines[i] = await handleNoteSyntax(lines[i]);
-    lines[i] = getImgFromObsidianSyntax(lines[i]);
-
-    if (i === 0 && line.startsWith("> [!")) {
-      const { blockquote, title } = handleCalloutType(line);
-      isCallout = true;
-      output.push(blockquote);
-      output.push(title);
-    } else if (line.startsWith("> ")) {
-      output.push(`<p>${line.substring(2)}</p>`);
-    } else if (line.trim() !== "") {
-      output.push(`<p>${line}</p>`);
-    }
-  }
-
-  if (isCallout) output.push("</blockquote>\n");
-  else {
-    output.unshift("<blockquote class='not-prose'>");
-    output.push("</blockquote>\n");
-  }
-
-  multilines = output;
-
-  return multilines.join("");
+  return blockquoteLines.join("");
 }
 
 function getImgFromObsidianSyntax(line: string) {
@@ -198,4 +172,57 @@ function handleEmbededStyle(md: string) {
     .split("\n")
     .map((line) => `> ${line}`)
     .join("\n");
+}
+
+async function handleBlockquotes(
+  blockquoteLines: string[],
+  lines: string[]
+): Promise<string[]> {
+  const output = ["<blockquote>"];
+  let prevLine = "";
+
+  for (let i = 0; i < blockquoteLines.length; i++) {
+    const line = blockquoteLines[i];
+    lines[i] = await handleNoteSyntax(lines[i]);
+    lines[i] = getImgFromObsidianSyntax(lines[i]);
+
+    if (
+      line.split("> ").length > prevLine.split("> ").length &&
+      prevLine.length > 0
+    ) {
+      output.push("<blockquote>");
+    } else if (
+      line.split("> ").length < prevLine.split("> ").length &&
+      prevLine.length > 0
+    ) {
+      output.push("</blockquote>\n");
+    }
+
+    if (i === 0 && line.startsWith("> [!")) {
+      const { blockquote, title } = handleCalloutType(line);
+      output.push(blockquote);
+      output.push(title);
+    } else if (line.startsWith("> ")) {
+      output.push(`<p>${line.split("> ").join("")}</p>`);
+    } else if (line.trim() !== "") {
+      output.push(`<p>${line}</p>`);
+    }
+    prevLine = line;
+  }
+
+  // For each opened blockquote, we need to close each one
+  let endTagsNeeded = 0;
+  output.forEach((line) => {
+    if (line === "<blockquote>") {
+      endTagsNeeded++;
+    } else if (line === "</blockquote>") {
+      endTagsNeeded--;
+    }
+  });
+
+  for (let i = 0; i < endTagsNeeded; i++) {
+    output.push("</blockquote>");
+  }
+
+  return output;
 }
