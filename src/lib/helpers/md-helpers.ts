@@ -25,7 +25,7 @@ async function checkBlockForSyntax(block: string) {
     lines[0] = getImgFromObsidianSyntax(lines[0]);
   }
 
-  // Check for multiline syntax. Since all other blockquoteLines are handled
+  // Check for multiline syntax. Since all other multilines are handled
   let blockquoteLines: string[] = [];
   for (let i = 0; i < lines.length; i++) {
     lines[i] = await handleNoteSyntax(lines[i]);
@@ -39,6 +39,46 @@ async function checkBlockForSyntax(block: string) {
   blockquoteLines = await handleBlockquotes(blockquoteLines, lines);
 
   return blockquoteLines.join("");
+}
+
+async function handleNoteSyntax(line: string): Promise<string> {
+  if (
+    line.includes("![[") &&
+    line.includes("]]") &&
+    allowedExtentions.some((ext) => line.includes(ext))
+  )
+    return line;
+
+  if (line.includes("![[") && line.includes("]]")) {
+    // Embeded note
+    const [before, rest] = line.split("![[");
+    const [link, after] = rest.split("]]");
+    const [note, linktext] = link.split(" | ");
+    const mdFile = await getMdFileByIdentifier("filename", note + ".md");
+
+    const rawMd = await readFile(mdFile.md_path, "utf-8");
+
+    const embededStyle = handleEmbededStyle(rawMd);
+
+    return `>#### ${linktext ?? note}\n ${embededStyle}`;
+  } else if (line.includes("[[") && line.includes("]]")) {
+    // Note link
+    const [before, rest] = line.split("[[");
+    const [link, after] = rest.split("]]");
+    const [note, linkText] = link.split(" | ");
+
+    const mdFile = await getMdFileByIdentifier("filename", note + ".md");
+
+    return `${before}[${linkText}](/${mdFile.id})${after}`;
+  }
+  return line;
+}
+
+function handleEmbededStyle(md: string) {
+  return md
+    .split("\n")
+    .map((line) => `> ${line}`)
+    .join("\n");
 }
 
 function getImgFromObsidianSyntax(line: string) {
@@ -109,71 +149,6 @@ function getImgFromObsidianSyntax(line: string) {
   }
 }
 
-function handleCalloutType(line: string): {
-  blockquote: string;
-  title: string;
-} {
-  const startInx = line.indexOf("[!") + 2;
-  const endInx = line.indexOf("]");
-  const calloutType = line.slice(startInx, endInx);
-
-  const calloutObj = callouts.find(
-    (callout) =>
-      callout.name === calloutType.toLowerCase() ||
-      callout.aliases?.includes(calloutType.toLowerCase())
-  );
-
-  if (calloutObj === undefined) {
-    console.error("Reading callout type:", calloutType);
-    throw new Error("Callout type not recognized");
-  }
-
-  const blockquote = `<blockquote class='callout not-prose callout-${calloutObj.name}'>`;
-  const title = `<p class="callout-title"><i data-lucide="${calloutObj.icon}"></i> ${line.substring(endInx + 1)}</p>`;
-
-  return { blockquote, title };
-}
-
-async function handleNoteSyntax(line: string): Promise<string> {
-  if (
-    line.includes("![[") &&
-    line.includes("]]") &&
-    allowedExtentions.some((ext) => line.includes(ext))
-  )
-    return line;
-
-  if (line.includes("![[") && line.includes("]]")) {
-    // Embeded note
-    const [before, rest] = line.split("![[");
-    const [link, after] = rest.split("]]");
-    const [note, linktext] = link.split(" | ");
-    const mdFile = await getMdFileByIdentifier("filename", note + ".md");
-
-    const rawMd = await readFile(mdFile.md_path, "utf-8");
-
-    const embededStyle = handleEmbededStyle(rawMd);
-
-    return `>#### ${linktext ?? note}\n ${embededStyle}`;
-  } else if (line.includes("[[") && line.includes("]]")) {
-    // Note link
-    const [before, rest] = line.split("[[");
-    const [link, after] = rest.split("]]");
-    const [note, linkText] = link.split(" | ");
-
-    const mdFile = await getMdFileByIdentifier("filename", note + ".md");
-
-    return `${before}[${linkText}](/${mdFile.id})${after}`;
-  }
-  return line;
-}
-
-function handleEmbededStyle(md: string) {
-  return md
-    .split("\n")
-    .map((line) => `> ${line}`)
-    .join("\n");
-}
-
 async function handleBlockquotes(
   blockquoteLines: string[],
   lines: string[]
@@ -198,7 +173,7 @@ async function handleBlockquotes(
       output.push("</blockquote>\n");
     }
 
-    if (i === 0 && line.startsWith("> [!")) {
+    if (i === 0 && line.split("> ").join("").startsWith("[!")) {
       const { blockquote, title } = handleCalloutType(line);
       output.push(blockquote);
       output.push(title);
@@ -225,4 +200,29 @@ async function handleBlockquotes(
   }
 
   return output;
+}
+
+function handleCalloutType(line: string): {
+  blockquote: string;
+  title: string;
+} {
+  const startInx = line.indexOf("[!") + 2;
+  const endInx = line.indexOf("]");
+  const calloutType = line.slice(startInx, endInx);
+
+  const calloutObj = callouts.find(
+    (callout) =>
+      callout.name === calloutType.toLowerCase() ||
+      callout.aliases?.includes(calloutType.toLowerCase())
+  );
+
+  if (calloutObj === undefined) {
+    console.error("Reading callout type:", calloutType);
+    throw new Error("Callout type not recognized");
+  }
+
+  const blockquote = `<blockquote class='callout not-prose callout-${calloutObj.name}'>`;
+  const title = `<p class="callout-title"><i data-lucide="${calloutObj.icon}"></i> ${line.substring(endInx + 1)}</p>`;
+
+  return { blockquote, title };
 }
