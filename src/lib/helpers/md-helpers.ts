@@ -4,7 +4,6 @@ import { allowedExtentions } from "../data/fileExtensions";
 import { getMdFileByIdentifier } from "../db/supabase";
 import directoryTree, { DirectoryTree } from "directory-tree";
 import { flatten } from "./helpers";
-import { randomUUID } from "crypto";
 
 type DirTree<TAny> = DirectoryTree<Record<string, TAny>>;
 
@@ -51,8 +50,8 @@ async function handleNoteSyntax(line: string): Promise<string> {
 
   if (line.includes("![[") && line.includes("]]")) {
     // Embeded note
-    const [before, rest] = line.split("![[");
-    const [link, after] = rest.split("]]");
+    const [, rest] = line.split("![[");
+    const [link] = rest.split("]]");
     const [note, linktext] = link.split(" | ");
     const mdFile = await getMdFileByIdentifier("filename", note + ".md");
 
@@ -96,29 +95,29 @@ function getImgFromObsidianSyntax(line: string) {
 
   const substringedLine = line.substring(imgStart, imgEnd);
 
-  const obsidianDirectory = directoryTree(
+  const obsidianMapDirectory = directoryTree(
     "public/Markdown Map Marker/assets/maps/",
     {
       attributes: ["extension"],
-    }
+    },
   );
 
-  if (!obsidianDirectory.children) {
+  if (!obsidianMapDirectory.children) {
     throw new Error("Obsidian assets/maps/ directory is undefined");
   }
 
-  const flattenedDirectory = flatten<DirTree<string>>(
-    obsidianDirectory.children
+  const flattenedMapDirectory = flatten<DirTree<string>>(
+    obsidianMapDirectory.children,
   );
 
-  const filteredDirectory = flattenedDirectory.filter(
+  const filteredMapDirectory = flattenedMapDirectory.filter(
     (child) =>
       child.extension &&
       allowedExtentions.includes(child.extension) &&
-      !child.children
+      !child.children,
   );
 
-  const mapFileNames = filteredDirectory.map((file) => file.name);
+  const mapFileNames = filteredMapDirectory.map((file) => file.name);
 
   const [beforeImg, afterImg] = line.split(substringedLine);
 
@@ -130,18 +129,18 @@ function getImgFromObsidianSyntax(line: string) {
     return `${beforeImg}![[Image of ${filename}]]${afterImg}`;
   }
   if (mapFileNames.includes(filename)) {
-    const map = filteredDirectory.find((map) => map.name == filename);
+    const map = filteredMapDirectory.find((map) => map.name == filename);
     if (!map) {
       throw new Error("Map not found");
     }
     const mapPath = map.path.slice(7);
 
-    return `<img src="${mapPath}" id="${randomUUID()}" class="map"/>`;
+    return `<div data-map-src="${mapPath}"/>`;
   } else {
     if (!substringedLine.includes("|")) {
       console.error("Image requires an alt text", substringedLine);
       throw new Error(
-        "Image requires alt text. Insert one using this syntax: ![[image.png | alt text]]"
+        "Image requires alt text. Insert one using this syntax: ![[image.png | alt text]]",
       );
     }
 
@@ -151,7 +150,7 @@ function getImgFromObsidianSyntax(line: string) {
 
 async function handleBlockquotes(
   blockquoteLines: string[],
-  lines: string[]
+  lines: string[],
 ): Promise<string[]> {
   const output = [];
   let prevLine = "";
@@ -216,7 +215,7 @@ function handleCalloutType(line: string): {
   const calloutObj = callouts.find(
     (callout) =>
       callout.name === calloutType.toLowerCase() ||
-      callout.aliases?.includes(calloutType.toLowerCase())
+      callout.aliases?.includes(calloutType.toLowerCase()),
   );
 
   if (calloutObj === undefined) {
