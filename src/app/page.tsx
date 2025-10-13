@@ -8,8 +8,6 @@ export default async function Home() {
     "utf-8"
   );
 
-  // supabaseSetup("public/Markdown Map Marker/");
-
   return (
     <main>
       <MdWrapper rawMd={rawContent} />

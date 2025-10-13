@@ -96,29 +96,29 @@ function getImgFromObsidianSyntax(line: string) {
 
   const substringedLine = line.substring(imgStart, imgEnd);
 
-  const obsidianDirectory = directoryTree(
+  const obsidianMapDirectory = directoryTree(
     "public/Markdown Map Marker/assets/maps/",
     {
       attributes: ["extension"],
     }
   );
 
-  if (!obsidianDirectory.children) {
+  if (!obsidianMapDirectory.children) {
     throw new Error("Obsidian assets/maps/ directory is undefined");
   }
 
-  const flattenedDirectory = flatten<DirTree<string>>(
-    obsidianDirectory.children
+  const flattenedMapDirectory = flatten<DirTree<string>>(
+    obsidianMapDirectory.children
   );
 
-  const filteredDirectory = flattenedDirectory.filter(
+  const filteredMapDirectory = flattenedMapDirectory.filter(
     (child) =>
       child.extension &&
       allowedExtentions.includes(child.extension) &&
       !child.children
   );
 
-  const mapFileNames = filteredDirectory.map((file) => file.name);
+  const mapFileNames = filteredMapDirectory.map((file) => file.name);
 
   const [beforeImg, afterImg] = line.split(substringedLine);
 
@@ -130,13 +130,13 @@ function getImgFromObsidianSyntax(line: string) {
     return `${beforeImg}![[Image of ${filename}]]${afterImg}`;
   }
   if (mapFileNames.includes(filename)) {
-    const map = filteredDirectory.find((map) => map.name == filename);
+    const map = filteredMapDirectory.find((map) => map.name == filename);
     if (!map) {
       throw new Error("Map not found");
     }
     const mapPath = map.path.slice(7);
 
-    return `<img src="${mapPath}" id="${randomUUID()}" class="map"/>`;
+    return `<div data-map-src="${mapPath}"/>`;
   } else {
     if (!substringedLine.includes("|")) {
       console.error("Image requires an alt text", substringedLine);

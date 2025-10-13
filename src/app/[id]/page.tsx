@@ -15,6 +15,8 @@ export default async function Page({
 
   const mdFile = await getMdFileById(id);
 
+  if (!mdFile) return <div>Loading content...</div>;
+
   const rawContent = await readFile(mdFile.md_path, "utf-8");
 
   return (
