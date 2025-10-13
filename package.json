@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "format": "npx prettier . --write"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.74.0",

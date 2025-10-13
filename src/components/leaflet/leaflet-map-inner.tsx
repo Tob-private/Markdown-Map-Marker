@@ -56,5 +56,5 @@ export const LeafletMapInner = dynamic(
       );
     };
   },
-  { ssr: false } // ⬅️ this disables server-side rendering
+  { ssr: false }, // ⬅️ this disables server-side rendering
 );

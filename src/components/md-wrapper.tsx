@@ -38,7 +38,7 @@ export default async function MdWrapper({ rawMd }: { rawMd: string }) {
   const mapImgs = cleanHTML
     .split("\n")
     .filter((line: string) =>
-      line.includes(`<div data-map-src="Markdown Map Marker/assets/maps/`)
+      line.includes(`<div data-map-src="Markdown Map Marker/assets/maps/`),
     );
 
   return (

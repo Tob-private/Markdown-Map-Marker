@@ -10,7 +10,7 @@ export const flatten = <T extends { children?: T[] }>(routes: T[]) => {
 };
 
 export function getImageDimensions(
-  url: string
+  url: string,
 ): Promise<{ width: number; height: number }> {
   return new Promise((resolve, reject) => {
     const img = new Image();
