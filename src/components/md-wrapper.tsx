@@ -4,7 +4,7 @@ import taskLists from "markdown-it-task-lists";
 import wikiLinks from "markdown-it-wikilinks";
 import sanitizeHtml from "sanitize-html";
 import { parseObsidianSyntax } from "@/lib/helpers/md-helpers";
-import LeafletMapGenerator from "./leaflet-map-generator";
+import LeafletMap from "./leaflet/leaflet-map";
 
 export default async function MdWrapper({ rawMd }: { rawMd: string }) {
   const mdContent = await parseObsidianSyntax(rawMd);
@@ -28,17 +28,26 @@ export default async function MdWrapper({ rawMd }: { rawMd: string }) {
       ...sanitizeHtml.defaults.allowedAttributes,
       input: ["type", "checked"],
       i: ["data-lucide"],
-      div: ["class", "id"],
+      div: ["class", "id", "data-map-src"],
       img: ["src", "id", "class", "alt"],
       p: ["class"],
       blockquote: ["class"],
     },
   });
 
+  const mapImgs = cleanHTML
+    .split("\n")
+    .filter((line: string) =>
+      line.includes(`<div data-map-src="Markdown Map Marker/assets/maps/`),
+    );
+
   return (
     <>
       <div dangerouslySetInnerHTML={{ __html: cleanHTML }}></div>
-      <LeafletMapGenerator />
+      {mapImgs.length > 0 &&
+        mapImgs.map(async (mapImg, idx) => (
+          <LeafletMap imgElement={mapImg} key={idx} />
+        ))}
     </>
   );
 }

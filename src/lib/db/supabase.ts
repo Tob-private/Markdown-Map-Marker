@@ -30,17 +30,17 @@ export const supabaseSetup = async (path: string) => {
   }
 
   const flattenedDirectory = flatten<DirTree<string>>(
-    obsidianDirectory.children
+    obsidianDirectory.children,
   );
 
   const filteredDirectory = flattenedDirectory.filter(
-    (child) => child.extension && child.extension === ".md" && !child.children
+    (child) => child.extension && child.extension === ".md" && !child.children,
   );
 
   const localFileNames = filteredDirectory.map((file) => file.name);
 
   const missingFiles = mdFiles.filter(
-    (dbFile) => !localFileNames.includes(dbFile.filename)
+    (dbFile) => !localFileNames.includes(dbFile.filename),
   );
 
   if (missingFiles.length > 0) {
@@ -49,7 +49,7 @@ export const supabaseSetup = async (path: string) => {
       .delete()
       .in(
         "id",
-        missingFiles.map((f) => f.id)
+        missingFiles.map((f) => f.id),
       );
 
     if (deleteError) {
@@ -65,14 +65,14 @@ export const supabaseSetup = async (path: string) => {
     };
 
     const hasFileWithSameName = mdFiles.some(
-      (el) => el.filename === obsidianFile.name
+      (el) => el.filename === obsidianFile.name,
     );
 
     const fileNeedsUpdate: MdFile | undefined = mdFiles.find(
       (el) =>
         (el.filename === obsidianFile.name &&
           el.md_path !== obsidianFile.path) ||
-        (el.filename !== obsidianFile.name && el.md_path === obsidianFile.path)
+        (el.filename !== obsidianFile.name && el.md_path === obsidianFile.path),
     );
 
     if (!hasFileWithSameName) {
@@ -103,7 +103,7 @@ export async function getMdFileById(id: string): Promise<MdFile> {
 }
 export async function getMdFileByIdentifier(
   identifier: string,
-  value: string
+  value: string,
 ): Promise<MdFile> {
   const { data, error } = await supabase
     .from("md_files")
