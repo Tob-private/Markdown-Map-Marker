@@ -1,11 +1,11 @@
 import dynamic from "next/dynamic";
+import LeafletMapEvents from "./leaflet-map-events";
 
 export const LeafletMapInner = dynamic(
   async () => {
     const L = await import("leaflet");
-    const { MapContainer, ImageOverlay, Marker, Popup } = await import(
-      "react-leaflet"
-    );
+    const { MapContainer, ImageOverlay, Marker, Popup, useMapEvents } =
+      await import("react-leaflet");
 
     const CRS = L.CRS.Simple;
 
@@ -27,6 +27,7 @@ export const LeafletMapInner = dynamic(
         [argMaxBounds[0][0], argMaxBounds[0][1]],
         [argMaxBounds[1][0], argMaxBounds[1][1]],
       ]);
+
       return (
         <MapContainer
           crs={CRS}
@@ -38,6 +39,7 @@ export const LeafletMapInner = dynamic(
           className="map"
           style={{ height: "600px", width: "100%" }}
         >
+          <LeafletMapEvents useMapEvents={useMapEvents} />
           <ImageOverlay url={imageUrl} bounds={bounds} />
           <Marker
             position={[500, 500]}
@@ -56,5 +58,5 @@ export const LeafletMapInner = dynamic(
       );
     };
   },
-  { ssr: false }, // ⬅️ this disables server-side rendering
+  { ssr: false } // ⬅️ this disables server-side rendering
 );
