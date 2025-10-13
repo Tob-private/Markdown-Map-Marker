@@ -4,7 +4,6 @@ import { allowedExtentions } from "../data/fileExtensions";
 import { getMdFileByIdentifier } from "../db/supabase";
 import directoryTree, { DirectoryTree } from "directory-tree";
 import { flatten } from "./helpers";
-import { randomUUID } from "crypto";
 
 type DirTree<TAny> = DirectoryTree<Record<string, TAny>>;
 
@@ -51,8 +50,8 @@ async function handleNoteSyntax(line: string): Promise<string> {
 
   if (line.includes("![[") && line.includes("]]")) {
     // Embeded note
-    const [before, rest] = line.split("![[");
-    const [link, after] = rest.split("]]");
+    const [, rest] = line.split("![[");
+    const [link] = rest.split("]]");
     const [note, linktext] = link.split(" | ");
     const mdFile = await getMdFileByIdentifier("filename", note + ".md");
 

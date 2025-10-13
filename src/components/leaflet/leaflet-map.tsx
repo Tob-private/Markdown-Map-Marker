@@ -5,8 +5,8 @@ import { LeafletMapInner } from "./leaflet-map-inner";
 import { getImageDimensions } from "@/lib/helpers/helpers";
 
 export default function LeafletMap({ imgElement }: { imgElement: string }) {
-  const [bounds, setBounds] = useState<any>(null);
-  const [maxBounds, setMaxBounds] = useState<any>(null);
+  const [bounds, setBounds] = useState<number[][] | null>(null);
+  const [maxBounds, setMaxBounds] = useState<number[][] | null>(null);
   const [imageUrl, setImageUrl] = useState<string>("");
 
   useEffect(() => {
@@ -34,8 +34,8 @@ export default function LeafletMap({ imgElement }: { imgElement: string }) {
   return (
     <LeafletMapInner
       imageUrl={imageUrl}
-      bounds={bounds}
-      maxBounds={maxBounds}
+      argBounds={bounds}
+      argMaxBounds={maxBounds}
     />
   );
 }

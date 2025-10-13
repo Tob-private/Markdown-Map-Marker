@@ -10,7 +10,23 @@ export const LeafletMapInner = dynamic(
     const CRS = L.CRS.Simple;
 
     // Return a functional component defined *inside* the dynamic import
-    return function InnerMap({ imageUrl, bounds, maxBounds }: any) {
+    return function InnerMap({
+      imageUrl,
+      argBounds,
+      argMaxBounds,
+    }: {
+      imageUrl: string;
+      argBounds: number[][];
+      argMaxBounds: number[][];
+    }) {
+      const bounds = new L.LatLngBounds([
+        [argBounds[0][0], argBounds[0][1]],
+        [argBounds[1][0], argBounds[1][1]],
+      ]);
+      const maxBounds = new L.LatLngBounds([
+        [argMaxBounds[0][0], argMaxBounds[0][1]],
+        [argMaxBounds[1][0], argMaxBounds[1][1]],
+      ]);
       return (
         <MapContainer
           crs={CRS}
