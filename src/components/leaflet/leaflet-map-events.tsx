@@ -7,7 +7,7 @@ export default function LeafletMapEvents({
   useMapEvents: (handlers: LeafletEventHandlerFnMap) => Map;
 }) {
   const map = useMapEvents({
-    click: (e) => createMarker([e.latlng.lat, e.latlng.lng]),
+    click: (e) => createMarker(e.latlng.lat, e.latlng.lng),
   });
 
   return null;
