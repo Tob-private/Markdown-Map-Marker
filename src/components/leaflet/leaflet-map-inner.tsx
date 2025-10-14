@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic";
 import LeafletMapEvents from "./leaflet-map-events";
+import { MapMarker } from "@/lib/types/supabase";
 
 export const LeafletMapInner = dynamic(
   async () => {
@@ -13,10 +14,12 @@ export const LeafletMapInner = dynamic(
       imageUrl,
       argBounds,
       argMaxBounds,
+      mapMarkers,
     }: {
       imageUrl: string;
       argBounds: number[][];
       argMaxBounds: number[][];
+      mapMarkers: MapMarker[];
     }) {
       const bounds = new L.LatLngBounds([
         [argBounds[0][0], argBounds[0][1]],
@@ -41,19 +44,23 @@ export const LeafletMapInner = dynamic(
         >
           <LeafletMapEvents useMapEvents={useMapEvents} imgPath={imageUrl} />
           <ImageOverlay url={imageUrl} bounds={bounds} />
-          <Marker
-            position={[500, 500]}
-            icon={
-              new L.Icon({
-                iconUrl: "marker-icon.png",
-                iconSize: [40, 40],
-                iconAnchor: [20, 40],
-                popupAnchor: [0, -45],
-              })
-            }
-          >
-            <Popup>Top-left corner (0, 0)</Popup>
-          </Marker>
+          {mapMarkers &&
+            mapMarkers.map((marker) => (
+              <Marker
+                key={marker.id}
+                position={[marker.lat, marker.lng]}
+                icon={
+                  new L.Icon({
+                    iconUrl: "marker-icon.png",
+                    iconSize: [40, 40],
+                    iconAnchor: [20, 40],
+                    popupAnchor: [0, -45],
+                  })
+                }
+              >
+                <Popup>This is marker: {marker.id}</Popup>
+              </Marker>
+            ))}
         </MapContainer>
       );
     };

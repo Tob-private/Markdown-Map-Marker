@@ -1,6 +1,23 @@
 "use server";
 import { supabase } from "../db/supabase";
 import { CreateMapMarker } from "../types/api/leaflet";
+import { MapMarker } from "../types/supabase";
+
+export async function getMarkersFromImgPath(
+  imgPath: string
+): Promise<MapMarker[]> {
+  const { data, error } = await supabase
+    .from("map_markers")
+    .select()
+    .like("img_path", imgPath);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Error fetching markers from img path");
+  } else {
+    return data;
+  }
+}
 
 export async function createMarker(
   lat: number,
