@@ -67,7 +67,7 @@ export const supabaseMdFilesSetup = async () => {
         filename: obsidianFile.name,
         md_path: obsidianFile.path,
       };
-      const { data, error } = await supabase.from("md_files").insert(md_file);
+      const { error } = await supabase.from("md_files").insert(md_file);
       if (error) {
         console.error(error);
         throw new Error("Error creating md file");
@@ -80,7 +80,7 @@ export const supabaseMdFilesSetup = async () => {
         md_path: obsidianFile.path,
       };
       console.dir({ md_file });
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from("md_files")
         .update(md_file)
         .eq("id", fileNeedsUpdate.id);

@@ -1,14 +1,13 @@
 import { readFile } from "fs/promises";
 
 import MdWrapper from "@/components/md-wrapper";
-import { supabaseMdFilesSetup } from "@/lib/db/seed/md-files-setup";
 import { supabase } from "@/lib/db/supabase";
 
 export default async function Home() {
   const usrEmail = process.env.NEXT_PUBLIC_SUPABASE_USER_EMAIL ?? "empty";
   const usrPW = process.env.NEXT_PUBLIC_SUPABASE_USER_PW ?? "empty";
 
-  const { data, error } = await supabase.auth.signInWithPassword({
+  const { error } = await supabase.auth.signInWithPassword({
     email: usrEmail,
     password: usrPW,
   });

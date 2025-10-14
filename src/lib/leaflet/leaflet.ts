@@ -18,7 +18,7 @@ export async function createMarker(
   };
   console.dir({ mapMarker });
 
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from("map_markers")
     .insert(mapMarker)
     .select();
