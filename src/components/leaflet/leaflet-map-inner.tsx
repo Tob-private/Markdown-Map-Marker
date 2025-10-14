@@ -33,6 +33,7 @@ export const LeafletMapInner = dynamic(
           bounds={bounds}
           maxBounds={maxBounds}
           scrollWheelZoom={true}
+          doubleClickZoom={false}
           maxZoom={2}
           minZoom={-1}
           className="map"

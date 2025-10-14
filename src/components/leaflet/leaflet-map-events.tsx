@@ -8,8 +8,8 @@ export default function LeafletMapEvents({
   useMapEvents: (handlers: LeafletEventHandlerFnMap) => Map;
   imgPath: string;
 }) {
-  const map = useMapEvents({
-    click: (e) => createMarker(e.latlng.lat, e.latlng.lng, imgPath),
+  useMapEvents({
+    dblclick: (e) => createMarker(e.latlng.lat, e.latlng.lng, imgPath),
   });
 
   return null;
