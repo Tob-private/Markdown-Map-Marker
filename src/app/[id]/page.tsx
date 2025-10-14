@@ -1,5 +1,5 @@
 import MdWrapper from "@/components/md-wrapper";
-import { getMdFileById } from "@/lib/db/supabase";
+import { getMdFileById } from "@/lib/leaflet/md-files";
 import { readFile } from "fs/promises";
 
 interface PageParams {
