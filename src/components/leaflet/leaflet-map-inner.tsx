@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic";
 import LeafletMapEvents from "./leaflet-map-events";
+import { useUser } from "@/context-providers/user-provider";
 
 export const LeafletMapInner = dynamic(
   async () => {
@@ -8,7 +9,6 @@ export const LeafletMapInner = dynamic(
       await import("react-leaflet");
 
     const CRS = L.CRS.Simple;
-
     // Return a functional component defined *inside* the dynamic import
     return function InnerMap({
       imageUrl,
@@ -28,6 +28,8 @@ export const LeafletMapInner = dynamic(
         [argMaxBounds[1][0], argMaxBounds[1][1]],
       ]);
 
+      const user = useUser();
+
       return (
         <MapContainer
           crs={CRS}
@@ -39,7 +41,13 @@ export const LeafletMapInner = dynamic(
           className="map"
           style={{ height: "600px", width: "100%" }}
         >
-          <LeafletMapEvents useMapEvents={useMapEvents} />
+          {user.user && (
+            <LeafletMapEvents
+              useMapEvents={useMapEvents}
+              imgPath={imageUrl}
+              user={user.user}
+            />
+          )}
           <ImageOverlay url={imageUrl} bounds={bounds} />
           <Marker
             position={[500, 500]}
