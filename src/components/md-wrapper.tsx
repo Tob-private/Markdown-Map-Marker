@@ -5,8 +5,6 @@ import wikiLinks from "markdown-it-wikilinks";
 import sanitizeHtml from "sanitize-html";
 import { parseObsidianSyntax } from "@/lib/helpers/md-helpers";
 import LeafletMap from "./leaflet/leaflet-map";
-import { User } from "@supabase/supabase-js";
-import UserProvider from "@/context-providers/user-provider";
 
 export default async function MdWrapper({ rawMd }: { rawMd: string }) {
   const mdContent = await parseObsidianSyntax(rawMd);
@@ -46,12 +44,10 @@ export default async function MdWrapper({ rawMd }: { rawMd: string }) {
   return (
     <>
       <div dangerouslySetInnerHTML={{ __html: cleanHTML }}></div>
-      <UserProvider>
-        {mapImgs.length > 0 &&
-          mapImgs.map(async (mapImg, idx) => (
-            <LeafletMap imgElement={mapImg} key={idx} />
-          ))}
-      </UserProvider>
+      {mapImgs.length > 0 &&
+        mapImgs.map(async (mapImg, idx) => (
+          <LeafletMap imgElement={mapImg} key={idx} />
+        ))}
     </>
   );
 }

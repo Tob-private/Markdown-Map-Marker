@@ -29,10 +29,7 @@ export default async function Page({
   if (error || !data || !data.session) {
     console.error(error);
     throw new Error("Login error");
-  } else {
-    console.log(data.session);
   }
-
   const { id } = await params;
 
   const mdFile = await getMdFileById(id);
