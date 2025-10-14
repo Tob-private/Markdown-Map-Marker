@@ -3,8 +3,15 @@
 import { useEffect, useState } from "react";
 import { LeafletMapInner } from "./leaflet-map-inner";
 import { getImageDimensions } from "@/lib/helpers/helpers";
+import { MapMarker } from "@/lib/types/supabase";
 
-export default function LeafletMap({ imgElement }: { imgElement: string }) {
+export default function LeafletMap({
+  imgElement,
+  mapMarkers,
+}: {
+  imgElement: string;
+  mapMarkers: MapMarker[];
+}) {
   const [bounds, setBounds] = useState<number[][] | null>(null);
   const [maxBounds, setMaxBounds] = useState<number[][] | null>(null);
   const [imageUrl, setImageUrl] = useState<string>("");
@@ -36,6 +43,7 @@ export default function LeafletMap({ imgElement }: { imgElement: string }) {
       imageUrl={imageUrl}
       argBounds={bounds}
       argMaxBounds={maxBounds}
+      mapMarkers={mapMarkers}
     />
   );
 }

@@ -1,9 +1,9 @@
 import { readFile } from "fs/promises";
 import { callouts } from "../data/callouts";
 import { allowedExtentions } from "../data/fileExtensions";
-import { getMdFileByIdentifier } from "../db/supabase";
 import directoryTree, { DirectoryTree } from "directory-tree";
 import { flatten } from "./helpers";
+import { getMdFileByIdentifier } from "../leaflet/md-files";
 
 type DirTree<TAny> = DirectoryTree<Record<string, TAny>>;
 
@@ -99,7 +99,7 @@ function getImgFromObsidianSyntax(line: string) {
     "public/Markdown Map Marker/assets/maps/",
     {
       attributes: ["extension"],
-    },
+    }
   );
 
   if (!obsidianMapDirectory.children) {
@@ -107,14 +107,14 @@ function getImgFromObsidianSyntax(line: string) {
   }
 
   const flattenedMapDirectory = flatten<DirTree<string>>(
-    obsidianMapDirectory.children,
+    obsidianMapDirectory.children
   );
 
   const filteredMapDirectory = flattenedMapDirectory.filter(
     (child) =>
       child.extension &&
       allowedExtentions.includes(child.extension) &&
-      !child.children,
+      !child.children
   );
 
   const mapFileNames = filteredMapDirectory.map((file) => file.name);
@@ -140,7 +140,7 @@ function getImgFromObsidianSyntax(line: string) {
     if (!substringedLine.includes("|")) {
       console.error("Image requires an alt text", substringedLine);
       throw new Error(
-        "Image requires alt text. Insert one using this syntax: ![[image.png | alt text]]",
+        "Image requires alt text. Insert one using this syntax: ![[image.png | alt text]]"
       );
     }
 
@@ -150,7 +150,7 @@ function getImgFromObsidianSyntax(line: string) {
 
 async function handleBlockquotes(
   blockquoteLines: string[],
-  lines: string[],
+  lines: string[]
 ): Promise<string[]> {
   const output = [];
   let prevLine = "";
@@ -215,7 +215,7 @@ function handleCalloutType(line: string): {
   const calloutObj = callouts.find(
     (callout) =>
       callout.name === calloutType.toLowerCase() ||
-      callout.aliases?.includes(calloutType.toLowerCase()),
+      callout.aliases?.includes(calloutType.toLowerCase())
   );
 
   if (calloutObj === undefined) {

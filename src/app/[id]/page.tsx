@@ -1,5 +1,6 @@
 import MdWrapper from "@/components/md-wrapper";
-import { getMdFileById } from "@/lib/db/supabase";
+import { supabase } from "@/lib/db/supabase";
+import { getMdFileById } from "@/lib/leaflet/md-files";
 import { readFile } from "fs/promises";
 
 interface PageParams {
@@ -11,6 +12,18 @@ export default async function Page({
 }: {
   params: Promise<PageParams>;
 }) {
+  const usrEmail = process.env.NEXT_PUBLIC_SUPABASE_USER_EMAIL ?? "empty";
+  const usrPW = process.env.NEXT_PUBLIC_SUPABASE_USER_PW ?? "empty";
+
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: usrEmail,
+    password: usrPW,
+  });
+
+  if (error || !data || !data.session) {
+    console.error(error);
+    throw new Error("Login error");
+  }
   const { id } = await params;
 
   const mdFile = await getMdFileById(id);
