@@ -12,12 +12,6 @@ export default async function Page({
 }: {
   params: Promise<PageParams>;
 }) {
-  const { error: asdasdasdasd } = await supabase.auth.signOut();
-
-  if (asdasdasdasd) {
-    console.error(asdasdasdasd);
-  }
-
   const usrEmail = process.env.NEXT_PUBLIC_SUPABASE_USER_EMAIL ?? "empty";
   const usrPW = process.env.NEXT_PUBLIC_SUPABASE_USER_PW ?? "empty";
 
