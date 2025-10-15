@@ -27,8 +27,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body className="min-h-screen bg-background text-foreground antialiased">
+    <html lang="en">
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Sidemenu />
         {children}
         <LucideProvider />

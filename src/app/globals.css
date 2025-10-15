@@ -93,7 +93,6 @@ body {
     Arial, sans-serif;
   line-height: 1.6;
   margin: 0;
-  padding: 2rem;
   transition:
     background-color 0.3s ease,
     color 0.3s ease;
@@ -119,6 +118,7 @@ h6 {
 main {
   width: 70%;
   margin: auto;
+  padding: 2rem;
 
   /* Headings */
 
