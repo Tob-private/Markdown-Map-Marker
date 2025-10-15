@@ -1,15 +1,16 @@
 import React from "react";
-import directoryTree from "directory-tree";
-import {
-  createMenuItemsFromObsidianDirectory,
-  renderMenuItems,
-} from "@/lib/helpers/nav-helpers";
+import { createMenuItemsFromObsidianDirectory } from "@/lib/helpers/nav-helpers";
+import { getDirectoryTree } from "@/lib/helpers/actions/directory";
+import SidemenuClient from "./sidemenu-client";
 
 export default async function Sidemenu() {
-  const obsidianDirectory = directoryTree("public/Markdown Map Marker/", {
-    extensions: /\.md$/,
-    attributes: ["extension", "type"],
-  });
+  const obsidianDirectory = await getDirectoryTree(
+    "public/Markdown Map Marker/",
+    {
+      extensions: /\.md$/,
+      attributes: ["extension", "type"],
+    }
+  );
 
   if (!obsidianDirectory.children || obsidianDirectory.children.length < 1) {
     throw new Error("Obsidian directory doesn't have any children");
@@ -22,9 +23,5 @@ export default async function Sidemenu() {
   const menuItems =
     await createMenuItemsFromObsidianDirectory(filteredDirectory);
 
-  return (
-    <aside>
-      <h1>Sss</h1>
-    </aside>
-  );
+  return <SidemenuClient menuItems={menuItems} />;
 }
