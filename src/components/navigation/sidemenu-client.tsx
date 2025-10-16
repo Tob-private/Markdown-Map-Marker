@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Children, useState } from "react";
+import React, { useState } from "react";
 import styles from "./sidemenu-client.module.css";
 import SidemenuItems from "./sidemenu-items";
 

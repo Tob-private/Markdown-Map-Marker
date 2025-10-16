@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { getMdFileByIdentifier } from "../leaflet/md-files";
 
 interface MenuItem {
@@ -9,7 +8,7 @@ interface MenuItem {
 }
 
 export async function createMenuItemsFromObsidianDirectory(
-  directory: directoryTree.DirectoryTree<Record<string, any>>[]
+  directory: directoryTree.DirectoryTree<Record<string, never>>[]
 ): Promise<MenuItem[]> {
   const menuItems: MenuItem[] = [];
 
@@ -36,11 +35,4 @@ export async function createMenuItemsFromObsidianDirectory(
   }
 
   return menuItems;
-}
-
-export function renderMenuItems(items: MenuItem[]) {
-  return items.map((item) => {
-    if (item.children && item.children.length > 0) {
-    }
-  });
 }
