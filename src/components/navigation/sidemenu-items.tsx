@@ -32,9 +32,23 @@ function MenuItemComponent({ item }: MenuItemProps) {
       )}
       {item.children && !collapsed && (
         <ul>
-          {item.children.map((child) => (
-            <MenuItemComponent key={child.key} item={child} />
-          ))}
+          {item.children
+            .sort((a, b) => {
+              // Put children with their own children arr first
+              const childrenDiff =
+                Number(a.children !== undefined) -
+                Number(b.children !== undefined);
+
+              if (childrenDiff !== 0) return childrenDiff;
+
+              // Prioritize items with the same label as parent
+              return (
+                Number(b.label === item.label) - Number(a.label === item.label)
+              );
+            })
+            .map((child) => (
+              <MenuItemComponent key={child.key} item={child} />
+            ))}
         </ul>
       )}
     </li>
@@ -46,6 +60,12 @@ export default function SidemenuItems({
 }: {
   menuItems: MenuItem[];
 }) {
+  // Put items without children at the start
+  menuItems = menuItems.sort(
+    (a, b) =>
+      Number(b.children === undefined) - Number(a.children === undefined)
+  );
+
   return (
     <ul>
       {menuItems.map((item) => (
