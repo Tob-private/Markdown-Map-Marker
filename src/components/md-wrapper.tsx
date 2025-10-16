@@ -1,54 +1,54 @@
-import MarkdownIt from "markdown-it";
-import mark from "markdown-it-mark";
-import taskLists from "markdown-it-task-lists";
-import wikiLinks from "markdown-it-wikilinks";
-import sanitizeHtml from "sanitize-html";
-import { parseObsidianSyntax } from "@/lib/helpers/md-helpers";
-import LeafletMap from "./leaflet/leaflet-map";
-import { getMarkersFromImgPath } from "@/lib/leaflet/leaflet";
+import MarkdownIt from 'markdown-it'
+import mark from 'markdown-it-mark'
+import taskLists from 'markdown-it-task-lists'
+import wikiLinks from 'markdown-it-wikilinks'
+import sanitizeHtml from 'sanitize-html'
+import { parseObsidianSyntax } from '@/lib/helpers/md-helpers'
+import LeafletMap from './leaflet/leaflet-map'
+import { getMarkersFromImgPath } from '@/lib/leaflet/leaflet'
 
 export default async function MdWrapper({ rawMd }: { rawMd: string }) {
-  const mdContent = await parseObsidianSyntax(rawMd);
+  const mdContent = await parseObsidianSyntax(rawMd)
 
   const md = new MarkdownIt({
     html: true,
     linkify: true,
-    typographer: true,
+    typographer: true
   })
     .use(mark)
     .use(taskLists, { label: true })
     .use(wikiLinks, {
-      uriSuffix: "",
+      uriSuffix: '',
       generatePageNameFromLabel: (label: string) => label.trim(),
-      baseURL: "/notes/",
-    });
+      baseURL: '/notes/'
+    })
 
   const cleanHTML = sanitizeHtml(md.render(mdContent), {
-    allowedTags: sanitizeHtml.defaults.allowedTags.concat(["input", "img"]),
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat(['input', 'img']),
     allowedAttributes: {
       ...sanitizeHtml.defaults.allowedAttributes,
-      input: ["type", "checked"],
-      i: ["data-lucide"],
-      div: ["class", "id", "data-map-src"],
-      img: ["src", "id", "class", "alt"],
-      p: ["class"],
-      blockquote: ["class"],
-    },
-  });
+      input: ['type', 'checked'],
+      i: ['data-lucide'],
+      div: ['class', 'id', 'data-map-src'],
+      img: ['src', 'id', 'class', 'alt'],
+      p: ['class'],
+      blockquote: ['class']
+    }
+  })
 
   const mapImgs = cleanHTML
-    .split("\n")
+    .split('\n')
     .filter((line: string) =>
       line.includes(`<div data-map-src="Markdown Map Marker/assets/maps/`)
-    );
+    )
   const mapMarkers = await Promise.all(
     mapImgs.map((mapImg) => {
-      const [, srcRight] = mapImg.split(`src="`);
-      const [src] = srcRight.split(`"`);
-      const url = `/${src}`;
-      return getMarkersFromImgPath(url);
+      const [, srcRight] = mapImg.split(`src="`)
+      const [src] = srcRight.split(`"`)
+      const url = `/${src}`
+      return getMarkersFromImgPath(url)
     })
-  );
+  )
 
   return (
     <>
@@ -62,5 +62,5 @@ export default async function MdWrapper({ rawMd }: { rawMd: string }) {
           />
         ))}
     </>
-  );
+  )
 }
