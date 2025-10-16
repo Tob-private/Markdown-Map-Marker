@@ -1,11 +1,10 @@
 import { readFile } from "fs/promises";
 import { callouts } from "../data/callouts";
 import { allowedExtentions } from "../data/fileExtensions";
-import directoryTree, { DirectoryTree } from "directory-tree";
 import { flatten } from "./helpers";
 import { getMdFileByIdentifier } from "../leaflet/md-files";
-
-type DirTree<TAny> = DirectoryTree<Record<string, TAny>>;
+import { getDirectoryTree } from "./actions/directory";
+import { DirectoryTreeInterface } from "../types/directory-tree";
 
 export async function parseObsidianSyntax(mdContent: string) {
   const blocks = mdContent.split("\n\n");
@@ -21,14 +20,14 @@ async function checkBlockForSyntax(block: string) {
   const lines = block.split("\n");
   if (lines.length === 1) {
     lines[0] = await handleNoteSyntax(lines[0]);
-    lines[0] = getImgFromObsidianSyntax(lines[0]);
+    lines[0] = await getImgFromObsidianSyntax(lines[0]);
   }
 
   // Check for multiline syntax. Since all other multilines are handled
   let blockquoteLines: string[] = [];
   for (let i = 0; i < lines.length; i++) {
     lines[i] = await handleNoteSyntax(lines[i]);
-    lines[i] = getImgFromObsidianSyntax(lines[i]);
+    lines[i] = await getImgFromObsidianSyntax(lines[i]);
     if (lines[i].startsWith("> ")) {
       blockquoteLines.push(lines[i]);
     }
@@ -80,7 +79,7 @@ function handleEmbededStyle(md: string) {
     .join("\n");
 }
 
-function getImgFromObsidianSyntax(line: string) {
+async function getImgFromObsidianSyntax(line: string) {
   if (
     !(
       line.includes("![[") &&
@@ -95,7 +94,7 @@ function getImgFromObsidianSyntax(line: string) {
 
   const substringedLine = line.substring(imgStart, imgEnd);
 
-  const obsidianMapDirectory = directoryTree(
+  const obsidianMapDirectory = await getDirectoryTree(
     "public/Markdown Map Marker/assets/maps/",
     {
       attributes: ["extension"],
@@ -106,7 +105,7 @@ function getImgFromObsidianSyntax(line: string) {
     throw new Error("Obsidian assets/maps/ directory is undefined");
   }
 
-  const flattenedMapDirectory = flatten<DirTree<string>>(
+  const flattenedMapDirectory = flatten<DirectoryTreeInterface>(
     obsidianMapDirectory.children
   );
 
@@ -158,7 +157,7 @@ async function handleBlockquotes(
   for (let i = 0; i < blockquoteLines.length; i++) {
     const line = blockquoteLines[i];
     lines[i] = await handleNoteSyntax(lines[i]);
-    lines[i] = getImgFromObsidianSyntax(lines[i]);
+    lines[i] = await getImgFromObsidianSyntax(lines[i]);
 
     if (
       line.split("> ").length > prevLine.split("> ").length &&

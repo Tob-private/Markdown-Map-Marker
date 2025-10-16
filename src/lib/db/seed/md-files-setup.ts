@@ -1,26 +1,28 @@
 import { PostgrestSingleResponse } from "@supabase/supabase-js";
-import directoryTree, { type DirectoryTree } from "directory-tree";
 import { MdFile } from "../../types/supabase";
 import { flatten } from "../../helpers/helpers";
 import { supabase } from "../supabase";
-
-type DirTree<TAny> = DirectoryTree<Record<string, TAny>>;
+import { getDirectoryTree } from "@/lib/helpers/actions/directory";
+import { DirectoryTreeInterface } from "@/lib/types/directory-tree";
 
 export const supabaseMdFilesSetup = async () => {
   const { data }: PostgrestSingleResponse<MdFile[]> = await supabase
     .from("md_files")
     .select();
   const mdFiles = data ?? [];
-  const obsidianDirectory = directoryTree("public/Markdown Map Marker/", {
-    extensions: /\.md$/,
-    attributes: ["extension"],
-  });
+  const obsidianDirectory = await getDirectoryTree(
+    "public/Markdown Map Marker/",
+    {
+      extensions: /\.md$/,
+      attributes: ["extension"],
+    }
+  );
 
   if (!obsidianDirectory.children) {
     throw new Error("Obsidian directory is undefined");
   }
 
-  const flattenedDirectory = flatten<DirTree<string>>(
+  const flattenedDirectory = flatten<DirectoryTreeInterface>(
     obsidianDirectory.children
   );
 
