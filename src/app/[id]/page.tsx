@@ -1,40 +1,40 @@
-import MdWrapper from "@/components/md-wrapper";
-import { supabase } from "@/lib/db/supabase";
-import { getMdFileById } from "@/lib/leaflet/md-files";
-import { readFile } from "fs/promises";
+import MdWrapper from '@/components/md-wrapper'
+import { supabase } from '@/lib/db/supabase'
+import { getMdFileById } from '@/lib/leaflet/md-files'
+import { readFile } from 'fs/promises'
 
 interface PageParams {
-  id: string;
+  id: string
 }
 
 export default async function Page({
-  params,
+  params
 }: {
-  params: Promise<PageParams>;
+  params: Promise<PageParams>
 }) {
-  const usrEmail = process.env.NEXT_PUBLIC_SUPABASE_USER_EMAIL ?? "empty";
-  const usrPW = process.env.NEXT_PUBLIC_SUPABASE_USER_PW ?? "empty";
+  const usrEmail = process.env.NEXT_PUBLIC_SUPABASE_USER_EMAIL ?? 'empty'
+  const usrPW = process.env.NEXT_PUBLIC_SUPABASE_USER_PW ?? 'empty'
 
   const { data, error } = await supabase.auth.signInWithPassword({
     email: usrEmail,
-    password: usrPW,
-  });
+    password: usrPW
+  })
 
   if (error || !data || !data.session) {
-    console.error(error);
-    throw new Error("Login error");
+    console.error(error)
+    throw new Error('Login error')
   }
-  const { id } = await params;
+  const { id } = await params
 
-  const mdFile = await getMdFileById(id);
+  const mdFile = await getMdFileById(id)
 
-  if (!mdFile) return <div>Loading content...</div>;
+  if (!mdFile) return <div>Loading content...</div>
 
-  const rawContent = await readFile(mdFile.md_path, "utf-8");
+  const rawContent = await readFile(mdFile.md_path, 'utf-8')
 
   return (
     <main>
       <MdWrapper rawMd={rawContent} />
     </main>
-  );
+  )
 }

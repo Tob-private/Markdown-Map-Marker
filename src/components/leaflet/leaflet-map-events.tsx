@@ -1,16 +1,16 @@
-import { createMarker } from "@/lib/leaflet/leaflet";
-import { LeafletEventHandlerFnMap, Map } from "leaflet";
+import { createMarker } from '@/lib/leaflet/leaflet'
+import { LeafletEventHandlerFnMap, Map } from 'leaflet'
 
 export default function LeafletMapEvents({
   useMapEvents,
-  imgPath,
+  imgPath
 }: {
-  useMapEvents: (handlers: LeafletEventHandlerFnMap) => Map;
-  imgPath: string;
+  useMapEvents: (handlers: LeafletEventHandlerFnMap) => Map
+  imgPath: string
 }) {
   useMapEvents({
-    dblclick: (e) => createMarker(e.latlng.lat, e.latlng.lng, imgPath),
-  });
+    dblclick: (e) => createMarker(e.latlng.lat, e.latlng.lng, imgPath)
+  })
 
-  return null;
+  return null
 }

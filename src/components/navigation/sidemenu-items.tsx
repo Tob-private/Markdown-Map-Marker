@@ -1,23 +1,23 @@
-import { useState } from "react";
+import { useState } from 'react'
 
 interface MenuItem {
-  key: string | number;
-  label: string;
-  href?: string;
-  children?: MenuItem[];
+  key: string | number
+  label: string
+  href?: string
+  children?: MenuItem[]
 }
 
 interface MenuItemProps {
-  item: MenuItem;
+  item: MenuItem
 }
 
 function MenuItemComponent({ item }: MenuItemProps) {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(false)
 
   const handleCollapse = (e: React.MouseEvent<HTMLSpanElement>) => {
-    e.stopPropagation();
-    setCollapsed((prev) => !prev);
-  };
+    e.stopPropagation()
+    setCollapsed((prev) => !prev)
+  }
 
   return (
     <li>
@@ -37,14 +37,14 @@ function MenuItemComponent({ item }: MenuItemProps) {
               // Put children with their own children arr first
               const childrenDiff =
                 Number(a.children !== undefined) -
-                Number(b.children !== undefined);
+                Number(b.children !== undefined)
 
-              if (childrenDiff !== 0) return childrenDiff;
+              if (childrenDiff !== 0) return childrenDiff
 
               // Prioritize items with the same label as parent
               return (
                 Number(b.label === item.label) - Number(a.label === item.label)
-              );
+              )
             })
             .map((child) => (
               <MenuItemComponent key={child.key} item={child} />
@@ -52,19 +52,19 @@ function MenuItemComponent({ item }: MenuItemProps) {
         </ul>
       )}
     </li>
-  );
+  )
 }
 
 export default function SidemenuItems({
-  menuItems,
+  menuItems
 }: {
-  menuItems: MenuItem[];
+  menuItems: MenuItem[]
 }) {
   // Put items without children at the start
   menuItems = menuItems.sort(
     (a, b) =>
       Number(b.children === undefined) - Number(a.children === undefined)
-  );
+  )
 
   return (
     <ul>
@@ -72,5 +72,5 @@ export default function SidemenuItems({
         <MenuItemComponent key={item.key} item={item} />
       ))}
     </ul>
-  );
+  )
 }

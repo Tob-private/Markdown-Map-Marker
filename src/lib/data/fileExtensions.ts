@@ -1,1 +1,1 @@
-export const allowedExtentions: string[] = [".jpg", ".jpeg", ".png"];
+export const allowedExtentions: string[] = ['.jpg', '.jpeg', '.png']

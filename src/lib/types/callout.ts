@@ -1,5 +1,5 @@
 export interface Callout {
-  name: string;
-  icon: string;
-  aliases?: string[];
+  name: string
+  icon: string
+  aliases?: string[]
 }
