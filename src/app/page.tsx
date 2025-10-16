@@ -1,9 +1,11 @@
 import { readFile } from 'fs/promises'
 
 import MdWrapper from '@/components/md-wrapper'
-import { supabase } from '@/lib/db/supabase'
+import { createServerSupabaseFromCookies } from '@/lib/db/supabase/server'
 
 export default async function Home() {
+  const supabase = await createServerSupabaseFromCookies()
+
   const usrEmail = process.env.NEXT_PUBLIC_SUPABASE_USER_EMAIL ?? 'empty'
   const usrPW = process.env.NEXT_PUBLIC_SUPABASE_USER_PW ?? 'empty'
 

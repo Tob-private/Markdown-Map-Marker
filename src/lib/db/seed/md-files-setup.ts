@@ -1,11 +1,12 @@
 import { PostgrestSingleResponse } from '@supabase/supabase-js'
 import { MdFile } from '../../types/supabase'
 import { flatten } from '../../helpers/helpers'
-import { supabase } from '../supabase'
 import { getDirectoryTree } from '@/lib/helpers/actions/directory'
 import { DirectoryTreeInterface } from '@/lib/types/directory-tree'
+import { createServerSupabaseFromCookies } from '../supabase/server'
 
 export const supabaseMdFilesSetup = async () => {
+  const supabase = await createServerSupabaseFromCookies()
   const { data }: PostgrestSingleResponse<MdFile[]> = await supabase
     .from('md_files')
     .select()
