@@ -1,4 +1,5 @@
 import { getMdFileByIdentifier } from "../leaflet/md-files";
+import { DirectoryTreeInterface } from "../types/directory-tree";
 
 interface MenuItem {
   key: string | number;
@@ -8,7 +9,7 @@ interface MenuItem {
 }
 
 export async function createMenuItemsFromObsidianDirectory(
-  directory: directoryTree.DirectoryTree<Record<string, never>>[]
+  directory: DirectoryTreeInterface[]
 ): Promise<MenuItem[]> {
   const menuItems: MenuItem[] = [];
 

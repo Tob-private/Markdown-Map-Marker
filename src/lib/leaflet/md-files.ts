@@ -36,7 +36,7 @@ export async function getMdFileByIdentifier(
     .single();
 
   if (error) {
-    console.dir({ error });
+    console.error({ error });
   }
 
   return data;
