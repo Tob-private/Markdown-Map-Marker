@@ -2,6 +2,7 @@ import MdWrapper from '@/components/md-wrapper'
 import { supabase } from '@/lib/db/supabase'
 import { getMdFileById } from '@/lib/leaflet/md-files'
 import { readFile } from 'fs/promises'
+import path from 'path'
 
 interface PageParams {
   id: string
@@ -30,7 +31,11 @@ export default async function Page({
 
   if (!mdFile) return <div>Loading content...</div>
 
-  const rawContent = await readFile(mdFile.md_path, 'utf-8')
+  const filePath = path.join(process.cwd(), mdFile.md_path)
+
+  console.log('Reading markdown file at:', filePath)
+
+  const rawContent = await readFile(filePath, 'utf-8')
 
   return (
     <main>
