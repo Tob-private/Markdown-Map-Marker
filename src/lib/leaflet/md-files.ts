@@ -4,8 +4,8 @@ import { MdFile } from "../types/supabase";
 export async function getMdFiles() {
   const { data, error } = await supabase.from("md_files").select();
 
-  if (error) {
-    console.dir({ error });
+  if (error && data === null) {
+    console.error({ error });
   }
 
   return data;
@@ -16,10 +16,10 @@ export async function getMdFileById(id: string): Promise<MdFile> {
     .from("md_files")
     .select()
     .eq("id", id)
-    .single();
+    .maybeSingle();
 
-  if (error) {
-    console.dir({ error });
+  if (error && data === null) {
+    console.error({ error });
   }
 
   return data;
@@ -33,9 +33,9 @@ export async function getMdFileByIdentifier(
     .from("md_files")
     .select()
     .like(identifier, value)
-    .single();
+    .maybeSingle();
 
-  if (error) {
+  if (error && data === null) {
     console.error({ error });
   }
 
