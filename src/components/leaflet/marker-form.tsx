@@ -1,13 +1,9 @@
 'use client'
 import styles from './marker-form.module.css'
-import { useActionState } from 'react'
+import { useActionState, useState } from 'react'
 import { MarkerFormState } from '@/lib/types/leaflet'
 import { createMarker } from '@/lib/actions/form'
-
-const initialState: MarkerFormState = {
-  success: true,
-  data: { lat: 0, lng: 0, title: '', desc: '', note: '' }
-}
+import { usePathname } from 'next/navigation'
 
 export default function MarkerForm({
   markerData
@@ -18,6 +14,14 @@ export default function MarkerForm({
     img_path: string
   }
 }) {
+  const pathName = usePathname()
+
+  const initialState: MarkerFormState = {
+    success: false,
+    errors: {},
+    path: pathName
+  }
+
   const createMarkerWithImgPath = createMarker.bind(null, markerData.img_path)
 
   const [, formAction] = useActionState<MarkerFormState, FormData>(

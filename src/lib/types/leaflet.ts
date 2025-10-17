@@ -10,6 +10,7 @@ export type MarkerFormState =
         desc: string
         note: string
       }
+      path: string
     }
   | {
       success: false
@@ -20,6 +21,7 @@ export type MarkerFormState =
         desc?: string[]
         note?: string[]
       }
+      path: string
     }
 
 export const markerFormSchema = z.object({

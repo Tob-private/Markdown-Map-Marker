@@ -2,6 +2,7 @@
 import { createServerSupabaseFromCookies } from '@/lib/db/supabase/server'
 import { CreateMapMarker } from '@/lib/types/api/leaflet'
 import { markerFormSchema, MarkerFormState } from '@/lib/types/leaflet'
+import { revalidatePath } from 'next/cache'
 import z from 'zod'
 
 export async function createMarker(
@@ -21,7 +22,7 @@ export async function createMarker(
 
   if (!validationResult.success) {
     const errors = z.flattenError(validationResult.error).fieldErrors
-    return { success: false, errors }
+    return { success: false, errors, path: currentState.path }
   }
 
   const decimals = 5
@@ -47,5 +48,7 @@ export async function createMarker(
     console.dir({ data })
   }
 
-  return { data: validationResult.data, success: true }
+  revalidatePath(currentState.path)
+
+  return { data: validationResult.data, success: true, path: currentState.path }
 }
