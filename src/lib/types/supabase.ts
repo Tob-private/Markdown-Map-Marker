@@ -5,6 +5,10 @@ export interface MdFile {
   filename: string
   md_path: string
 }
+export interface MdFileLight {
+  id: string
+  filename: string
+}
 
 export interface MapMarker {
   id: string
@@ -13,4 +17,7 @@ export interface MapMarker {
   lat: number
   lng: number
   imgPathname: string
+  title: string
+  desc: string
+  note_id?: string
 }

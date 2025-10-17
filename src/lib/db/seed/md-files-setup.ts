@@ -1,7 +1,7 @@
 import { PostgrestSingleResponse } from '@supabase/supabase-js'
 import { MdFile } from '../../types/supabase'
 import { flatten } from '../../helpers/helpers'
-import { getDirectoryTree } from '@/lib/helpers/actions/directory'
+import { getDirectoryTree } from '@/lib/actions/directory'
 import { DirectoryTreeInterface } from '@/lib/types/directory-tree'
 import { createServerSupabaseFromCookies } from '../supabase/server'
 

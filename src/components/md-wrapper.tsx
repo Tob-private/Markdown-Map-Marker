@@ -6,6 +6,7 @@ import sanitizeHtml from 'sanitize-html'
 import { parseObsidianSyntax } from '@/lib/helpers/md-helpers'
 import LeafletMap from './leaflet/leaflet-map'
 import { getMarkersFromImgPath } from '@/lib/leaflet/leaflet'
+import { getMdFilesLight } from '@/lib/leaflet/md-files'
 
 export default async function MdWrapper({ rawMd }: { rawMd: string }) {
   const mdContent = await parseObsidianSyntax(rawMd)
@@ -50,6 +51,7 @@ export default async function MdWrapper({ rawMd }: { rawMd: string }) {
     })
   )
 
+  const mdFiles = await getMdFilesLight()
   return (
     <>
       <div dangerouslySetInnerHTML={{ __html: cleanHTML }}></div>
@@ -59,6 +61,7 @@ export default async function MdWrapper({ rawMd }: { rawMd: string }) {
             imgElement={mapImg}
             mapMarkers={mapMarkers[0]}
             key={idx}
+            mdFiles={mdFiles}
           />
         ))}
     </>

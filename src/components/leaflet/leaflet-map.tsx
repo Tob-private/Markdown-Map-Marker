@@ -3,18 +3,32 @@
 import { useEffect, useState } from 'react'
 import { LeafletMapInner } from './leaflet-map-inner'
 import { getImageDimensions } from '@/lib/helpers/helpers'
-import { MapMarker } from '@/lib/types/supabase'
+import { MapMarker, MdFileLight } from '@/lib/types/supabase'
+import MarkerForm from './marker-form'
+import { getBrowserSupabase } from '@/lib/db/supabase/client'
+import { Session } from '@supabase/supabase-js'
 
 export default function LeafletMap({
   imgElement,
-  mapMarkers
+  mapMarkers,
+  mdFiles
 }: {
   imgElement: string
   mapMarkers: MapMarker[]
+  mdFiles: MdFileLight[]
 }) {
+  const supabase = getBrowserSupabase()
+
   const [bounds, setBounds] = useState<number[][] | null>(null)
   const [maxBounds, setMaxBounds] = useState<number[][] | null>(null)
   const [imageUrl, setImageUrl] = useState<string>('')
+  const [supabaseSession, setSupabaseSession] = useState<Session | null>()
+  const [showMarkerForm, setShowMarkerForm] = useState<boolean>(false)
+  const [markerData, setMarkerData] = useState<{
+    lat: number
+    lng: number
+    img_path: string
+  }>()
 
   useEffect(() => {
     const [, srcRight] = imgElement.split(`src="`)
@@ -34,16 +48,31 @@ export default function LeafletMap({
         ])
       })
       .catch(console.error)
-  }, [imgElement])
+
+    supabase.auth.getSession().then((session) => {
+      setSupabaseSession(session.data.session)
+    })
+  }, [imgElement, supabase.auth])
 
   if (!bounds || !imageUrl || !maxBounds) return <div>Loading map...</div>
 
+  const handleShowMarkerForm = (bool: boolean) => {
+    setShowMarkerForm(bool)
+  }
+
   return (
-    <LeafletMapInner
-      imageUrl={imageUrl}
-      argBounds={bounds}
-      argMaxBounds={maxBounds}
-      mapMarkers={mapMarkers}
-    />
+    <>
+      <LeafletMapInner
+        imageUrl={imageUrl}
+        argBounds={bounds}
+        argMaxBounds={maxBounds}
+        mapMarkers={mapMarkers}
+        markerFormToggle={handleShowMarkerForm}
+        setMarkerData={setMarkerData}
+      />
+      {supabaseSession && showMarkerForm && markerData && (
+        <MarkerForm markerData={markerData} mdFiles={mdFiles} />
+      )}
+    </>
   )
 }

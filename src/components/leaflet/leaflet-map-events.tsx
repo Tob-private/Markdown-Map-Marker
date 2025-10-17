@@ -1,15 +1,20 @@
-import { createMarker } from '@/lib/leaflet/leaflet'
+import { openCreateMarkerForm } from '@/lib/leaflet/leaflet'
 import { LeafletEventHandlerFnMap, Map } from 'leaflet'
 
 export default function LeafletMapEvents({
   useMapEvents,
-  imgPath
+  imgPath,
+  markerFormToggle,
+  setMarkerData
 }: {
   useMapEvents: (handlers: LeafletEventHandlerFnMap) => Map
   imgPath: string
+  markerFormToggle: (bool: boolean) => void
+  setMarkerData: (data: { lat: number; lng: number; img_path: string }) => void
 }) {
   useMapEvents({
-    dblclick: (e) => createMarker(e.latlng.lat, e.latlng.lng, imgPath)
+    dblclick: (e) =>
+      openCreateMarkerForm(e.latlng, imgPath, markerFormToggle, setMarkerData)
   })
 
   return null

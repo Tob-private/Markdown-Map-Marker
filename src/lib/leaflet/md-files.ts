@@ -1,5 +1,5 @@
 import { createServerSupabaseFromCookies } from '../db/supabase/server'
-import { MdFile } from '../types/supabase'
+import { MdFile, MdFileLight } from '../types/supabase'
 
 export async function getMdFiles() {
   const supabase = await createServerSupabaseFromCookies()
@@ -11,6 +11,17 @@ export async function getMdFiles() {
   }
 
   return data
+}
+export async function getMdFilesLight(): Promise<MdFileLight[]> {
+  const supabase = await createServerSupabaseFromCookies()
+
+  const { data, error } = await supabase.from('md_files').select('id,filename')
+
+  if (error && data === null) {
+    console.error({ error })
+  }
+
+  return data as MdFileLight[]
 }
 
 export async function getMdFileById(id: string): Promise<MdFile> {

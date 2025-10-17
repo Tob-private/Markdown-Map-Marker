@@ -1,6 +1,8 @@
 import dynamic from 'next/dynamic'
 import LeafletMapEvents from './leaflet-map-events'
 import { MapMarker } from '@/lib/types/supabase'
+import styles from './leaflet-map-inner.module.css'
+import Link from 'next/link'
 
 export const LeafletMapInner = dynamic(
   async () => {
@@ -14,12 +16,20 @@ export const LeafletMapInner = dynamic(
       imageUrl,
       argBounds,
       argMaxBounds,
-      mapMarkers
+      mapMarkers,
+      markerFormToggle,
+      setMarkerData
     }: {
       imageUrl: string
       argBounds: number[][]
       argMaxBounds: number[][]
       mapMarkers: MapMarker[]
+      markerFormToggle: (bool: boolean) => void
+      setMarkerData: (dadata: {
+        lat: number
+        lng: number
+        img_path: string
+      }) => void
     }) {
       const bounds = new L.LatLngBounds([
         [argBounds[0][0], argBounds[0][1]],
@@ -42,7 +52,12 @@ export const LeafletMapInner = dynamic(
           className="map"
           style={{ height: '600px', width: '100%' }}
         >
-          <LeafletMapEvents useMapEvents={useMapEvents} imgPath={imageUrl} />
+          <LeafletMapEvents
+            useMapEvents={useMapEvents}
+            imgPath={imageUrl}
+            markerFormToggle={markerFormToggle}
+            setMarkerData={setMarkerData}
+          />
           <ImageOverlay url={imageUrl} bounds={bounds} />
           {mapMarkers &&
             mapMarkers.map((marker) => (
@@ -53,12 +68,26 @@ export const LeafletMapInner = dynamic(
                   new L.Icon({
                     iconUrl: 'marker-icon.png',
                     iconSize: [40, 40],
-                    iconAnchor: [20, 40],
+                    iconAnchor: [20, 20],
                     popupAnchor: [0, -45]
                   })
                 }
               >
-                <Popup>This is marker: {marker.id}</Popup>
+                <Popup className={styles.marker_popup}>
+                  {marker.note_id ? (
+                    <Link href={`/${marker.note_id}`}>
+                      <h6 className={styles.marker_popup_title}>
+                        {marker.title}
+                      </h6>
+                    </Link>
+                  ) : (
+                    <h6 className={styles.marker_popup_title}>
+                      {marker.title}
+                    </h6>
+                  )}
+
+                  <p className={styles.marker_popup_desc}>{marker.desc}</p>
+                </Popup>
               </Marker>
             ))}
         </MapContainer>
