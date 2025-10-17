@@ -1,21 +1,36 @@
 import { CreateMapMarker } from '@/lib/types/api/leaflet'
 import styles from './marker-form.module.css'
+import { useActionState } from 'react'
+import { MarkerFormState } from '@/lib/types/leaflet'
+import { createMarker } from '@/lib/helpers/actions/form'
+
+const initialState: MarkerFormState = {
+  success: true,
+  data: { lat: 0, lng: 0, title: '', desc: '', note: '' }
+}
 
 export default function MarkerForm({
   markerData
 }: {
   markerData: CreateMapMarker
 }) {
+  const [state, formAction, isPending] = useActionState<
+    MarkerFormState,
+    FormData
+  >(createMarker, initialState)
+
+  console.dir({ state }, { depth: null })
+
   return (
-    <form className={styles.marker_form}>
+    <form className={styles.marker_form} action={formAction}>
       <label htmlFor="lat" className={styles.marker_label}>
         Latitude:
         <input
           className={styles.marker_input}
-          type="text"
+          type="hidden"
           id="lat"
+          name="lat"
           value={markerData.lat}
-          disabled
         />
       </label>
 
@@ -23,27 +38,39 @@ export default function MarkerForm({
         Longitude:
         <input
           className={styles.marker_input}
-          type="text"
+          type="hidden"
           id="lng"
+          name="lng"
           value={markerData.lng}
-          disabled
         />
       </label>
 
       <label htmlFor="title" className={styles.marker_label}>
         Marker Title:
-        <input className={styles.marker_input} type="text" id="title" />
+        <input
+          className={styles.marker_input}
+          type="text"
+          id="title"
+          name="title"
+        />
       </label>
 
       <label htmlFor="desc" className={styles.marker_label}>
         Marker Description:
-        <textarea id="desc"></textarea>
+        <textarea id="desc" name="desc"></textarea>
       </label>
 
       <label htmlFor="note" className={styles.marker_label}>
         Linked Note:
-        <input className={styles.marker_input} type="text" id="note" />
+        <input
+          className={styles.marker_input}
+          type="text"
+          id="note"
+          name="note"
+        />
       </label>
+
+      <button type="submit">Create Marker</button>
     </form>
   )
 }

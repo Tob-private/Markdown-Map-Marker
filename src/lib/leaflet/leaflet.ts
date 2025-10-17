@@ -1,4 +1,4 @@
-import { getBrowserSupabase } from '../db/supabase/client'
+import z from 'zod'
 import { createServerSupabaseFromCookies } from '../db/supabase/server'
 import { CreateMapMarker } from '../types/api/leaflet'
 import { MapMarker } from '../types/supabase'
@@ -28,21 +28,4 @@ export async function openCreateMarkerForm(
 ) {
   markerFormToggle(true)
   setMarkerData({ lat, lng, img_path: imgPathName })
-  // const supabase = getBrowserSupabase()
-  // // To convert them to numbers to avoid having to store floating points
-  // lat = Math.round(lat)
-  // lng = Math.round(lng)
-  // const mapMarker: CreateMapMarker = {
-  //   lat,
-  //   lng,
-  //   img_path: imgPathName
-  // }
-  // console.dir({ mapMarker })
-  // const { error } = await supabase
-  //   .from('map_markers')
-  //   .insert(mapMarker)
-  //   .select()
-  // if (error !== null) {
-  //   console.error(error)
-  // }
 }
