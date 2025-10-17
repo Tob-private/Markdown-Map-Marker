@@ -67,7 +67,7 @@ export const LeafletMapInner = dynamic(
                   new L.Icon({
                     iconUrl: 'marker-icon.png',
                     iconSize: [40, 40],
-                    iconAnchor: [20, 50],
+                    iconAnchor: [20, 20],
                     popupAnchor: [0, -45]
                   })
                 }
