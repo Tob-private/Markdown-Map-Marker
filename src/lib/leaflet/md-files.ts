@@ -1,7 +1,9 @@
-import { supabase } from '../db/supabase'
+import { createServerSupabaseFromCookies } from '../db/supabase/server'
 import { MdFile } from '../types/supabase'
 
 export async function getMdFiles() {
+  const supabase = await createServerSupabaseFromCookies()
+
   const { data, error } = await supabase.from('md_files').select()
 
   if (error && data === null) {
@@ -12,6 +14,8 @@ export async function getMdFiles() {
 }
 
 export async function getMdFileById(id: string): Promise<MdFile> {
+  const supabase = await createServerSupabaseFromCookies()
+
   const { data, error } = await supabase
     .from('md_files')
     .select()
@@ -29,6 +33,8 @@ export async function getMdFileByIdentifier(
   identifier: string,
   value: string
 ): Promise<MdFile> {
+  const supabase = await createServerSupabaseFromCookies()
+
   const { data, error } = await supabase
     .from('md_files')
     .select()
