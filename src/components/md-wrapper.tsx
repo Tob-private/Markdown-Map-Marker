@@ -7,6 +7,7 @@ import { parseObsidianSyntax } from '@/lib/helpers/md-helpers'
 import LeafletMap from './leaflet/leaflet-map'
 import { getMarkersFromImgPath } from '@/lib/leaflet/leaflet'
 import { getMdFilesLight } from '@/lib/leaflet/md-files'
+import { MdFileLight } from '@/lib/types/supabase'
 
 export default async function MdWrapper({ rawMd }: { rawMd: string }) {
   const mdContent = await parseObsidianSyntax(rawMd)
