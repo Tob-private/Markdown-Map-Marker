@@ -20,30 +20,29 @@ export async function getMarkersFromImgPath(
   }
 }
 
-export async function createMarker(
-  lat: number,
-  lng: number,
-  imgPathName: string
+export async function openCreateMarkerForm(
+  { lat, lng }: { lat: number; lng: number },
+  imgPathName: string,
+  markerFormToggle: (bool: boolean) => void,
+  setMarkerData: (data: CreateMapMarker) => void
 ) {
-  const supabase = getBrowserSupabase()
-
-  // To convert them to numbers to avoid having to store floating points
-  lat = Math.round(lat)
-  lng = Math.round(lng)
-
-  const mapMarker: CreateMapMarker = {
-    lat,
-    lng,
-    img_path: imgPathName
-  }
-  console.dir({ mapMarker })
-
-  const { error } = await supabase
-    .from('map_markers')
-    .insert(mapMarker)
-    .select()
-
-  if (error !== null) {
-    console.error(error)
-  }
+  markerFormToggle(true)
+  setMarkerData({ lat, lng, img_path: imgPathName })
+  // const supabase = getBrowserSupabase()
+  // // To convert them to numbers to avoid having to store floating points
+  // lat = Math.round(lat)
+  // lng = Math.round(lng)
+  // const mapMarker: CreateMapMarker = {
+  //   lat,
+  //   lng,
+  //   img_path: imgPathName
+  // }
+  // console.dir({ mapMarker })
+  // const { error } = await supabase
+  //   .from('map_markers')
+  //   .insert(mapMarker)
+  //   .select()
+  // if (error !== null) {
+  //   console.error(error)
+  // }
 }

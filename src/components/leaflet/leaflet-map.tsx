@@ -4,6 +4,10 @@ import { useEffect, useState } from 'react'
 import { LeafletMapInner } from './leaflet-map-inner'
 import { getImageDimensions } from '@/lib/helpers/helpers'
 import { MapMarker } from '@/lib/types/supabase'
+import MarkerForm from './marker-form'
+import { getBrowserSupabase } from '@/lib/db/supabase/client'
+import { AuthError, Session } from '@supabase/supabase-js'
+import { CreateMapMarker } from '@/lib/types/api/leaflet'
 
 export default function LeafletMap({
   imgElement,
@@ -12,9 +16,14 @@ export default function LeafletMap({
   imgElement: string
   mapMarkers: MapMarker[]
 }) {
+  const supabase = getBrowserSupabase()
+
   const [bounds, setBounds] = useState<number[][] | null>(null)
   const [maxBounds, setMaxBounds] = useState<number[][] | null>(null)
   const [imageUrl, setImageUrl] = useState<string>('')
+  const [supabaseSession, setSupabaseSession] = useState<Session | null>()
+  const [showMarkerForm, setShowMarkerForm] = useState<boolean>(false)
+  const [markerData, setMarkerData] = useState<CreateMapMarker>()
 
   useEffect(() => {
     const [, srcRight] = imgElement.split(`src="`)
@@ -34,16 +43,29 @@ export default function LeafletMap({
         ])
       })
       .catch(console.error)
+
+    supabase.auth.getSession().then((session) => {
+      setSupabaseSession(session.data.session)
+    })
   }, [imgElement])
 
   if (!bounds || !imageUrl || !maxBounds) return <div>Loading map...</div>
 
+  const handleShowMarkerForm = (bool: boolean) => {
+    setShowMarkerForm(bool)
+  }
+
   return (
-    <LeafletMapInner
-      imageUrl={imageUrl}
-      argBounds={bounds}
-      argMaxBounds={maxBounds}
-      mapMarkers={mapMarkers}
-    />
+    <>
+      <LeafletMapInner
+        imageUrl={imageUrl}
+        argBounds={bounds}
+        argMaxBounds={maxBounds}
+        mapMarkers={mapMarkers}
+        markerFormToggle={handleShowMarkerForm}
+        setMarkerData={setMarkerData}
+      />
+      {supabaseSession && markerData && <MarkerForm markerData={markerData} />}
+    </>
   )
 }
