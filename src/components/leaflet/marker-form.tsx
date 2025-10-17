@@ -2,7 +2,7 @@
 import styles from './marker-form.module.css'
 import { useActionState } from 'react'
 import { MarkerFormState } from '@/lib/types/leaflet'
-import { createMarker } from '@/lib/helpers/actions/form'
+import { createMarker } from '@/lib/actions/form'
 
 const initialState: MarkerFormState = {
   success: true,

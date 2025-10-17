@@ -3,7 +3,7 @@ import { callouts } from '../data/callouts'
 import { allowedExtentions } from '../data/fileExtensions'
 import { flatten } from './helpers'
 import { getMdFileByIdentifier } from '../leaflet/md-files'
-import { getDirectoryTree } from './actions/directory'
+import { getDirectoryTree } from '../actions/directory'
 import { DirectoryTreeInterface } from '../types/directory-tree'
 
 export async function parseObsidianSyntax(mdContent: string) {

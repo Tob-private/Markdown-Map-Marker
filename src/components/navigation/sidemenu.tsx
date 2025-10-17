@@ -1,6 +1,6 @@
 import React from 'react'
 import { createMenuItemsFromObsidianDirectory } from '@/lib/helpers/nav-helpers'
-import { getDirectoryTree } from '@/lib/helpers/actions/directory'
+import { getDirectoryTree } from '@/lib/actions/directory'
 import SidemenuClient from './sidemenu-client'
 
 export default async function Sidemenu() {
