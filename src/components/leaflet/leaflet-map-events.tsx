@@ -1,5 +1,4 @@
 import { openCreateMarkerForm } from '@/lib/leaflet/leaflet'
-import { CreateMapMarker } from '@/lib/types/api/leaflet'
 import { LeafletEventHandlerFnMap, Map } from 'leaflet'
 
 export default function LeafletMapEvents({
@@ -11,7 +10,7 @@ export default function LeafletMapEvents({
   useMapEvents: (handlers: LeafletEventHandlerFnMap) => Map
   imgPath: string
   markerFormToggle: (bool: boolean) => void
-  setMarkerData: (data: CreateMapMarker) => void
+  setMarkerData: (data: { lat: number; lng: number; img_path: string }) => void
 }) {
   useMapEvents({
     dblclick: (e) =>

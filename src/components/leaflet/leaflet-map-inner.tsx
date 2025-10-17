@@ -1,7 +1,6 @@
 import dynamic from 'next/dynamic'
 import LeafletMapEvents from './leaflet-map-events'
 import { MapMarker } from '@/lib/types/supabase'
-import { CreateMapMarker } from '@/lib/types/api/leaflet'
 
 export const LeafletMapInner = dynamic(
   async () => {
@@ -24,7 +23,11 @@ export const LeafletMapInner = dynamic(
       argMaxBounds: number[][]
       mapMarkers: MapMarker[]
       markerFormToggle: (bool: boolean) => void
-      setMarkerData: (data: CreateMapMarker) => void
+      setMarkerData: (dadata: {
+        lat: number
+        lng: number
+        img_path: string
+      }) => void
     }) {
       const bounds = new L.LatLngBounds([
         [argBounds[0][0], argBounds[0][1]],

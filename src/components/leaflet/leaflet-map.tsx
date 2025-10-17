@@ -7,7 +7,6 @@ import { MapMarker } from '@/lib/types/supabase'
 import MarkerForm from './marker-form'
 import { getBrowserSupabase } from '@/lib/db/supabase/client'
 import { Session } from '@supabase/supabase-js'
-import { CreateMapMarker } from '@/lib/types/api/leaflet'
 
 export default function LeafletMap({
   imgElement,
@@ -23,7 +22,11 @@ export default function LeafletMap({
   const [imageUrl, setImageUrl] = useState<string>('')
   const [supabaseSession, setSupabaseSession] = useState<Session | null>()
   const [showMarkerForm, setShowMarkerForm] = useState<boolean>(false)
-  const [markerData, setMarkerData] = useState<CreateMapMarker>()
+  const [markerData, setMarkerData] = useState<{
+    lat: number
+    lng: number
+    img_path: string
+  }>()
 
   useEffect(() => {
     const [, srcRight] = imgElement.split(`src="`)

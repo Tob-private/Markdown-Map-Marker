@@ -1,5 +1,4 @@
 'use client'
-import { CreateMapMarker } from '@/lib/types/api/leaflet'
 import styles from './marker-form.module.css'
 import { useActionState } from 'react'
 import { MarkerFormState } from '@/lib/types/leaflet'
@@ -13,7 +12,11 @@ const initialState: MarkerFormState = {
 export default function MarkerForm({
   markerData
 }: {
-  markerData: CreateMapMarker
+  markerData: {
+    lat: number
+    lng: number
+    img_path: string
+  }
 }) {
   const createMarkerWithImgPath = createMarker.bind(null, markerData.img_path)
 
