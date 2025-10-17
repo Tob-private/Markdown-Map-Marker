@@ -1,12 +1,15 @@
 'use server'
+import { createServerSupabaseFromCookies } from '@/lib/db/supabase/server'
+import { CreateMapMarker } from '@/lib/types/api/leaflet'
 import { markerFormSchema, MarkerFormState } from '@/lib/types/leaflet'
 import z from 'zod'
 
 export async function createMarker(
+  img_path: string,
   currentState: MarkerFormState,
   formData: FormData
 ): Promise<MarkerFormState> {
-  'use server'
+  const supabase = await createServerSupabaseFromCookies()
   const rawFormData = {
     lat: Number(formData.get('lat')),
     lng: Number(formData.get('lng')),
@@ -14,12 +17,31 @@ export async function createMarker(
     desc: formData.get('desc'),
     note: formData.get('note')
   }
-  console.dir({ rawFormData })
   const validationResult = markerFormSchema.safeParse(rawFormData)
 
   if (!validationResult.success) {
     const errors = z.flattenError(validationResult.error).fieldErrors
     return { success: false, errors }
+  }
+
+  const decimals = 5
+
+  const markerObj: CreateMapMarker = {
+    lat:
+      Math.round(validationResult.data.lat * 10 ** decimals) / 10 ** decimals,
+    lng:
+      Math.round(validationResult.data.lng * 10 ** decimals) / 10 ** decimals,
+    img_path,
+    title: validationResult.data.title,
+    desc: validationResult.data.desc
+  }
+
+  const { data, error } = await supabase.from('map_markers').insert(markerObj)
+
+  if (error) {
+    console.error(error)
+  } else {
+    console.dir({ data })
   }
 
   return { data: validationResult.data, success: true }

@@ -14,12 +14,12 @@ export default function MarkerForm({
 }: {
   markerData: CreateMapMarker
 }) {
+  const createMarkerWithImgPath = createMarker.bind(null, markerData.img_path)
+
   const [state, formAction, isPending] = useActionState<
     MarkerFormState,
     FormData
-  >(createMarker, initialState)
-
-  console.dir({ state }, { depth: null })
+  >(createMarkerWithImgPath, initialState)
 
   return (
     <form className={styles.marker_form} action={formAction}>
@@ -27,10 +27,11 @@ export default function MarkerForm({
         Latitude:
         <input
           className={styles.marker_input}
-          type="hidden"
+          type="text"
+          readOnly
           id="lat"
           name="lat"
-          value={markerData.lat}
+          value={Number(markerData.lat)}
         />
       </label>
 
@@ -38,10 +39,11 @@ export default function MarkerForm({
         Longitude:
         <input
           className={styles.marker_input}
-          type="hidden"
+          type="text"
+          readOnly
           id="lng"
           name="lng"
-          value={markerData.lng}
+          value={Number(markerData.lng)}
         />
       </label>
 

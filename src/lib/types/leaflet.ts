@@ -23,8 +23,8 @@ export type MarkerFormState =
     }
 
 export const markerFormSchema = z.object({
-  lat: z.number('Lat needs to be a number').min(0, 'Lat is smaller than 0'),
-  lng: z.number('Lng needs to be a number').min(0, 'Lng is smaller than 0'),
+  lat: z.float64('Lat needs to be a float64').min(0, 'Lat is smaller than 0'),
+  lng: z.float64('Lng needs to be a float64').min(0, 'Lng is smaller than 0'),
   title: z
     .string('Title needs to be a string')
     .min(3, 'Title needs to be at least 3 characters long'),
