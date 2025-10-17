@@ -3,17 +3,19 @@
 import { useEffect, useState } from 'react'
 import { LeafletMapInner } from './leaflet-map-inner'
 import { getImageDimensions } from '@/lib/helpers/helpers'
-import { MapMarker } from '@/lib/types/supabase'
+import { MapMarker, MdFileLight } from '@/lib/types/supabase'
 import MarkerForm from './marker-form'
 import { getBrowserSupabase } from '@/lib/db/supabase/client'
 import { Session } from '@supabase/supabase-js'
 
 export default function LeafletMap({
   imgElement,
-  mapMarkers
+  mapMarkers,
+  mdFiles
 }: {
   imgElement: string
   mapMarkers: MapMarker[]
+  mdFiles: MdFileLight[]
 }) {
   const supabase = getBrowserSupabase()
 
@@ -69,7 +71,7 @@ export default function LeafletMap({
         setMarkerData={setMarkerData}
       />
       {supabaseSession && showMarkerForm && markerData && (
-        <MarkerForm markerData={markerData} />
+        <MarkerForm markerData={markerData} mdFiles={mdFiles} />
       )}
     </>
   )

@@ -12,6 +12,17 @@ export async function getMdFiles() {
 
   return data
 }
+export async function getMdFilesLight() {
+  const supabase = await createServerSupabaseFromCookies()
+
+  const { data, error } = await supabase.from('md_files').select('id,filename')
+
+  if (error && data === null) {
+    console.error({ error })
+  }
+
+  return data
+}
 
 export async function getMdFileById(id: string): Promise<MdFile> {
   const supabase = await createServerSupabaseFromCookies()

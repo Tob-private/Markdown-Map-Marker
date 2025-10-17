@@ -8,7 +8,7 @@ export type MarkerFormState =
         lng: number
         title: string
         desc: string
-        note: string
+        note_id: string
       }
       path: string
     }
@@ -19,7 +19,7 @@ export type MarkerFormState =
         lng?: string[]
         title?: string[]
         desc?: string[]
-        note?: string[]
+        note_id?: string[]
       }
       path: string
     }
@@ -33,5 +33,5 @@ export const markerFormSchema = z.object({
   desc: z
     .string('Desc needs to be a string')
     .min(10, 'Desc needs to be at least 10 characters long'),
-  note: z.string('Note link needs to be a string')
+  note_id: z.string('Note id link needs to be a string')
 })

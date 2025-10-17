@@ -10,10 +10,12 @@
   align-items: center;
   margin-bottom: 2rem;
 }
-.marker_input {
+.marker_input,
+.marker_textarea {
   padding: 0.2rem;
   color: var(--color-base-100);
   border: 1px solid var(--color-purple);
+  border-radius: 5px;
 }
 .marker_input:read-only {
   color: var(--color-base-60);

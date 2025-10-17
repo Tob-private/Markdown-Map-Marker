@@ -2,6 +2,7 @@ import dynamic from 'next/dynamic'
 import LeafletMapEvents from './leaflet-map-events'
 import { MapMarker } from '@/lib/types/supabase'
 import styles from './leaflet-map-inner.module.css'
+import Link from 'next/link'
 
 export const LeafletMapInner = dynamic(
   async () => {
@@ -73,7 +74,18 @@ export const LeafletMapInner = dynamic(
                 }
               >
                 <Popup className={styles.marker_popup}>
-                  <h6 className={styles.marker_popup_title}>{marker.title}</h6>
+                  {marker.note_id ? (
+                    <Link href={`/${marker.note_id}`}>
+                      <h6 className={styles.marker_popup_title}>
+                        {marker.title}
+                      </h6>
+                    </Link>
+                  ) : (
+                    <h6 className={styles.marker_popup_title}>
+                      {marker.title}
+                    </h6>
+                  )}
+
                   <p className={styles.marker_popup_desc}>{marker.desc}</p>
                 </Popup>
               </Marker>

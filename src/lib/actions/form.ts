@@ -16,12 +16,13 @@ export async function createMarker(
     lng: Number(formData.get('lng')),
     title: formData.get('title'),
     desc: formData.get('desc'),
-    note: formData.get('note')
+    note_id: formData.get('note_id')
   }
   const validationResult = markerFormSchema.safeParse(rawFormData)
 
   if (!validationResult.success) {
     const errors = z.flattenError(validationResult.error).fieldErrors
+    console.dir({ errors, data: validationResult.data }, { depth: null })
     return { success: false, errors, path: currentState.path }
   }
 
@@ -34,7 +35,8 @@ export async function createMarker(
       Math.round(validationResult.data.lng * 10 ** decimals) / 10 ** decimals,
     img_path,
     title: validationResult.data.title,
-    desc: validationResult.data.desc
+    desc: validationResult.data.desc,
+    note_id: validationResult.data.note_id
   }
 
   const { data, error } = await supabase

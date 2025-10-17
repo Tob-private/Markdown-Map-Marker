@@ -4,16 +4,21 @@ import { useActionState, useState } from 'react'
 import { MarkerFormState } from '@/lib/types/leaflet'
 import { createMarker } from '@/lib/actions/form'
 import { usePathname } from 'next/navigation'
+import { AutocompleteSearch } from './autocomplete-search'
+import { MdFileLight } from '@/lib/types/supabase'
 
 export default function MarkerForm({
+  mdFiles,
   markerData
 }: {
+  mdFiles: MdFileLight[]
   markerData: {
     lat: number
     lng: number
     img_path: string
   }
 }) {
+  const [selectedFile, setSelectedFile] = useState<string>('')
   const pathName = usePathname()
 
   const initialState: MarkerFormState = {
@@ -67,18 +72,23 @@ export default function MarkerForm({
 
       <label htmlFor="desc" className={styles.marker_label}>
         Marker Description:
-        <textarea id="desc" name="desc"></textarea>
+        <textarea
+          id="desc"
+          name="desc"
+          className={styles.marker_textarea}
+        ></textarea>
       </label>
 
-      <label htmlFor="note" className={styles.marker_label}>
-        Linked Note:
-        <input
-          className={styles.marker_input}
-          type="text"
-          id="note"
-          name="note"
-        />
+      <label htmlFor="md-file" className={styles.label}>
+        Select Markdown File
       </label>
+      <AutocompleteSearch
+        options={mdFiles}
+        value={selectedFile}
+        onChange={setSelectedFile}
+        placeholder="Search files..."
+        name="note_id"
+      />
 
       <button type="submit">Create Marker</button>
     </form>
