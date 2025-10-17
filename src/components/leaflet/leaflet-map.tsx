@@ -6,7 +6,7 @@ import { getImageDimensions } from '@/lib/helpers/helpers'
 import { MapMarker } from '@/lib/types/supabase'
 import MarkerForm from './marker-form'
 import { getBrowserSupabase } from '@/lib/db/supabase/client'
-import { AuthError, Session } from '@supabase/supabase-js'
+import { Session } from '@supabase/supabase-js'
 import { CreateMapMarker } from '@/lib/types/api/leaflet'
 
 export default function LeafletMap({
@@ -47,7 +47,7 @@ export default function LeafletMap({
     supabase.auth.getSession().then((session) => {
       setSupabaseSession(session.data.session)
     })
-  }, [imgElement])
+  }, [imgElement, supabase.auth])
 
   if (!bounds || !imageUrl || !maxBounds) return <div>Loading map...</div>
 
@@ -65,7 +65,9 @@ export default function LeafletMap({
         markerFormToggle={handleShowMarkerForm}
         setMarkerData={setMarkerData}
       />
-      {supabaseSession && markerData && <MarkerForm markerData={markerData} />}
+      {supabaseSession && showMarkerForm && markerData && (
+        <MarkerForm markerData={markerData} />
+      )}
     </>
   )
 }

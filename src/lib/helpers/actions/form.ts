@@ -36,7 +36,10 @@ export async function createMarker(
     desc: validationResult.data.desc
   }
 
-  const { data, error } = await supabase.from('map_markers').insert(markerObj)
+  const { data, error } = await supabase
+    .from('map_markers')
+    .insert(markerObj)
+    .select()
 
   if (error) {
     console.error(error)

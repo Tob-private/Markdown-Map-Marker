@@ -1,4 +1,3 @@
-import z from 'zod'
 import { createServerSupabaseFromCookies } from '../db/supabase/server'
 import { CreateMapMarker } from '../types/api/leaflet'
 import { MapMarker } from '../types/supabase'
