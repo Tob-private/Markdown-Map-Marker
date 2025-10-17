@@ -13,4 +13,7 @@ export interface MapMarker {
   lat: number
   lng: number
   imgPathname: string
+  title: string
+  desc: string
+  note_id?: string
 }

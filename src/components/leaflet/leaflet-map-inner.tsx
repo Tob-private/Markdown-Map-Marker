@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic'
 import LeafletMapEvents from './leaflet-map-events'
 import { MapMarker } from '@/lib/types/supabase'
+import styles from './leaflet-map-inner.module.css'
 
 export const LeafletMapInner = dynamic(
   async () => {
@@ -66,12 +67,15 @@ export const LeafletMapInner = dynamic(
                   new L.Icon({
                     iconUrl: 'marker-icon.png',
                     iconSize: [40, 40],
-                    iconAnchor: [20, 40],
+                    iconAnchor: [20, 50],
                     popupAnchor: [0, -45]
                   })
                 }
               >
-                <Popup>This is marker: {marker.id}</Popup>
+                <Popup className={styles.marker_popup}>
+                  <h6 className={styles.marker_popup_title}>{marker.title}</h6>
+                  <p className={styles.marker_popup_desc}>{marker.desc}</p>
+                </Popup>
               </Marker>
             ))}
         </MapContainer>
