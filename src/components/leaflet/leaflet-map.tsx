@@ -7,6 +7,7 @@ import { MapMarker, MdFileLight } from '@/lib/types/supabase'
 import MarkerForm from './marker-form'
 import { getBrowserSupabase } from '@/lib/db/supabase/client'
 import { Session } from '@supabase/supabase-js'
+import { MapMarkerData, MarkerFormState } from '@/lib/types/leaflet'
 
 export default function LeafletMap({
   imgElement,
@@ -23,12 +24,11 @@ export default function LeafletMap({
   const [maxBounds, setMaxBounds] = useState<number[][] | null>(null)
   const [imageUrl, setImageUrl] = useState<string>('')
   const [supabaseSession, setSupabaseSession] = useState<Session | null>()
-  const [showMarkerForm, setShowMarkerForm] = useState<boolean>(false)
-  const [markerData, setMarkerData] = useState<{
-    lat: number
-    lng: number
-    img_path: string
-  }>()
+  const [showMarkerForm, setShowMarkerForm] = useState<{
+    show: boolean
+    type: string
+  }>({ show: false, type: '' })
+  const [markerData, setMarkerData] = useState<MapMarkerData>()
 
   useEffect(() => {
     const [, srcRight] = imgElement.split(`src="`)
@@ -56,8 +56,20 @@ export default function LeafletMap({
 
   if (!bounds || !imageUrl || !maxBounds) return <div>Loading map...</div>
 
-  const handleShowMarkerForm = (bool: boolean) => {
-    setShowMarkerForm(bool)
+  const handleShowMarkerForm = (bool: boolean, type: 'insert' | 'update') => {
+    setShowMarkerForm({ show: bool, type })
+  }
+
+  const initialState: MarkerFormState = {
+    success: true,
+    data: {
+      lat: markerData?.lat ?? 0,
+      lng: markerData?.lng ?? 0,
+      title: markerData?.title ?? '',
+      desc: markerData?.desc ?? '',
+      note_id: markerData?.note_id
+    },
+    path: ''
   }
 
   return (
@@ -71,7 +83,12 @@ export default function LeafletMap({
         setMarkerData={setMarkerData}
       />
       {supabaseSession && showMarkerForm && markerData && (
-        <MarkerForm markerData={markerData} mdFiles={mdFiles} />
+        <MarkerForm
+          markerData={markerData}
+          mdFiles={mdFiles}
+          initialState={initialState}
+          type={showMarkerForm.type}
+        />
       )}
     </>
   )

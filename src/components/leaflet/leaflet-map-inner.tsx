@@ -3,6 +3,8 @@ import LeafletMapEvents from './leaflet-map-events'
 import { MapMarker } from '@/lib/types/supabase'
 import styles from './leaflet-map-inner.module.css'
 import Link from 'next/link'
+import { SquarePen } from 'lucide-react'
+import { openMarkerForm } from '@/lib/leaflet/leaflet'
 
 export const LeafletMapInner = dynamic(
   async () => {
@@ -24,7 +26,7 @@ export const LeafletMapInner = dynamic(
       argBounds: number[][]
       argMaxBounds: number[][]
       mapMarkers: MapMarker[]
-      markerFormToggle: (bool: boolean) => void
+      markerFormToggle: (bool: boolean, type: 'insert' | 'update') => void
       setMarkerData: (dadata: {
         lat: number
         lng: number
@@ -55,6 +57,7 @@ export const LeafletMapInner = dynamic(
           <LeafletMapEvents
             useMapEvents={useMapEvents}
             imgPath={imageUrl}
+            markerFormType="insert"
             markerFormToggle={markerFormToggle}
             setMarkerData={setMarkerData}
           />
@@ -74,17 +77,37 @@ export const LeafletMapInner = dynamic(
                 }
               >
                 <Popup className={styles.marker_popup}>
-                  {marker.note_id ? (
-                    <Link href={`/${marker.note_id}`}>
+                  <div className={styles.marker_popup_title_div}>
+                    {marker.note_id ? (
+                      <Link href={`/${marker.note_id}`}>
+                        <h6 className={styles.marker_popup_title}>
+                          {marker.title}
+                        </h6>
+                      </Link>
+                    ) : (
                       <h6 className={styles.marker_popup_title}>
                         {marker.title}
                       </h6>
-                    </Link>
-                  ) : (
-                    <h6 className={styles.marker_popup_title}>
-                      {marker.title}
-                    </h6>
-                  )}
+                    )}
+                    <SquarePen
+                      className={styles.marker_popup_edit}
+                      onClick={() =>
+                        openMarkerForm(
+                          {
+                            lat: marker.lat,
+                            lng: marker.lng,
+                            img_path: imageUrl,
+                            title: marker.title,
+                            desc: marker.desc,
+                            note_id: marker.note_id
+                          },
+                          'update',
+                          markerFormToggle,
+                          setMarkerData
+                        )
+                      }
+                    />
+                  </div>
 
                   <p className={styles.marker_popup_desc}>{marker.desc}</p>
                 </Popup>

@@ -1,7 +1,18 @@
 .marker_popup_title {
   color: var(--color-purple);
-  border-bottom: 1px solid var(--color-base-70);
+  margin: 5px 0;
+  border-bottom: 1px solid var(--color-purple);
+  width: 30%;
 }
 .marker_popup_desc {
   color: var(--color-base-25);
+}
+.marker_popup_title_div {
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+.marker_popup_edit {
+  margin-right: 10px;
+  align-self: flex-start;
 }

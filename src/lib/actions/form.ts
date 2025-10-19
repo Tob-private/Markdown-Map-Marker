@@ -27,7 +27,10 @@ export async function createMarker(
     img_path,
     title: validationResult.data.title,
     desc: validationResult.data.desc,
-    note_id: validationResult.data.note_id
+    note_id:
+      validationResult.data.note_id !== ''
+        ? validationResult.data.note_id
+        : null
   }
   console.dir({ markerObj })
 

@@ -1,4 +1,5 @@
 import { createServerSupabaseFromCookies } from '../db/supabase/server'
+import { MapMarkerData } from '../types/leaflet'
 import { MapMarker } from '../types/supabase'
 
 export async function getMarkersFromImgPath(
@@ -18,12 +19,12 @@ export async function getMarkersFromImgPath(
   }
 }
 
-export async function openCreateMarkerForm(
-  { lat, lng }: { lat: number; lng: number },
-  img_path: string,
-  markerFormToggle: (bool: boolean) => void,
+export async function openMarkerForm(
+  markerData: MapMarkerData,
+  type: 'insert' | 'update',
+  markerFormToggle: (bool: boolean, type: 'insert' | 'update') => void,
   setMarkerData: (data: { lat: number; lng: number; img_path: string }) => void
 ) {
-  markerFormToggle(true)
-  setMarkerData({ lat, lng, img_path })
+  markerFormToggle(true, type)
+  setMarkerData(markerData)
 }

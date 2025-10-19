@@ -35,3 +35,12 @@ export const markerFormSchema = z.object({
     .min(10, 'Desc needs to be at least 10 characters long'),
   note_id: z.string('Note id link needs to be a string').optional()
 })
+
+export interface MapMarkerData {
+  lat: number
+  lng: number
+  img_path: string
+  title?: string
+  desc?: string
+  note_id?: string
+}
