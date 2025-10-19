@@ -82,12 +82,13 @@ export default function LeafletMap({
         markerFormToggle={handleShowMarkerForm}
         setMarkerData={setMarkerData}
       />
-      {supabaseSession && showMarkerForm && markerData && (
+      {supabaseSession && showMarkerForm.show && markerData && (
         <MarkerForm
           markerData={markerData}
           mdFiles={mdFiles}
           initialState={initialState}
           type={showMarkerForm.type}
+          showFormToggle={setShowMarkerForm}
         />
       )}
     </>

@@ -20,15 +20,21 @@ export default function MarkerForm({
     },
     path: ''
   },
-  type
+  type,
+  showFormToggle
 }: {
   mdFiles: MdFileLight[]
   markerData: MapMarkerData
   initialState: MarkerFormState
   type: string
+  showFormToggle: React.Dispatch<
+    React.SetStateAction<{
+      show: boolean
+      type: string
+    }>
+  >
 }) {
   const [selectedFile, setSelectedFile] = useState<string>('')
-  const [showForm, setShowForm] = useState<boolean>(true)
   const pathName = usePathname()
 
   initialState.path = pathName
@@ -55,73 +61,75 @@ export default function MarkerForm({
     }
   }, [])
 
+  const handleSubmit = () => {
+    showFormToggle({ show: false, type })
+  }
+
   return (
-    showForm && (
-      <form
-        className={styles.marker_form}
-        action={formAction}
-        onSubmit={() => setShowForm(false)}
-      >
-        <label htmlFor="lat" className={styles.marker_label}>
-          Latitude:
-          <input
-            className={styles.marker_input}
-            type="text"
-            readOnly
-            id="lat"
-            name="lat"
-            value={Number(markerData.lat)}
-          />
-        </label>
-
-        <label htmlFor="lng" className={styles.marker_label}>
-          Longitude:
-          <input
-            className={styles.marker_input}
-            type="text"
-            readOnly
-            id="lng"
-            name="lng"
-            value={Number(markerData.lng)}
-          />
-        </label>
-
-        <label htmlFor="title" className={styles.marker_label}>
-          Marker Title:
-          <input
-            className={styles.marker_input}
-            type="text"
-            id="title"
-            name="title"
-            defaultValue={initialState.success ? initialState.data.title : ''}
-          />
-        </label>
-
-        <label htmlFor="desc" className={styles.marker_label}>
-          Marker Description:
-          <textarea
-            id="desc"
-            name="desc"
-            className={styles.marker_textarea}
-            defaultValue={initialState.success ? initialState.data.desc : ''}
-          ></textarea>
-        </label>
-
-        <label htmlFor="md-file" className={styles.label}>
-          Select Markdown File
-        </label>
-        <AutocompleteSearch
-          options={mdFiles}
-          value={selectedFile}
-          onChange={setSelectedFile}
-          placeholder="Search files..."
-          name="note_id"
+    <form
+      className={styles.marker_form}
+      action={formAction}
+      onSubmit={handleSubmit}
+    >
+      <label htmlFor="lat" className={styles.marker_label}>
+        Latitude:
+        <input
+          className={styles.marker_input}
+          type="text"
+          readOnly
+          id="lat"
+          name="lat"
+          value={Number(markerData.lat)}
         />
+      </label>
 
-        <button type="submit">
-          {type === 'insert' ? 'Create' : 'Update'} Marker
-        </button>
-      </form>
-    )
+      <label htmlFor="lng" className={styles.marker_label}>
+        Longitude:
+        <input
+          className={styles.marker_input}
+          type="text"
+          readOnly
+          id="lng"
+          name="lng"
+          value={Number(markerData.lng)}
+        />
+      </label>
+
+      <label htmlFor="title" className={styles.marker_label}>
+        Marker Title:
+        <input
+          className={styles.marker_input}
+          type="text"
+          id="title"
+          name="title"
+          defaultValue={initialState.success ? initialState.data.title : ''}
+        />
+      </label>
+
+      <label htmlFor="desc" className={styles.marker_label}>
+        Marker Description:
+        <textarea
+          id="desc"
+          name="desc"
+          className={styles.marker_textarea}
+          defaultValue={initialState.success ? initialState.data.desc : ''}
+        ></textarea>
+      </label>
+
+      <label htmlFor="md-file" className={styles.label}>
+        Select Markdown File
+      </label>
+      <AutocompleteSearch
+        options={mdFiles}
+        value={selectedFile}
+        onChange={setSelectedFile}
+        placeholder="Search files..."
+        name="note_id"
+      />
+
+      <button type="submit">
+        {type === 'insert' ? 'Create' : 'Update'} Marker
+      </button>
+    </form>
   )
 }
