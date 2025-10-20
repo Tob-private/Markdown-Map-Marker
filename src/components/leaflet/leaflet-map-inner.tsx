@@ -70,7 +70,6 @@ export const LeafletMapInner = dynamic(
             <LeafletMapEvents
               useMapEvents={useMapEvents}
               imgPath={imageUrl}
-              markerFormType="insert"
               markerFormToggle={markerFormToggle}
               setMarkerData={setMarkerData}
             />
