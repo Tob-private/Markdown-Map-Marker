@@ -1,6 +1,6 @@
 'use client'
 import styles from './marker-form.module.css'
-import { useActionState, useEffect, useState } from 'react'
+import { useActionState, useState } from 'react'
 import { MapMarkerData, MarkerFormState } from '@/lib/types/leaflet'
 import { createMarker, updateMarker } from '@/lib/actions/form'
 import { usePathname } from 'next/navigation'
