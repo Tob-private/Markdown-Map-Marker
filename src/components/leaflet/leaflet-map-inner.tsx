@@ -5,6 +5,9 @@ import styles from './leaflet-map-inner.module.css'
 import Link from 'next/link'
 import { Link as LucideLink, SquarePen } from 'lucide-react'
 import { openMarkerForm } from '@/lib/leaflet/leaflet'
+import { useState } from 'react'
+import { Session } from '@supabase/supabase-js'
+import { getBrowserSupabase } from '@/lib/db/supabase/client'
 
 export const LeafletMapInner = dynamic(
   async () => {
@@ -33,6 +36,9 @@ export const LeafletMapInner = dynamic(
         img_path: string
       }) => void
     }) {
+      const [supabaseSession, setSupabaseSession] = useState<Session | null>()
+      const supabase = getBrowserSupabase()
+
       const bounds = new L.LatLngBounds([
         [argBounds[0][0], argBounds[0][1]],
         [argBounds[1][0], argBounds[1][1]]
@@ -41,6 +47,10 @@ export const LeafletMapInner = dynamic(
         [argMaxBounds[0][0], argMaxBounds[0][1]],
         [argMaxBounds[1][0], argMaxBounds[1][1]]
       ])
+
+      supabase.auth.getSession().then((session) => {
+        setSupabaseSession(session.data.session)
+      })
 
       return (
         <MapContainer
@@ -54,13 +64,15 @@ export const LeafletMapInner = dynamic(
           className="map"
           style={{ height: '600px', width: '100%' }}
         >
-          <LeafletMapEvents
-            useMapEvents={useMapEvents}
-            imgPath={imageUrl}
-            markerFormType="insert"
-            markerFormToggle={markerFormToggle}
-            setMarkerData={setMarkerData}
-          />
+          {supabaseSession && (
+            <LeafletMapEvents
+              useMapEvents={useMapEvents}
+              imgPath={imageUrl}
+              markerFormType="insert"
+              markerFormToggle={markerFormToggle}
+              setMarkerData={setMarkerData}
+            />
+          )}
           <ImageOverlay url={imageUrl} bounds={bounds} />
           {mapMarkers &&
             mapMarkers.map((marker) => (
@@ -93,25 +105,27 @@ export const LeafletMapInner = dynamic(
                         {marker.title}
                       </h6>
                     )}
-                    <SquarePen
-                      width={20}
-                      className={styles.marker_popup_edit}
-                      onClick={() =>
-                        openMarkerForm(
-                          {
-                            lat: marker.lat,
-                            lng: marker.lng,
-                            img_path: imageUrl,
-                            title: marker.title,
-                            desc: marker.desc,
-                            note_id: marker.note_id
-                          },
-                          'update',
-                          markerFormToggle,
-                          setMarkerData
-                        )
-                      }
-                    />
+                    {supabaseSession && (
+                      <SquarePen
+                        width={20}
+                        className={styles.marker_popup_edit}
+                        onClick={() =>
+                          openMarkerForm(
+                            {
+                              lat: marker.lat,
+                              lng: marker.lng,
+                              img_path: imageUrl,
+                              title: marker.title,
+                              desc: marker.desc,
+                              note_id: marker.note_id
+                            },
+                            'update',
+                            markerFormToggle,
+                            setMarkerData
+                          )
+                        }
+                      />
+                    )}
                   </div>
 
                   <p className={styles.marker_popup_desc}>{marker.desc}</p>
