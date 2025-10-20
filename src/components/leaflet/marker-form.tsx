@@ -51,16 +51,6 @@ export default function MarkerForm({
     initialState
   )
 
-  useEffect(() => {
-    if (
-      initialState.success &&
-      initialState.data.note_id &&
-      type === 'update'
-    ) {
-      setSelectedFile(initialState.data.note_id)
-    }
-  }, [])
-
   const handleSubmit = () => {
     showFormToggle({ show: false, type })
   }

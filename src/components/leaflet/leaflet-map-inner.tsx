@@ -52,7 +52,7 @@ export const LeafletMapInner = dynamic(
         supabase.auth.getSession().then((session) => {
           setSupabaseSession(session.data.session)
         })
-      }, [])
+      }, [supabase.auth])
 
       return (
         <MapContainer
