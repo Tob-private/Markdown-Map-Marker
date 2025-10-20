@@ -5,7 +5,7 @@ import styles from './leaflet-map-inner.module.css'
 import Link from 'next/link'
 import { Link as LucideLink, SquarePen } from 'lucide-react'
 import { openMarkerForm } from '@/lib/leaflet/leaflet'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Session } from '@supabase/supabase-js'
 import { getBrowserSupabase } from '@/lib/db/supabase/client'
 
@@ -48,9 +48,11 @@ export const LeafletMapInner = dynamic(
         [argMaxBounds[1][0], argMaxBounds[1][1]]
       ])
 
-      supabase.auth.getSession().then((session) => {
-        setSupabaseSession(session.data.session)
-      })
+      useEffect(() => {
+        supabase.auth.getSession().then((session) => {
+          setSupabaseSession(session.data.session)
+        })
+      }, [])
 
       return (
         <MapContainer
