@@ -3,7 +3,7 @@ import LeafletMapEvents from './leaflet-map-events'
 import { MapMarker } from '@/lib/types/supabase'
 import styles from './leaflet-map-inner.module.css'
 import Link from 'next/link'
-import { SquarePen } from 'lucide-react'
+import { Link as LucideLink, SquarePen } from 'lucide-react'
 import { openMarkerForm } from '@/lib/leaflet/leaflet'
 
 export const LeafletMapInner = dynamic(
@@ -79,10 +79,14 @@ export const LeafletMapInner = dynamic(
                 <Popup className={styles.marker_popup}>
                   <div className={styles.marker_popup_title_div}>
                     {marker.note_id ? (
-                      <Link href={`/${marker.note_id}`}>
+                      <Link
+                        href={`/${marker.note_id}`}
+                        className={styles.marker_popup_link}
+                      >
                         <h6 className={styles.marker_popup_title}>
                           {marker.title}
                         </h6>
+                        <LucideLink color="var(--color-purple)" width={20} />
                       </Link>
                     ) : (
                       <h6 className={styles.marker_popup_title}>
@@ -90,6 +94,7 @@ export const LeafletMapInner = dynamic(
                       </h6>
                     )}
                     <SquarePen
+                      width={20}
                       className={styles.marker_popup_edit}
                       onClick={() =>
                         openMarkerForm(
