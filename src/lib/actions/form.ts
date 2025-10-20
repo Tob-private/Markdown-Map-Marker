@@ -32,7 +32,6 @@ export async function createMarker(
         ? validationResult.data.note_id
         : null
   }
-  console.dir({ markerObj })
 
   const { data, error } = await supabase
     .from('map_markers')
