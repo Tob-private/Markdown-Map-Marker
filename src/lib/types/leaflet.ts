@@ -8,7 +8,7 @@ export type MarkerFormState =
         lng: number
         title: string
         desc: string
-        note_id: string
+        note_id?: string | null
       }
       path: string
     }
@@ -33,5 +33,14 @@ export const markerFormSchema = z.object({
   desc: z
     .string('Desc needs to be a string')
     .min(10, 'Desc needs to be at least 10 characters long'),
-  note_id: z.string('Note id link needs to be a string')
+  note_id: z.string('Note id link needs to be a string').optional()
 })
+
+export interface MapMarkerData {
+  lat: number
+  lng: number
+  img_path: string
+  title?: string
+  desc?: string
+  note_id?: string
+}

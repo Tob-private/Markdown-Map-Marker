@@ -82,7 +82,6 @@ export const supabaseMdFilesSetup = async () => {
         filename: obsidianFile.name,
         md_path: obsidianFile.path
       }
-      console.dir({ md_file })
       const { error } = await supabase
         .from('md_files')
         .update(md_file)

@@ -1,41 +1,66 @@
 'use client'
 import styles from './marker-form.module.css'
 import { useActionState, useState } from 'react'
-import { MarkerFormState } from '@/lib/types/leaflet'
-import { createMarker } from '@/lib/actions/form'
+import { MapMarkerData, MarkerFormState } from '@/lib/types/leaflet'
+import { createMarker, updateMarker } from '@/lib/actions/form'
 import { usePathname } from 'next/navigation'
 import { AutocompleteSearch } from './autocomplete-search'
 import { MdFileLight } from '@/lib/types/supabase'
 
 export default function MarkerForm({
   mdFiles,
-  markerData
+  markerData,
+  initialState = {
+    success: true,
+    data: {
+      lat: 0,
+      lng: 0,
+      title: '',
+      desc: ''
+    },
+    path: ''
+  },
+  type,
+  showFormToggle
 }: {
   mdFiles: MdFileLight[]
-  markerData: {
-    lat: number
-    lng: number
-    img_path: string
-  }
+  markerData: MapMarkerData
+  initialState: MarkerFormState
+  type: string
+  showFormToggle: React.Dispatch<
+    React.SetStateAction<{
+      show: boolean
+      type: string
+    }>
+  >
 }) {
   const [selectedFile, setSelectedFile] = useState<string>('')
   const pathName = usePathname()
 
-  const initialState: MarkerFormState = {
-    success: false,
-    errors: {},
-    path: pathName
-  }
+  initialState.path = pathName
 
-  const createMarkerWithImgPath = createMarker.bind(null, markerData.img_path)
+  const markerFormAction = type === 'insert' ? createMarker : updateMarker
+
+  const createMarkerWithImgPath = markerFormAction.bind(
+    null,
+    markerData.img_path
+  )
 
   const [, formAction] = useActionState<MarkerFormState, FormData>(
     createMarkerWithImgPath,
     initialState
   )
 
+  const handleSubmit = () => {
+    showFormToggle({ show: false, type })
+  }
+
   return (
-    <form className={styles.marker_form} action={formAction}>
+    <form
+      className={styles.marker_form}
+      action={formAction}
+      onSubmit={handleSubmit}
+    >
       <label htmlFor="lat" className={styles.marker_label}>
         Latitude:
         <input
@@ -67,6 +92,7 @@ export default function MarkerForm({
           type="text"
           id="title"
           name="title"
+          defaultValue={initialState.success ? initialState.data.title : ''}
         />
       </label>
 
@@ -76,6 +102,7 @@ export default function MarkerForm({
           id="desc"
           name="desc"
           className={styles.marker_textarea}
+          defaultValue={initialState.success ? initialState.data.desc : ''}
         ></textarea>
       </label>
 
@@ -90,7 +117,9 @@ export default function MarkerForm({
         name="note_id"
       />
 
-      <button type="submit">Create Marker</button>
+      <button type="submit">
+        {type === 'insert' ? 'Create' : 'Update'} Marker
+      </button>
     </form>
   )
 }

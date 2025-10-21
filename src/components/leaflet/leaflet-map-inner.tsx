@@ -3,6 +3,11 @@ import LeafletMapEvents from './leaflet-map-events'
 import { MapMarker } from '@/lib/types/supabase'
 import styles from './leaflet-map-inner.module.css'
 import Link from 'next/link'
+import { Link as LucideLink, SquarePen } from 'lucide-react'
+import { openMarkerForm } from '@/lib/leaflet/leaflet'
+import { useEffect, useState } from 'react'
+import { Session } from '@supabase/supabase-js'
+import { getBrowserSupabase } from '@/lib/db/supabase/client'
 
 export const LeafletMapInner = dynamic(
   async () => {
@@ -24,13 +29,16 @@ export const LeafletMapInner = dynamic(
       argBounds: number[][]
       argMaxBounds: number[][]
       mapMarkers: MapMarker[]
-      markerFormToggle: (bool: boolean) => void
+      markerFormToggle: (bool: boolean, type: 'insert' | 'update') => void
       setMarkerData: (dadata: {
         lat: number
         lng: number
         img_path: string
       }) => void
     }) {
+      const [supabaseSession, setSupabaseSession] = useState<Session | null>()
+      const supabase = getBrowserSupabase()
+
       const bounds = new L.LatLngBounds([
         [argBounds[0][0], argBounds[0][1]],
         [argBounds[1][0], argBounds[1][1]]
@@ -39,6 +47,12 @@ export const LeafletMapInner = dynamic(
         [argMaxBounds[0][0], argMaxBounds[0][1]],
         [argMaxBounds[1][0], argMaxBounds[1][1]]
       ])
+
+      useEffect(() => {
+        supabase.auth.getSession().then((session) => {
+          setSupabaseSession(session.data.session)
+        })
+      }, [supabase.auth])
 
       return (
         <MapContainer
@@ -52,12 +66,14 @@ export const LeafletMapInner = dynamic(
           className="map"
           style={{ height: '600px', width: '100%' }}
         >
-          <LeafletMapEvents
-            useMapEvents={useMapEvents}
-            imgPath={imageUrl}
-            markerFormToggle={markerFormToggle}
-            setMarkerData={setMarkerData}
-          />
+          {supabaseSession && (
+            <LeafletMapEvents
+              useMapEvents={useMapEvents}
+              imgPath={imageUrl}
+              markerFormToggle={markerFormToggle}
+              setMarkerData={setMarkerData}
+            />
+          )}
           <ImageOverlay url={imageUrl} bounds={bounds} />
           {mapMarkers &&
             mapMarkers.map((marker) => (
@@ -74,17 +90,44 @@ export const LeafletMapInner = dynamic(
                 }
               >
                 <Popup className={styles.marker_popup}>
-                  {marker.note_id ? (
-                    <Link href={`/${marker.note_id}`}>
+                  <div className={styles.marker_popup_title_div}>
+                    {marker.note_id ? (
+                      <Link
+                        href={`/${marker.note_id}`}
+                        className={styles.marker_popup_link}
+                      >
+                        <h6 className={styles.marker_popup_title}>
+                          {marker.title}
+                        </h6>
+                        <LucideLink color="var(--color-purple)" width={20} />
+                      </Link>
+                    ) : (
                       <h6 className={styles.marker_popup_title}>
                         {marker.title}
                       </h6>
-                    </Link>
-                  ) : (
-                    <h6 className={styles.marker_popup_title}>
-                      {marker.title}
-                    </h6>
-                  )}
+                    )}
+                    {supabaseSession && (
+                      <SquarePen
+                        width={20}
+                        className={styles.marker_popup_edit}
+                        onClick={() =>
+                          openMarkerForm(
+                            {
+                              lat: marker.lat,
+                              lng: marker.lng,
+                              img_path: imageUrl,
+                              title: marker.title,
+                              desc: marker.desc,
+                              note_id: marker.note_id
+                            },
+                            'update',
+                            markerFormToggle,
+                            setMarkerData
+                          )
+                        }
+                      />
+                    )}
+                  </div>
 
                   <p className={styles.marker_popup_desc}>{marker.desc}</p>
                 </Popup>
