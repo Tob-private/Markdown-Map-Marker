@@ -12,7 +12,7 @@ const initialState: LoginFormState = {
 }
 
 export default function Page() {
-  const [state, formAction] = useActionState(login, initialState)
+  const [state, formAction, isPending] = useActionState(login, initialState)
 
   return (
     <main className={styles.main}>
@@ -23,7 +23,7 @@ export default function Page() {
       <form action={formAction}>
         <section className={styles.section}>
           <label htmlFor="email">Email:</label>
-          <input type="text" id="email" name="email" />
+          <input type="text" id="email" name="email" autoComplete="email" />
           {!state.success &&
             state.errors.email?.map((error, index) => (
               <ErrorMessage error={error} key={error.substring(5) + index} />
@@ -31,13 +31,20 @@ export default function Page() {
         </section>
         <section className={styles.section}>
           <label htmlFor="password">Password:</label>
-          <input type="password" id="password" name="password" />
+          <input
+            type="password"
+            id="password"
+            name="password"
+            autoComplete="current-password"
+          />
           {!state.success &&
             state.errors.password?.map((error, index) => (
               <ErrorMessage error={error} key={error.substring(5) + index} />
             ))}
         </section>
-        <button type="submit">Login</button>
+        <button type="submit" disabled={isPending}>
+          Login
+        </button>
       </form>
     </main>
   )
