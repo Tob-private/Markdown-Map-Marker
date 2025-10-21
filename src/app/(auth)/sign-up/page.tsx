@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useActionState } from 'react'
 import styles from './page.module.css'
 import { SignUpFormState } from '@/lib/types/auth'
-import { signUp } from '@/lib/actions/auth-form'
+import { signUp } from '@/lib/actions/auth'
 
 const initialState: SignUpFormState = {
   success: false,

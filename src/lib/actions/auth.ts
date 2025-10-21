@@ -1,10 +1,11 @@
 'use client'
 
-import z from 'zod'
+import z, { success } from 'zod'
 import { getBrowserSupabase } from '../db/supabase/client'
 import {
   loginFormSchema,
   LoginFormState,
+  SignOutResult,
   signUpFormSchema,
   SignUpFormState
 } from '../types/auth'
@@ -80,4 +81,16 @@ export async function signUp(
   console.log('Logged in')
 
   return { success: true, data: validatedData.data }
+}
+
+export async function signOut(): Promise<SignOutResult> {
+  const supabase = getBrowserSupabase()
+
+  const { error } = await supabase.auth.signOut()
+
+  if (error) {
+    return { success: false, error }
+  }
+  console.log('Logged out')
+  return { success: true }
 }

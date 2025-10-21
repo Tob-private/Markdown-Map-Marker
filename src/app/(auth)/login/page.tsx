@@ -2,7 +2,7 @@
 import styles from './page.module.css'
 import Link from 'next/link'
 import { useActionState } from 'react'
-import { login } from '@/lib/actions/auth-form'
+import { login } from '@/lib/actions/auth'
 import { LoginFormState } from '@/lib/types/auth'
 
 const initialState: LoginFormState = {
