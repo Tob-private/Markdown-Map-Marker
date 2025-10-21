@@ -31,7 +31,9 @@ export default function Header() {
 
   return (
     <header className={styles.header}>
-      {user ? <UserProfile /> : <Link href={'/login'}>Login</Link>}
+      <div className={styles.auth}>
+        {user ? <UserProfile /> : <Link href={'/login'}>Login</Link>}
+      </div>
     </header>
   )
 }
