@@ -1,0 +1,7 @@
+.main {
+  width: fit-content;
+  margin: auto;
+  display: flex;
+  flex-flow: column;
+  place-items: center;
+}
