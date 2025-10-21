@@ -1,5 +1,4 @@
 'use client'
-import { getBrowserSupabase } from '@/lib/db/supabase/client'
 import styles from './page.module.css'
 import Link from 'next/link'
 import { useActionState } from 'react'
@@ -12,13 +11,13 @@ const initialState: LoginFormState = {
 }
 
 export default function Page() {
-  const [state, formAction, isPending] = useActionState(login, initialState)
+  const [, formAction] = useActionState(login, initialState)
 
   return (
     <main className={styles.main}>
       <h1>Login</h1>
       <p>
-        Don't have an account? <Link href={'/sign-up'}>Sign up</Link>
+        Don&apos;t have an account? <Link href={'/sign-up'}>Sign up</Link>
       </p>
       <form action={formAction}>
         <section>
