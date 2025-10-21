@@ -22,7 +22,12 @@ export default function Header() {
         setUserError(response.error)
       }
     })
-  }, [supabase.auth])
+
+    if (userError) {
+      console.error('Error getting user')
+      console.error(userError)
+    }
+  }, [supabase.auth, userError])
 
   return (
     <header className={styles.header}>

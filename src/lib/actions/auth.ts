@@ -1,6 +1,5 @@
 'use client'
-
-import z, { success } from 'zod'
+import z from 'zod'
 import { getBrowserSupabase } from '../db/supabase/client'
 import {
   loginFormSchema,
