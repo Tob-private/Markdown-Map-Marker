@@ -91,5 +91,6 @@ export async function signOut(): Promise<SignOutResult> {
     return { success: false, error }
   }
   console.log('Logged out')
+
   return { success: true }
 }

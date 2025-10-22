@@ -10,7 +10,9 @@
     "format": "npx prettier . --write"
   },
   "dependencies": {
+    "@ant-design/v5-patch-for-react-19": "^1.0.3",
     "@supabase/supabase-js": "^2.74.0",
+    "antd": "^5.27.6",
     "directory-tree": "^3.5.2",
     "image-size": "^2.0.2",
     "leaflet": "^1.9.4",

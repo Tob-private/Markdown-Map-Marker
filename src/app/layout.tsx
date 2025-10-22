@@ -5,6 +5,7 @@ import 'leaflet/dist/leaflet.css'
 import LucideProvider from '@/providers/lucide-provider'
 import Sidemenu from '@/components/navigation/sidemenu'
 import Header from '@/components/header/header'
+import '@ant-design/v5-patch-for-react-19'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
