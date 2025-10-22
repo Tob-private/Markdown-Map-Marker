@@ -1,10 +1,31 @@
-.logout {
-  background-color: var(--color-base-30);
-  color: var(--color-base-100);
+.popover_trigger {
+  cursor: pointer;
 }
 
-.logout:hover {
+.popover_content {
+  padding: 5px;
+  background-color: var(--color-base-50);
+  border: none;
+  border-radius: 5px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+}
+
+.logout {
+  padding: 5px 10px;
+  color: var(--color-base-100);
+  border: 1px solid var(--color-purple);
+  border-radius: 5px;
+  height: fit-content;
+  margin: auto 0 0 0;
+  background-color: var(--color-base-40);
+}
+
+.logout:hover,
+.logout:active,
+.logout:focus {
   background-color: var(--color-base-70);
   color: var(--color-base-10);
-  border: 1px solid var(--color-base-30);
+  border: 1px solid var(--color-purple);
 }

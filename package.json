@@ -10,9 +10,12 @@
     "format": "npx prettier . --write"
   },
   "dependencies": {
-    "@ant-design/v5-patch-for-react-19": "^1.0.3",
+    "@radix-ui/react-popover": "^1.1.15",
+    "@radix-ui/react-slot": "^1.2.3",
     "@supabase/supabase-js": "^2.74.0",
-    "antd": "^5.27.6",
+    "@tailwindcss/postcss": "^4.1.15",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "directory-tree": "^3.5.2",
     "image-size": "^2.0.2",
     "leaflet": "^1.9.4",
@@ -28,6 +31,8 @@
     "react-leaflet": "^5.0.0-rc.2",
     "react-markdown": "^10.1.0",
     "sanitize-html": "^2.17.0",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss-animate": "^1.0.7",
     "zod": "^4.1.12"
   },
   "devDependencies": {

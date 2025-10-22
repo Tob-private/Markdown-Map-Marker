@@ -1,9 +1,13 @@
 .header {
-  min-height: 50px;
-  padding: 5px 30px;
   background-color: var(--color-base-20);
+  padding: 15px 0;
+}
+
+.container {
   display: flex;
   align-items: center;
+  width: 90%;
+  margin: auto;
 }
 
 .auth {

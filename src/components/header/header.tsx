@@ -31,8 +31,14 @@ export default function Header() {
 
   return (
     <header className={styles.header}>
-      <div className={styles.auth}>
-        {user ? <UserProfile /> : <Link href={'/login'}>Login</Link>}
+      <div className={styles.container}>
+        <div className={styles.auth}>
+          {user ? (
+            <UserProfile setUser={() => setUser(null)} />
+          ) : (
+            <Link href={'/login'}>Login</Link>
+          )}
+        </div>
       </div>
     </header>
   )
