@@ -5,7 +5,6 @@ import styles from './page.module.css'
 import { SignUpFormState } from '@/lib/types/auth'
 import { signUp } from '@/lib/actions/auth'
 import ErrorMessage from '@/components/form/error-message'
-import { useRouter } from 'next/navigation'
 
 const initialState: SignUpFormState = {
   success: false,
@@ -13,7 +12,6 @@ const initialState: SignUpFormState = {
 }
 export default function Page() {
   const [state, formAction, isPending] = useActionState(signUp, initialState)
-  const router = useRouter()
 
   return (
     <main className={styles.main}>
