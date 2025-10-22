@@ -16,10 +16,6 @@ export default function Page() {
   const [state, formAction, isPending] = useActionState(login, initialState)
   const router = useRouter()
 
-  if (state.success) {
-    router.replace('/')
-  }
-
   return (
     <main className={styles.main}>
       <h1>Login</h1>

@@ -15,10 +15,6 @@ export default function Page() {
   const [state, formAction, isPending] = useActionState(signUp, initialState)
   const router = useRouter()
 
-  if (state.success) {
-    router.replace('/')
-  }
-
   return (
     <main className={styles.main}>
       <h1>Sign Up</h1>

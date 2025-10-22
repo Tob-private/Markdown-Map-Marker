@@ -1,43 +1,18 @@
 'use client'
 import UserProfile from './user-profile'
 import styles from './header.module.css'
-import { useEffect, useState } from 'react'
-import { AuthError, User } from '@supabase/supabase-js'
-import { getBrowserSupabase } from '@/lib/db/supabase/client'
+import { useContext } from 'react'
 import Link from 'next/link'
+import { UserContext } from '@/providers/user-context'
 
 export default function Header() {
-  const supabase = getBrowserSupabase()
-
-  const [user, setUser] = useState<User | null>(null)
-  const [userError, setUserError] = useState<AuthError | null>(null)
-
-  useEffect(() => {
-    const user = supabase.auth.getUser()
-
-    user.then((response) => {
-      if (response.data && !response.error) {
-        setUser(response.data.user)
-      } else if (response.error && !response.data) {
-        setUserError(response.error)
-      }
-    })
-
-    if (userError) {
-      console.error('Error getting user')
-      console.error(userError)
-    }
-  }, [supabase.auth, userError])
+  const user = useContext(UserContext)
 
   return (
     <header className={styles.header}>
       <div className={styles.container}>
         <div className={styles.auth}>
-          {user ? (
-            <UserProfile setUser={() => setUser(null)} />
-          ) : (
-            <Link href={'/login'}>Login</Link>
-          )}
+          {user ? <UserProfile /> : <Link href={'/login'}>Login</Link>}
         </div>
       </div>
     </header>

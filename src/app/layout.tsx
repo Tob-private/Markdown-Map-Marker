@@ -5,6 +5,7 @@ import 'leaflet/dist/leaflet.css'
 import LucideProvider from '@/providers/lucide-provider'
 import Sidemenu from '@/components/navigation/sidemenu'
 import Header from '@/components/header/header'
+import { UserProvider } from '@/providers/user-context'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -29,7 +30,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <Header />
+        <UserProvider>
+          <Header />
+        </UserProvider>
         <Sidemenu />
         {children}
         <LucideProvider />
