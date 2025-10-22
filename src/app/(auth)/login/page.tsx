@@ -5,6 +5,7 @@ import { useActionState } from 'react'
 import { login } from '@/lib/actions/auth'
 import { LoginFormState } from '@/lib/types/auth'
 import ErrorMessage from '@/components/form/error-message'
+import { useRouter } from 'next/navigation'
 
 const initialState: LoginFormState = {
   success: false,
@@ -13,6 +14,11 @@ const initialState: LoginFormState = {
 
 export default function Page() {
   const [state, formAction, isPending] = useActionState(login, initialState)
+  const router = useRouter()
+
+  if (state.success) {
+    router.replace('/')
+  }
 
   return (
     <main className={styles.main}>

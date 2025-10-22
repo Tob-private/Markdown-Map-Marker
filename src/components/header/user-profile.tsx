@@ -3,14 +3,20 @@ import { signOut } from '@/lib/actions/auth'
 import { Button, Popover } from 'antd'
 import { CircleUser } from 'lucide-react'
 import styles from './user-profile.module.css'
-
-const content = (
-  <Button onClick={signOut} className={styles.logout}>
-    Log out
-  </Button>
-)
+import { useRouter } from 'next/navigation'
 
 export default function UserProfile() {
+  const router = useRouter()
+  const handleSignout = () => {
+    signOut()
+    router.replace('/login')
+  }
+
+  const content = (
+    <Button onClick={handleSignout} className={styles.logout}>
+      Log out
+    </Button>
+  )
   return (
     <Popover
       content={content}
