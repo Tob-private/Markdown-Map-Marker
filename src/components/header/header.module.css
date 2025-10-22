@@ -1,0 +1,17 @@
+.header {
+  background-color: var(--color-base-20);
+  padding: 15px 0;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  width: 90%;
+  margin: auto;
+}
+
+.auth {
+  margin: 0 0 0 auto;
+  display: flex;
+  place-items: center;
+}

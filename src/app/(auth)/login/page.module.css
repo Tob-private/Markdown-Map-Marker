@@ -1,0 +1,26 @@
+.main {
+  width: fit-content;
+  margin: auto;
+  display: flex;
+  flex-flow: column;
+  place-items: center;
+}
+
+.section {
+  display: grid;
+  grid-template-areas:
+    'label . .'
+    'input . .'
+    'error error error';
+  align-items: center;
+  justify-content: space-between;
+  flex-flow: row wrap;
+  margin-bottom: 10px;
+}
+.section > label {
+  grid-area: label;
+}
+.section > input {
+  padding: 0.2rem;
+  grid-area: input;
+}

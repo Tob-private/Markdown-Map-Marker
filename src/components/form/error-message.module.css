@@ -1,0 +1,12 @@
+.error_message {
+  color: var(--color-red);
+  padding: 0.3rem;
+  flex: 1;
+  min-width: fit-content;
+  height: fit-content;
+  display: flex;
+  place-items: center;
+  gap: 0.5rem;
+  grid-area: error;
+  font-size: 0.9rem;
+}
