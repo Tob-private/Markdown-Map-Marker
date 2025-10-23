@@ -5,8 +5,13 @@ import { markerFormSchema, MarkerFormState } from '@/lib/types/leaflet'
 import { revalidatePath } from 'next/cache'
 import z from 'zod'
 
+interface BoundData {
+  img_path: string
+  id?: string
+}
+
 export async function createMarker(
-  img_path: string,
+  { img_path }: BoundData,
   currentState: MarkerFormState,
   formData: FormData
 ): Promise<MarkerFormState> {
@@ -20,22 +25,25 @@ export async function createMarker(
   const decimals = 5
 
   const markerObj: MapMarkerForm = {
-    lat:
-      Math.round(validationResult.data.lat * 10 ** decimals) / 10 ** decimals,
-    lng:
-      Math.round(validationResult.data.lng * 10 ** decimals) / 10 ** decimals,
-    img_path,
-    title: validationResult.data.title,
-    desc: validationResult.data.desc,
-    note_id:
-      validationResult.data.note_id !== ''
-        ? validationResult.data.note_id
-        : null
+    type: 'create',
+    payload: {
+      lat:
+        Math.round(validationResult.data.lat * 10 ** decimals) / 10 ** decimals,
+      lng:
+        Math.round(validationResult.data.lng * 10 ** decimals) / 10 ** decimals,
+      img_path,
+      title: validationResult.data.title,
+      desc: validationResult.data.desc,
+      note_id:
+        validationResult.data.note_id !== ''
+          ? validationResult.data.note_id
+          : null
+    }
   }
 
   const { data, error } = await supabase
     .from('map_markers')
-    .insert(markerObj)
+    .insert(markerObj.payload)
     .select()
 
   if (error) {
@@ -48,8 +56,9 @@ export async function createMarker(
 
   return { data: validationResult.data, success: true, path: currentState.path }
 }
+
 export async function updateMarker(
-  img_path: string,
+  { img_path, id }: BoundData,
   currentState: MarkerFormState,
   formData: FormData
 ): Promise<MarkerFormState> {
@@ -63,22 +72,27 @@ export async function updateMarker(
   const decimals = 5
 
   const markerObj: MapMarkerForm = {
-    lat:
-      Math.round(validationResult.data.lat * 10 ** decimals) / 10 ** decimals,
-    lng:
-      Math.round(validationResult.data.lng * 10 ** decimals) / 10 ** decimals,
-    img_path,
-    title: validationResult.data.title,
-    desc: validationResult.data.desc,
-    note_id:
-      validationResult.data.note_id !== ''
-        ? validationResult.data.note_id
-        : null
+    type: 'update',
+    payload: {
+      lat:
+        Math.round(validationResult.data.lat * 10 ** decimals) / 10 ** decimals,
+      lng:
+        Math.round(validationResult.data.lng * 10 ** decimals) / 10 ** decimals,
+      img_path,
+      title: validationResult.data.title,
+      desc: validationResult.data.desc,
+      note_id:
+        validationResult.data.note_id !== ''
+          ? validationResult.data.note_id
+          : null,
+      updated_at: new Date()
+    }
   }
 
   const { data, error } = await supabase
     .from('map_markers')
-    .insert(markerObj)
+    .update(markerObj.payload)
+    .eq('id', id)
     .select()
 
   if (error) {

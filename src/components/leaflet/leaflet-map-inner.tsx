@@ -87,7 +87,7 @@ export const LeafletMapInner = dynamic(
           {mapMarkers &&
             mapMarkers.map((marker) => (
               <Marker
-                key={marker.id}
+                key={marker.id + marker.updated_at}
                 position={[marker.lat, marker.lng]}
                 icon={
                   new L.Icon({
@@ -136,7 +136,8 @@ export const LeafletMapInner = dynamic(
                                   img_path: imageUrl,
                                   title: marker.title,
                                   desc: marker.desc,
-                                  note_id: marker.note_id
+                                  note_id: marker.note_id,
+                                  id: marker.id
                                 },
                                 'update',
                                 markerFormToggle,
