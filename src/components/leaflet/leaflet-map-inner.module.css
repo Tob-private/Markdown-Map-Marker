@@ -2,8 +2,6 @@
   justify-content: space-between;
   align-items: center;
   display: flex;
-  max-width: 200px;
-  word-wrap: break-word;
 }
 
 .marker_popup_title {
@@ -12,6 +10,8 @@
   width: fit-content;
   color: var(--color-purple);
   padding-right: 2px;
+  max-width: 200px;
+  word-wrap: break-word;
 }
 
 .marker_popup_link {
