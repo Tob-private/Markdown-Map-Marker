@@ -14,6 +14,8 @@ import { useEffect, useState } from 'react'
 import { Session } from '@supabase/supabase-js'
 import { getBrowserSupabase } from '@/lib/db/supabase/client'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
+import { usePathname } from 'next/navigation'
+import { deleteMarker } from '@/lib/actions/marker-actions'
 
 export const LeafletMapInner = dynamic(
   async () => {
@@ -42,6 +44,7 @@ export const LeafletMapInner = dynamic(
         img_path: string
       }) => void
     }) {
+      const pathName = usePathname()
       const [supabaseSession, setSupabaseSession] = useState<Session | null>()
       const supabase = getBrowserSupabase()
 
@@ -59,22 +62,6 @@ export const LeafletMapInner = dynamic(
           setSupabaseSession(session.data.session)
         })
       }, [supabase.auth])
-
-      const handleDelete = async (id: string) => {
-        const { data, error } = await supabase
-          .from('map_markers')
-          .delete()
-          .eq('id', id)
-          .select()
-        if (error) {
-          console.error(error)
-        } else if (data.length === 0) {
-          console.log('Item to delete wasnt found')
-        } else {
-          console.dir({ data }, { depth: null })
-          console.log('id ' + id + ' has been deleted')
-        }
-      }
 
       return (
         <MapContainer
@@ -161,7 +148,7 @@ export const LeafletMapInner = dynamic(
                             color="var(--color-red)"
                             width={20}
                             className={styles.marker_popup_delete}
-                            onClick={() => handleDelete(marker.id)}
+                            onClick={() => deleteMarker(marker.id, pathName)}
                           />
                         </PopoverContent>
                       </Popover>
