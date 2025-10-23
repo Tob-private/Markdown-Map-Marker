@@ -41,10 +41,10 @@ export default function MarkerForm({
 
   const markerFormAction = type === 'insert' ? createMarker : updateMarker
 
-  const createMarkerWithImgPath = markerFormAction.bind(
-    null,
-    markerData.img_path
-  )
+  const createMarkerWithImgPath = markerFormAction.bind(null, {
+    img_path: markerData.img_path,
+    id: markerData.id
+  })
 
   const [, formAction] = useActionState<MarkerFormState, FormData>(
     createMarkerWithImgPath,

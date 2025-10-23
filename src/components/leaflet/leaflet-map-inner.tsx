@@ -3,11 +3,19 @@ import LeafletMapEvents from './leaflet-map-events'
 import { MapMarker } from '@/lib/types/supabase'
 import styles from './leaflet-map-inner.module.css'
 import Link from 'next/link'
-import { Link as LucideLink, SquarePen } from 'lucide-react'
+import {
+  EllipsisVertical,
+  Link as LucideLink,
+  SquarePen,
+  Trash2
+} from 'lucide-react'
 import { openMarkerForm } from '@/lib/leaflet/leaflet'
 import { useEffect, useState } from 'react'
 import { Session } from '@supabase/supabase-js'
 import { getBrowserSupabase } from '@/lib/db/supabase/client'
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
+import { usePathname } from 'next/navigation'
+import { deleteMarker } from '@/lib/actions/marker-actions'
 
 export const LeafletMapInner = dynamic(
   async () => {
@@ -36,6 +44,7 @@ export const LeafletMapInner = dynamic(
         img_path: string
       }) => void
     }) {
+      const pathName = usePathname()
       const [supabaseSession, setSupabaseSession] = useState<Session | null>()
       const supabase = getBrowserSupabase()
 
@@ -78,14 +87,14 @@ export const LeafletMapInner = dynamic(
           {mapMarkers &&
             mapMarkers.map((marker) => (
               <Marker
-                key={marker.id}
+                key={marker.id + marker.updated_at}
                 position={[marker.lat, marker.lng]}
                 icon={
                   new L.Icon({
                     iconUrl: 'marker-icon.png',
                     iconSize: [40, 40],
                     iconAnchor: [20, 20],
-                    popupAnchor: [0, -45]
+                    popupAnchor: [0, -25]
                   })
                 }
               >
@@ -107,29 +116,51 @@ export const LeafletMapInner = dynamic(
                       </h6>
                     )}
                     {supabaseSession && (
-                      <SquarePen
-                        width={20}
-                        className={styles.marker_popup_edit}
-                        onClick={() =>
-                          openMarkerForm(
-                            {
-                              lat: marker.lat,
-                              lng: marker.lng,
-                              img_path: imageUrl,
-                              title: marker.title,
-                              desc: marker.desc,
-                              note_id: marker.note_id
-                            },
-                            'update',
-                            markerFormToggle,
-                            setMarkerData
-                          )
-                        }
-                      />
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <EllipsisVertical />
+                        </PopoverTrigger>
+                        <PopoverContent
+                          className={styles.marker_popup_actions}
+                          side="top"
+                        >
+                          <SquarePen
+                            width={20}
+                            color="var(--color-purple)"
+                            className={styles.marker_popup_edit}
+                            onClick={() =>
+                              openMarkerForm(
+                                {
+                                  lat: marker.lat,
+                                  lng: marker.lng,
+                                  img_path: imageUrl,
+                                  title: marker.title,
+                                  desc: marker.desc,
+                                  note_id: marker.note_id,
+                                  id: marker.id
+                                },
+                                'update',
+                                markerFormToggle,
+                                setMarkerData
+                              )
+                            }
+                          />
+                          <Trash2
+                            color="var(--color-red)"
+                            width={20}
+                            className={styles.marker_popup_delete}
+                            onClick={() => deleteMarker(marker.id, pathName)}
+                          />
+                        </PopoverContent>
+                      </Popover>
                     )}
                   </div>
 
-                  <p className={styles.marker_popup_desc}>{marker.desc}</p>
+                  <p className={styles.marker_popup_desc}>
+                    {marker.desc.length > 100
+                      ? marker.desc.substring(0, 100) + '...'
+                      : marker.desc}
+                  </p>
                 </Popup>
               </Marker>
             ))}

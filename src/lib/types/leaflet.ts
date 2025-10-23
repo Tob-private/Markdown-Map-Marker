@@ -43,4 +43,5 @@ export interface MapMarkerData {
   title?: string
   desc?: string
   note_id?: string
+  id?: string
 }
