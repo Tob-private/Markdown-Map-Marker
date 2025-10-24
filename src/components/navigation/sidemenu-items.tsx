@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import styles from './sidemenu-items.module.css'
 
 interface MenuItem {
   key: string | number
@@ -9,6 +10,26 @@ interface MenuItem {
 
 interface MenuItemProps {
   item: MenuItem
+}
+
+export default function SidemenuItems({
+  menuItems
+}: {
+  menuItems: MenuItem[]
+}) {
+  // Put items without children at the start
+  menuItems = menuItems.sort(
+    (a, b) =>
+      Number(b.children === undefined) - Number(a.children === undefined)
+  )
+
+  return (
+    <ul className={styles.list}>
+      {menuItems.map((item) => (
+        <MenuItemComponent key={item.key} item={item} />
+      ))}
+    </ul>
+  )
 }
 
 function MenuItemComponent({ item }: MenuItemProps) {
@@ -26,12 +47,15 @@ function MenuItemComponent({ item }: MenuItemProps) {
           {item.label}
         </a>
       ) : (
-        <span onClick={!item.href ? handleCollapse : undefined}>
+        <span
+          onClick={!item.href ? handleCollapse : undefined}
+          className={styles.directory}
+        >
           {item.label}
         </span>
       )}
       {item.children && !collapsed && (
-        <ul>
+        <ul className={styles.list}>
           {item.children
             .sort((a, b) => {
               // Put children with their own children arr first
@@ -52,25 +76,5 @@ function MenuItemComponent({ item }: MenuItemProps) {
         </ul>
       )}
     </li>
-  )
-}
-
-export default function SidemenuItems({
-  menuItems
-}: {
-  menuItems: MenuItem[]
-}) {
-  // Put items without children at the start
-  menuItems = menuItems.sort(
-    (a, b) =>
-      Number(b.children === undefined) - Number(a.children === undefined)
-  )
-
-  return (
-    <ul>
-      {menuItems.map((item) => (
-        <MenuItemComponent key={item.key} item={item} />
-      ))}
-    </ul>
   )
 }

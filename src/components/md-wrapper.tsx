@@ -7,6 +7,7 @@ import { parseObsidianSyntax } from '@/lib/helpers/md-helpers'
 import LeafletMap from './leaflet/leaflet-map'
 import { getMarkersFromImgPath } from '@/lib/leaflet/leaflet'
 import { getMdFilesLight } from '@/lib/leaflet/md-files'
+import styles from './md-wrapper.module.css'
 
 export default async function MdWrapper({ rawMd }: { rawMd: string }) {
   const mdContent = await parseObsidianSyntax(rawMd)
@@ -53,7 +54,7 @@ export default async function MdWrapper({ rawMd }: { rawMd: string }) {
 
   const mdFiles = await getMdFilesLight()
   return (
-    <>
+    <main className={styles.main}>
       <div dangerouslySetInnerHTML={{ __html: cleanHTML }}></div>
       {mapImgs.length > 0 &&
         mapImgs.map(async (mapImg, idx) => (
@@ -64,6 +65,6 @@ export default async function MdWrapper({ rawMd }: { rawMd: string }) {
             mdFiles={mdFiles}
           />
         ))}
-    </>
+    </main>
   )
 }
