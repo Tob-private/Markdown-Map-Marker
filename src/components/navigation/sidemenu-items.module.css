@@ -1,0 +1,36 @@
+.list {
+  padding-inline-start: 0;
+  margin-left: 10px;
+  position: relative;
+}
+
+.list > li {
+  position: relative; /* For absolute positioning of ::before */
+  padding-left: 25px; /* Space for the line */
+}
+
+/* Shared ::before styles */
+.list > li > a::before,
+.list > li > span::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 20px;
+  height: 1px;
+  background-color: var(--color-purple);
+}
+
+/* Specific vertical positioning */
+.list > li > a::before {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.list > li > span::before {
+  top: 12px; /* intentional offset */
+  transform: translateY(-50%);
+}
+
+.directory {
+  cursor: pointer;
+}
