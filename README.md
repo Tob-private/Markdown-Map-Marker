@@ -151,3 +151,7 @@ src
     ├── lucide-provider.tsx
     └── user-context.tsx
 ```
+
+## Screenshots
+<img width="983" height="698" alt="image" src="https://github.com/user-attachments/assets/8abdefff-3e2a-4cf7-aa8f-634047bc6222" />
+<img width="952" height="918" alt="image" src="https://github.com/user-attachments/assets/06b017d9-83b6-47a1-bab3-5bd60acd01e9" />
