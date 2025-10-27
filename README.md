@@ -10,6 +10,13 @@ The goal I worked towards was that non-programmers should be able to create, edi
 
 The idea is that the "admin" users can use a program called obsidian to edit the .md files in the project.
 
+## What I learnt
+
+- How to do **user role authentication** on the Supabase platform. I started out by using their metadata which turned out to be maleable by the user, so I switched to using a user_perms table to determine what permissions a user has. This in combination with some **RLS policies** made for a robust auth check on my DB.
+- How to **manipulate strings** and extract the parts of the string I want. For example converting obsidian's syntax to html in a way that any libraries couldn't quite emmulate.
+- How to work with **CSS Modules** instead of tailwind. I made this change mostly **to stay uniform** across all my files, and to challenge the way I usually work (with tailwind, that is).
+- How to **plan around non-technical users** that are not webdev-literate. This was mostly a challenge because I wanted to use the program [Obsidian]([url](https://obsidian.md/)) to organize pages, as well as creating new ones.
+
 ## Tech
 
 CSS Modules
@@ -24,14 +31,14 @@ CSS Modules
 
 First, clone repo
 
-````
+```
 git clone https://github.com/Tob-private/Markdown-Map-Marker.git
 cd Markdown-Map-Marker
 ```
 
 Second, run the development server:
 
-```bash
+```
 npm i
 npm run dev
 ````
@@ -143,42 +150,4 @@ src
 └── providers
     ├── lucide-provider.tsx
     └── user-context.tsx
-
-
-public
-├── Markdown Map Marker
-│   ├── assets
-│   │   ├── lathernia.png
-│   │   └── maps
-│   │       ├── halrani.jpg
-│   │       └── lathernia 1.png
-│   ├── Lathernia
-│   │   ├── Ancerin
-│   │   │   └── Ancerin.md
-│   │   ├── Dunlarin
-│   │   │   └── Dunlarin.md
-│   │   ├── Halrani
-│   │   │   ├── Gryphon St. Cemetary.md
-│   │   │   ├── Halrani.md
-│   │   │   ├── Lark St..md
-│   │   │   ├── Plim's Clothing Emporium.md
-│   │   │   ├── Royal Treasury.md
-│   │   │   ├── Tanner's Tannery.md
-│   │   │   ├── The Golden Ring Inn.md
-│   │   │   ├── The Grand Library.md
-│   │   │   ├── The Iron Golem Inn.md
-│   │   │   ├── The Iron Guardhouse.md
-│   │   │   ├── The Iron Palace.md
-│   │   │   └── The Old Gryphon Smithy.md
-│   │   ├── Lathernia.md
-│   │   ├── Ozir
-│   │   │   └── Ozir.md
-│   │   ├── Sanbul
-│   │   │   └── Sanbul.md
-│   │   ├── Sultan's Hills.md
-│   │   ├── The Broken Flats.md
-│   │   ├── The Ghaba Forest.md
-│   │   └── The Larus Ocean.md
-│   └── md-styling.md
-└── marker-icon.png
 ```
