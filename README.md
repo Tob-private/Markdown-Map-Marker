@@ -17,6 +17,10 @@ The idea is that the "admin" users can use a program called obsidian to edit the
 - How to work with **CSS Modules** instead of tailwind. I made this change mostly **to stay uniform** across all my files, and to challenge the way I usually work (with tailwind, that is).
 - How to **plan around non-technical users** that are not webdev-literate. This was mostly a challenge because I wanted to use the program [Obsidian]([url](https://obsidian.md/)) to organize pages, as well as creating new ones.
 
+## How I worked
+
+Since I couldn't figure out how to work in a SCRUM structure in a solo project, I settled for a Kanban structure instead, where I created tickets as I went. I picked which tickets to do based on what ticket I had just done, as well as my personal feel as well. For example if I felt a ticket about supabase would be interesting to do, and I had just set up the md_files table, I would pick that ticket.
+
 ## Tech
 
 CSS Modules
@@ -29,21 +33,21 @@ CSS Modules
 
 ## Getting Started
 
-First, clone repo
+**First**, clone repo
 
 ```
 git clone https://github.com/Tob-private/Markdown-Map-Marker.git
 cd Markdown-Map-Marker
 ```
 
-Second, run the development server:
+**Second**, run the development server:
 
 ```
 npm i
 npm run dev
 ````
 
-Third, setup a supabase project with 3 tables with the following structure:
+**Third**, setup a supabase project with 3 tables with the following structure:
 
 md_files:
 | id (uuid) | created_at (timestamp) | updated_at (timestamp) | filename (varchar) | md_path (varchar) | user_id (uuid fk) |
@@ -57,7 +61,7 @@ user_perms:
 | id (uuid fk) | role (text) |
 | ------------ | ----------- |
 
-Fourth, create a .env.local file with the following vars:
+**Fourth**, create a .env.local file with the following vars:
 
 ```
 NEXT_PUBLIC_SUPABASE_URL = "https://linktoyour.supabase.project"
