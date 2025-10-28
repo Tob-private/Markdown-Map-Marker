@@ -86,7 +86,7 @@ export async function signUp(
 export async function authWithGithub(): Promise<GithubSignInResult> {
   const supabase = getBrowserSupabase()
 
-  let { error } = await supabase.auth.signInWithOAuth({
+  const { error } = await supabase.auth.signInWithOAuth({
     provider: 'github'
   })
 
