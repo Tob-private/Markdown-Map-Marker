@@ -2,7 +2,7 @@
 import styles from './page.module.css'
 import Link from 'next/link'
 import { useActionState } from 'react'
-import { login } from '@/lib/actions/auth'
+import { login, authWithGithub } from '@/lib/actions/auth'
 import { LoginFormState } from '@/lib/types/auth'
 import ErrorMessage from '@/components/form/error-message'
 
@@ -20,6 +20,7 @@ export default function Page() {
       <p>
         Don&apos;t have an account? <Link href={'/sign-up'}>Sign up</Link>
       </p>
+      <button onClick={authWithGithub}>Login with Github</button>
       <form action={formAction}>
         <section className={styles.section}>
           <label htmlFor="email">Email:</label>

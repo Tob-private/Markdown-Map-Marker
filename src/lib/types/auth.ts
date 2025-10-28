@@ -40,6 +40,10 @@ export type SignOutResult =
   | { success: true }
   | { success: false; error: AuthError }
 
+export type GithubSignInResult =
+  | { success: true }
+  | { success: false; error: AuthError }
+
 export const loginFormSchema = z.object({
   email: z.email('Email is not a valid email'),
   password: z.string().min(6, 'Password must be minimum 6 characters long')

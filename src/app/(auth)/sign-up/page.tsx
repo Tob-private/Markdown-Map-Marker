@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useActionState } from 'react'
 import styles from './page.module.css'
 import { SignUpFormState } from '@/lib/types/auth'
-import { signUp } from '@/lib/actions/auth'
+import { authWithGithub, signUp } from '@/lib/actions/auth'
 import ErrorMessage from '@/components/form/error-message'
 
 const initialState: SignUpFormState = {
@@ -19,6 +19,8 @@ export default function Page() {
       <p>
         Already have an account? <Link href={'/login'}>Login</Link>
       </p>
+      <button onClick={authWithGithub}>Sign up with Github</button>
+
       <form action={formAction}>
         <section className={styles.section}>
           <label htmlFor="email">Email:</label>

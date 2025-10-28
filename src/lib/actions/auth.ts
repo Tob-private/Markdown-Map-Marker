@@ -2,6 +2,7 @@
 import z from 'zod'
 import { getBrowserSupabase } from '../db/supabase/client'
 import {
+  GithubSignInResult,
   loginFormSchema,
   LoginFormState,
   SignOutResult,
@@ -77,9 +78,24 @@ export async function signUp(
     return { success: false, errors: { supabaseError } }
   }
 
-  console.log('Logged in')
+  console.log('Signed up in')
 
   return { success: true, data: validatedData.data }
+}
+
+export async function authWithGithub(): Promise<GithubSignInResult> {
+  const supabase = getBrowserSupabase()
+
+  let { error } = await supabase.auth.signInWithOAuth({
+    provider: 'github'
+  })
+
+  if (error) {
+    return { error, success: false }
+  }
+  console.log('Logged in with github')
+
+  return { success: true }
 }
 
 export async function signOut(): Promise<SignOutResult> {
