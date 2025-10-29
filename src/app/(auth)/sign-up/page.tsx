@@ -5,6 +5,7 @@ import styles from './page.module.css'
 import { SignUpFormState } from '@/lib/types/auth'
 import { authWithGithub, signUp } from '@/lib/actions/auth'
 import ErrorMessage from '@/components/form/error-message'
+import LoginProvider from '@/components/auth/login-provider'
 
 const initialState: SignUpFormState = {
   success: false,
@@ -19,7 +20,12 @@ export default function Page() {
       <p>
         Already have an account? <Link href={'/login'}>Login</Link>
       </p>
-      <button onClick={authWithGithub}>Sign up with Github</button>
+      <LoginProvider
+        btnText="Login with Github"
+        provider="github"
+        providerIcon="/github.png"
+        onClickFunc={authWithGithub}
+      />
 
       <form action={formAction}>
         <section className={styles.section}>
