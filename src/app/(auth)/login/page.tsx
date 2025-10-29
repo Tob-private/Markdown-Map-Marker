@@ -5,6 +5,7 @@ import { useActionState } from 'react'
 import { login, authWithGithub } from '@/lib/actions/auth'
 import { LoginFormState } from '@/lib/types/auth'
 import ErrorMessage from '@/components/form/error-message'
+import LoginProvider from '@/components/auth/login-provider'
 
 const initialState: LoginFormState = {
   success: false,
@@ -20,7 +21,12 @@ export default function Page() {
       <p>
         Don&apos;t have an account? <Link href={'/sign-up'}>Sign up</Link>
       </p>
-      <button onClick={authWithGithub}>Login with Github</button>
+      <LoginProvider
+        btnText="Login with Github"
+        provider="github"
+        providerIcon="/github.png"
+        onClickFunc={authWithGithub}
+      />
       <form action={formAction}>
         <section className={styles.section}>
           <label htmlFor="email">Email:</label>

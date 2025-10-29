@@ -40,7 +40,7 @@ export type SignOutResult =
   | { success: true }
   | { success: false; error: AuthError }
 
-export type GithubSignInResult =
+export type OAuthSignInResult =
   | { success: true }
   | { success: false; error: AuthError }
 
@@ -60,3 +60,5 @@ export const signUpFormSchema = z
     error: 'Passwords dont match',
     path: ['confirm_password']
   })
+
+export type AuthProvider = 'github' // This is overly complicated now to allow for ease of expansion later with more providers later
