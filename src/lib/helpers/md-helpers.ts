@@ -222,7 +222,7 @@ function handleCalloutType(line: string): {
     throw new Error('Callout type not recognized')
   }
 
-  const blockquote = `<blockquote class='callout not-prose callout-${calloutObj.name}'>`
+  const blockquote = `<blockquote class='callout callout-${calloutObj.name}'>`
   const title = `<p class="callout-title"><i data-lucide="${calloutObj.icon}"></i> ${line.substring(endInx + 1)}</p>`
 
   return { blockquote, title }
