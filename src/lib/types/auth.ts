@@ -40,6 +40,10 @@ export type SignOutResult =
   | { success: true }
   | { success: false; error: AuthError }
 
+export type OAuthSignInResult =
+  | { success: true }
+  | { success: false; error: AuthError }
+
 export const loginFormSchema = z.object({
   email: z.email('Email is not a valid email'),
   password: z.string().min(6, 'Password must be minimum 6 characters long')
@@ -56,3 +60,5 @@ export const signUpFormSchema = z
     error: 'Passwords dont match',
     path: ['confirm_password']
   })
+
+export type AuthProvider = 'github' // This is overly complicated now to allow for ease of expansion later with more providers later

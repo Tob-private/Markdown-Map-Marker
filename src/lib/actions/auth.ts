@@ -4,6 +4,7 @@ import { getBrowserSupabase } from '../db/supabase/client'
 import {
   loginFormSchema,
   LoginFormState,
+  OAuthSignInResult,
   SignOutResult,
   signUpFormSchema,
   SignUpFormState
@@ -77,9 +78,27 @@ export async function signUp(
     return { success: false, errors: { supabaseError } }
   }
 
-  console.log('Logged in')
+  console.log('Signed up in')
 
   return { success: true, data: validatedData.data }
+}
+
+export async function authWithGithub(): Promise<OAuthSignInResult> {
+  const supabase = getBrowserSupabase()
+
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'github',
+    options: {
+      queryParams: { prompt: 'select_account' }
+    }
+  })
+
+  if (error) {
+    return { error, success: false }
+  }
+  console.log('Logged in with github')
+
+  return { success: true }
 }
 
 export async function signOut(): Promise<SignOutResult> {

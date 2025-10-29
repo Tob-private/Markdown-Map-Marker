@@ -1,0 +1,23 @@
+.auth_btn {
+  width: 100%;
+  min-width: 50px;
+  margin-bottom: 50px;
+  background: var(--color-base-35);
+  color: var(--color-base-100);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  font-size: var(--font-size-s);
+  padding: 5px 20px;
+  border: 2px solid var(--color-purple);
+  border-radius: 5px;
+  cursor: pointer;
+}
+.auth_btn:hover {
+  background: var(--color-base-40);
+}
+.auth_btn > img {
+  width: 35px;
+  height: 35px;
+}
