@@ -12,7 +12,11 @@ export default function Header() {
     <header className={styles.header}>
       <div className={styles.container}>
         <div className={styles.auth}>
-          {user ? <UserProfile /> : <Link href={'/login'}>Login</Link>}
+          {user ? (
+            <UserProfile user={user} />
+          ) : (
+            <Link href={'/login'}>Login</Link>
+          )}
         </div>
       </div>
     </header>
