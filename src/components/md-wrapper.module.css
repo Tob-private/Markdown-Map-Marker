@@ -80,15 +80,13 @@
   }
 
   /* ---------- Callouts ---------- */
-  .callout {
+  :global(.callout) {
     border-radius: 6px;
     padding: 1em 1.2em;
     margin: 1em 0;
-    transition:
-      background-color 0.3s ease,
-      color 0.3s ease;
+    border: none;
   }
-  .callout-title {
+  :global(.callout-title) {
     display: flex;
     gap: 10px;
     font-weight: 600;
@@ -96,158 +94,158 @@
   }
 
   /* Light mode callouts */
-  .callout-note {
+  :global(.callout-note) {
     background-color: rgba(var(--color-blue-rgb), 0.1);
   }
-  .callout-note > *:first-child {
+  :global(.callout-note > *:first-child) {
     color: var(--color-blue);
   }
 
-  .callout-abstract,
-  .callout-tip {
+  :global(.callout-abstract),
+  :global(.callout-tip) {
     background-color: rgba(var(--color-cyan-rgb), 0.1);
   }
-  .callout-abstract > *:first-child,
-  .callout-tip > *:first-child {
+  :global(.callout-abstract > *:first-child),
+  :global(.callout-tip > *:first-child) {
     color: var(--color-cyan);
   }
 
-  .callout-info,
-  .callout-todo {
+  :global(.callout-info),
+  :global(.callout-todo) {
     background-color: rgba(var(--color-blue-rgb), 0.1);
   }
-  .callout-info > *:first-child,
-  .callout-todo > *:first-child {
+  :global(.callout-info > *:first-child),
+  :global(.callout-todo > *:first-child) {
     color: var(--color-blue);
   }
 
-  .callout-success {
+  :global(.callout-success) {
     background-color: rgba(var(--color-green-rgb), 0.1);
   }
-  .callout-success > *:first-child {
+  :global(.callout-success > *:first-child) {
     color: var(--color-green);
   }
 
-  .callout-question {
+  :global(.callout-question) {
     background-color: rgba(var(--color-orange-rgb), 0.2);
     color: #2b2219;
   }
-  .callout-question > *:first-child {
+  :global(.callout-question > *:first-child) {
     color: var(--color-orange);
   }
 
-  .callout-warning {
+  :global(.callout-warning) {
     background-color: rgba(var(--color-orange-rgb), 0.1);
   }
-  .callout-warning > *:first-child {
+  :global(.callout-warning > *:first-child) {
     color: var(--color-orange);
   }
 
-  .callout-failure,
-  .callout-danger,
-  .callout-bug {
+  :global(.callout-failure),
+  :global(.callout-danger),
+  :global(.callout-bug) {
     background-color: rgba(var(--color-red-rgb), 0.1);
   }
-  .callout-failure > *:first-child,
-  .callout-danger > *:first-child,
-  .callout-bug > *:first-child {
+  :global(.callout-failure > *:first-child),
+  :global(.callout-danger > *:first-child),
+  :global(.callout-bug > *:first-child) {
     color: var(--color-red);
   }
 
-  .callout-example {
+  :global(.callout-example) {
     background-color: rgba(var(--color-purple-rgb), 0.1);
   }
-  .callout-example > *:first-child {
+  :global(.callout-example > *:first-child) {
     color: var(--color-purple);
   }
 
-  .callout-quote {
+  :global(.callout-quote) {
     background-color: rgba(var(--mono-rgb-100), 0.05);
   }
-  .callout-quote > *:first-child {
+  :global(.callout-quote > *:first-child) {
     color: var(--color-base-60);
   }
 
   /* ---------- Dark mode vivid callouts ---------- */
   @media (prefers-color-scheme: dark) {
-    .callout-note {
+    :global(.callout-note) {
       background-color: #151f2d;
     }
-    .callout-note > *:first-child {
+    :global(.callout-note > *:first-child) {
       color: #157aff;
     }
 
-    .callout-abstract {
+    :global(.callout-abstract) {
       background-color: #1b2a2a;
     }
-    .callout-abstract > *:first-child {
+    :global(.callout-abstract > *:first-child) {
       color: #53dfdd;
     }
 
-    .callout-info {
+    :global(.callout-info) {
       background-color: #151f2d;
     }
-    .callout-info > *:first-child {
+    :global(.callout-info > *:first-child) {
       color: #155cba;
     }
 
-    .callout-todo {
+    :global(.callout-todo) {
       background-color: #151f2d;
     }
-    .callout-todo > *:first-child {
+    :global(.callout-todo > *:first-child) {
       color: #157aff;
     }
 
-    .callout-tip {
+    :global(.callout-tip) {
       background-color: #1b2a2a;
     }
-    .callout-tip > *:first-child {
+    :global(.callout-tip > *:first-child) {
       color: #53dfdd;
     }
 
-    .callout-success {
+    :global(.callout-success) {
       background-color: #1a281e;
     }
-    .callout-success > *:first-child {
+    :global(.callout-success > *:first-child) {
       color: #44cf6e;
     }
 
-    .callout-question {
+    :global(.callout-question) {
       background-color: #e9973f;
     }
-    .callout-question > *:first-child {
+    :global(.callout-question > *:first-child) {
       color: #2b2219;
     }
 
-    .callout-warning {
+    :global(.callout-warning) {
       background-color: #2b2219;
     }
-    .callout-warning > *:first-child {
+    :global(.callout-warning > *:first-child) {
       color: #e9973f;
     }
 
-    .callout-failure,
-    .callout-danger,
-    .callout-bug {
+    :global(.callout-failure),
+    :global(.callout-danger),
+    :global(.callout-bug) {
       background-color: #2d1a1b;
     }
-    .callout-failure > *:first-child,
-    .callout-danger > *:first-child,
-    .callout-bug > *:first-child {
+    :global(.callout-failure > *:first-child),
+    :global(.callout-danger > *:first-child),
+    :global(.callout-bug > *:first-child) {
       color: #fb464c;
     }
 
-    .callout-example {
+    :global(.callout-example) {
       background-color: #24202d;
     }
-    .callout-example > *:first-child {
+    :global(.callout-example > *:first-child) {
       color: #a882ff;
     }
 
-    .callout-quote {
+    :global(.callout-quote) {
       background-color: #232323;
     }
-    .callout-quote > *:first-child {
+    :global(.callout-quote > *:first-child) {
       color: #9e9e9e;
     }
   }
