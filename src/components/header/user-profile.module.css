@@ -1,5 +1,27 @@
 .popover_trigger {
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  height: 100%;
+
+  h5 {
+    font-size: 1.1rem;
+    text-transform: capitalize;
+    margin: 0 0 5;
+  }
+
+  p {
+    font-size: 0.8rem;
+    margin: 0;
+    color: var(--color-purple);
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 }
 
 .popover_content {
@@ -7,7 +29,7 @@
   background-color: var(--color-base-50);
   border: none;
   border-radius: 5px;
-  height: 100px;
+  height: 50px;
   display: flex;
   flex-direction: column;
 }
