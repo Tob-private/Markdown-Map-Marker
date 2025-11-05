@@ -46,8 +46,12 @@ export interface MapMarkerData {
   id?: string
 }
 
-export interface PolygonCoords {
+export interface Polygon {
   index: number
+  positions: PolygonCoords[]
+}
+
+export interface PolygonCoords {
   lat: number
   lng: number
 }

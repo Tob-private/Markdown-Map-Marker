@@ -5,7 +5,7 @@ import { MapMarker } from '@/lib/types/supabase'
 import { useEffect, useState } from 'react'
 import { Session } from '@supabase/supabase-js'
 import { getBrowserSupabase } from '@/lib/db/supabase/client'
-import { MapMarkerData, PolygonCoords } from '@/lib/types/leaflet'
+import { MapMarkerData, Polygon } from '@/lib/types/leaflet'
 import { LeafletMapMarker } from './map-elements/map-marker'
 
 export const LeafletMapInner = dynamic(
@@ -21,8 +21,8 @@ export const LeafletMapInner = dynamic(
       mapMarkers,
       markerFormToggle,
       setMarkerData,
-      polyCoords,
-      setPolyCoords
+      polygons,
+      setPolygons
     }: {
       imageUrl: string
       argBounds: number[][]
@@ -32,8 +32,8 @@ export const LeafletMapInner = dynamic(
       setMarkerData: React.Dispatch<
         React.SetStateAction<MapMarkerData | undefined>
       >
-      polyCoords: PolygonCoords[]
-      setPolyCoords: React.Dispatch<React.SetStateAction<PolygonCoords[]>>
+      polygons: Polygon[]
+      setPolygons: React.Dispatch<React.SetStateAction<Polygon[]>>
     }) {
       const [supabaseSession, setSupabaseSession] = useState<Session | null>()
       const supabase = getBrowserSupabase()
