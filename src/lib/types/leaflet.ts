@@ -45,3 +45,9 @@ export interface MapMarkerData {
   note_id?: string
   id?: string
 }
+
+export interface PolygonCoords {
+  index: number
+  lat: number
+  lng: number
+}

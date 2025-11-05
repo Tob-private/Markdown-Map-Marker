@@ -7,7 +7,11 @@ import { MapMarker, MdFileLight } from '@/lib/types/supabase'
 import MarkerForm from './marker-form'
 import { getBrowserSupabase } from '@/lib/db/supabase/client'
 import { Session } from '@supabase/supabase-js'
-import { MapMarkerData, MarkerFormState } from '@/lib/types/leaflet'
+import {
+  MapMarkerData,
+  MarkerFormState,
+  PolygonCoords
+} from '@/lib/types/leaflet'
 
 export default function LeafletMap({
   imgElement,
@@ -28,7 +32,9 @@ export default function LeafletMap({
     show: boolean
     type: string
   }>({ show: false, type: '' })
+  const [isCreatingPolygon, setIsCreatingPolygon] = useState<boolean>(false)
   const [markerData, setMarkerData] = useState<MapMarkerData>()
+  const [polyCoords, setPolyCoords] = useState<PolygonCoords[]>([])
 
   useEffect(() => {
     const [, srcRight] = imgElement.split(`src="`)
@@ -60,6 +66,13 @@ export default function LeafletMap({
     setShowMarkerForm({ show: bool, type })
   }
 
+  const handleTogglePolygonCreation = () => {
+    setIsCreatingPolygon(!isCreatingPolygon)
+    if (!isCreatingPolygon) {
+      setPolyCoords([])
+    }
+  }
+
   const initialState: MarkerFormState = {
     success: true,
     data: {
@@ -74,6 +87,9 @@ export default function LeafletMap({
 
   return (
     <>
+      <button onClick={handleTogglePolygonCreation}>
+        Toggle polygon creation tool
+      </button>
       <LeafletMapInner
         imageUrl={imageUrl}
         argBounds={bounds}
@@ -81,6 +97,8 @@ export default function LeafletMap({
         mapMarkers={mapMarkers}
         markerFormToggle={handleShowMarkerForm}
         setMarkerData={setMarkerData}
+        polyCoords={polyCoords}
+        setPolyCoords={setPolyCoords}
       />
       {supabaseSession && showMarkerForm.show && markerData && (
         <MarkerForm
