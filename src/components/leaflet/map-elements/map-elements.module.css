@@ -1,10 +1,10 @@
-.marker_popup_title_div {
+.popup_title_div {
   justify-content: space-between;
   align-items: center;
   display: flex;
 }
 
-.marker_popup_title {
+.popup_title {
   margin: 5px 0;
   border-bottom: 1px solid var(--color-purple);
   width: fit-content;
@@ -14,14 +14,14 @@
   word-wrap: break-word;
 }
 
-.marker_popup_link {
+.popup_link {
   text-decoration: none;
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
-.marker_popup_actions {
+.popup_actions {
   z-index: 1099;
   background-color: var(--color-base-100);
   padding: 10px;
@@ -33,12 +33,12 @@
   box-shadow: 0px 1px 5px #0000007c;
 }
 
-.marker_popup_edit,
-.marker_popup_delete {
+.popup_edit,
+.popup_delete {
   cursor: pointer;
 }
 
-.marker_popup_desc {
+.popup_desc {
   color: var(--color-base-25);
   max-width: 200px;
   word-wrap: break-word;

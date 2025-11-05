@@ -1,3 +1,4 @@
+import type { PathOptions } from 'leaflet'
 import z from 'zod'
 
 export type MarkerFormState =
@@ -48,6 +49,9 @@ export interface MapMarkerData {
 
 export interface Polygon {
   index: number
+  options?: PathOptions
+  note_id?: string
+  title: string
   positions: PolygonCoords[]
 }
 
