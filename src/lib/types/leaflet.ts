@@ -48,7 +48,6 @@ export interface MapMarkerData {
 }
 
 export interface Polygon {
-  index: number
   options?: PathOptions
   note_id?: string
   title: string
@@ -56,6 +55,7 @@ export interface Polygon {
 }
 
 export interface PolygonCoords {
+  index: number
   lat: number
   lng: number
 }
