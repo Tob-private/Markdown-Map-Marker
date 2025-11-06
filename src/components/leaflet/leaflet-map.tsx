@@ -93,6 +93,7 @@ export default function LeafletMap({
         mapMarkers={mapMarkers}
         markerFormToggle={handleShowMarkerForm}
         setMarkerData={setMarkerData}
+        isCreatingPolygon={isCreatingPolygon}
         polygons={polygons}
         setPolygons={setPolygons}
       />

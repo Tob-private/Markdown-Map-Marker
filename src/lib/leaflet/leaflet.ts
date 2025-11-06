@@ -1,5 +1,5 @@
 import { createServerSupabaseFromCookies } from '../db/supabase/server'
-import { MapMarkerData } from '../types/leaflet'
+import { MapElementData } from '../types/leaflet'
 import { MapMarker } from '../types/supabase'
 
 export async function getMarkersFromImgPath(
@@ -20,11 +20,16 @@ export async function getMarkersFromImgPath(
 }
 
 export async function openMarkerForm(
-  markerData: MapMarkerData,
+  markerData: MapElementData,
   type: 'insert' | 'update',
   markerFormToggle: (bool: boolean, type: 'insert' | 'update') => void,
   setMarkerData: (data: { lat: number; lng: number; img_path: string }) => void
 ) {
   markerFormToggle(true, type)
   setMarkerData(markerData)
+}
+
+export async function pushPolygonDetails(polygonData: MapElementData) {
+  console.log('polygon double click')
+  console.log(polygonData)
 }

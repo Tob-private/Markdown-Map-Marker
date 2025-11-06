@@ -21,6 +21,7 @@ export const LeafletMapInner = dynamic(
       mapMarkers,
       markerFormToggle,
       setMarkerData,
+      isCreatingPolygon,
       polygons,
       setPolygons
     }: {
@@ -32,6 +33,7 @@ export const LeafletMapInner = dynamic(
       setMarkerData: React.Dispatch<
         React.SetStateAction<MapMarkerData | undefined>
       >
+      isCreatingPolygon: boolean
       polygons: Polygon[]
       setPolygons: React.Dispatch<React.SetStateAction<Polygon[]>>
     }) {
@@ -71,6 +73,7 @@ export const LeafletMapInner = dynamic(
               imgPath={imageUrl}
               markerFormToggle={markerFormToggle}
               setMarkerData={setMarkerData}
+              isCreatingPolygon={isCreatingPolygon}
             />
           )}
           <RL.ImageOverlay url={imageUrl} bounds={bounds} />

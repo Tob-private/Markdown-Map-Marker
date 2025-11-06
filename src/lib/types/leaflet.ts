@@ -37,6 +37,12 @@ export const markerFormSchema = z.object({
   note_id: z.string('Note id link needs to be a string').optional()
 })
 
+export interface MapElementData {
+  lat: number
+  lng: number
+  img_path: string
+}
+
 export interface MapMarkerData {
   lat: number
   lng: number
