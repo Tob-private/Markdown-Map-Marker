@@ -1,5 +1,5 @@
 import { openMarkerForm, pushPolygonDetails } from '@/lib/leaflet/leaflet'
-import { Polygon, PolygonCoords } from '@/lib/types/leaflet'
+import { PolygonCoords } from '@/lib/types/leaflet'
 import { LeafletEventHandlerFnMap, Map } from 'leaflet'
 
 export default function LeafletMapEvents({

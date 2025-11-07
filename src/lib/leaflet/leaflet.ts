@@ -1,5 +1,5 @@
 import { createServerSupabaseFromCookies } from '../db/supabase/server'
-import { MapElementData, Polygon, PolygonCoords } from '../types/leaflet'
+import { MapElementData, PolygonCoords } from '../types/leaflet'
 import { MapMarker } from '../types/supabase'
 
 export async function getMarkersFromImgPath(
