@@ -5,7 +5,7 @@ import { MapMarker } from '@/lib/types/supabase'
 import { useEffect, useState } from 'react'
 import { Session } from '@supabase/supabase-js'
 import { getBrowserSupabase } from '@/lib/db/supabase/client'
-import { MapMarkerData, Polygon } from '@/lib/types/leaflet'
+import { MapMarkerData, Polygon, PolygonCoords } from '@/lib/types/leaflet'
 import { LeafletMapMarker } from './map-elements/map-marker'
 
 export const LeafletMapInner = dynamic(
@@ -23,7 +23,8 @@ export const LeafletMapInner = dynamic(
       setMarkerData,
       isCreatingPolygon,
       polygons,
-      setPolygons
+      polygonCoords,
+      setPolygonsCoords
     }: {
       imageUrl: string
       argBounds: number[][]
@@ -35,7 +36,8 @@ export const LeafletMapInner = dynamic(
       >
       isCreatingPolygon: boolean
       polygons: Polygon[]
-      setPolygons: React.Dispatch<React.SetStateAction<Polygon[]>>
+      polygonCoords: PolygonCoords[]
+      setPolygonsCoords: React.Dispatch<React.SetStateAction<PolygonCoords[]>>
     }) {
       const [supabaseSession, setSupabaseSession] = useState<Session | null>()
       const supabase = getBrowserSupabase()
@@ -74,6 +76,8 @@ export const LeafletMapInner = dynamic(
               markerFormToggle={markerFormToggle}
               setMarkerData={setMarkerData}
               isCreatingPolygon={isCreatingPolygon}
+              polygonCoords={polygonCoords}
+              setPolygonsCoords={setPolygonsCoords}
             />
           )}
           <RL.ImageOverlay url={imageUrl} bounds={bounds} />

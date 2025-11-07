@@ -1,5 +1,5 @@
 import { createServerSupabaseFromCookies } from '../db/supabase/server'
-import { MapElementData } from '../types/leaflet'
+import { MapElementData, Polygon, PolygonCoords } from '../types/leaflet'
 import { MapMarker } from '../types/supabase'
 
 export async function getMarkersFromImgPath(
@@ -29,7 +29,17 @@ export async function openMarkerForm(
   setMarkerData(markerData)
 }
 
-export async function pushPolygonDetails(polygonData: MapElementData) {
+export async function pushPolygonDetails(
+  polygonData: MapElementData,
+  polygonCoords: PolygonCoords[],
+  setPolygonsCoords: React.Dispatch<React.SetStateAction<PolygonCoords[]>>
+) {
+  const polygonCoordObj = {
+    lat: polygonData.lat,
+    lng: polygonData.lng,
+    index: polygonCoords.length
+  }
   console.log('polygon double click')
   console.log(polygonData)
+  setPolygonsCoords([...polygonCoords, polygonCoordObj])
 }

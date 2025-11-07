@@ -7,7 +7,12 @@ import { MapMarker, MdFileLight } from '@/lib/types/supabase'
 import MarkerForm from './marker-form'
 import { getBrowserSupabase } from '@/lib/db/supabase/client'
 import { Session } from '@supabase/supabase-js'
-import { MapMarkerData, MarkerFormState, Polygon } from '@/lib/types/leaflet'
+import {
+  MapMarkerData,
+  MarkerFormState,
+  Polygon,
+  PolygonCoords
+} from '@/lib/types/leaflet'
 
 export default function LeafletMap({
   imgElement,
@@ -30,7 +35,18 @@ export default function LeafletMap({
   }>({ show: false, type: '' })
   const [isCreatingPolygon, setIsCreatingPolygon] = useState<boolean>(false)
   const [markerData, setMarkerData] = useState<MapMarkerData>()
+  const [polygonCoords, setPolygonsCoords] = useState<PolygonCoords[]>([])
   const [polygons, setPolygons] = useState<Polygon[]>([])
+
+  useEffect(() => {
+    const polygonCoordsIndexed = polygonCoords
+      .map((pc, index) => {
+        return { lat: pc.lat, lng: pc.lng, index }
+      })
+      .sort((a, b) => b.index - a.index)
+    setPolygonsCoords(polygonCoordsIndexed)
+    console.log(polygonCoords)
+  }, [polygonCoords.length])
 
   useEffect(() => {
     const [, srcRight] = imgElement.split(`src="`)
@@ -95,7 +111,8 @@ export default function LeafletMap({
         setMarkerData={setMarkerData}
         isCreatingPolygon={isCreatingPolygon}
         polygons={polygons}
-        setPolygons={setPolygons}
+        polygonCoords={polygonCoords}
+        setPolygonsCoords={setPolygonsCoords}
       />
       {supabaseSession && showMarkerForm.show && markerData && (
         <MarkerForm
