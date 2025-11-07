@@ -94,11 +94,16 @@ export const LeafletMapInner = dynamic(
                 setMarkerData={setMarkerData}
               />
             ))}
+          {/* This is the polygon that is currently being created, aka generated from a state, not db */}
           {polygonCoords && polygonCoords.length > 0 && (
             <LeafletMapPolygon
               polygon={{ title: 'Testing', positions: polygonCoords }}
             />
           )}
+
+          {/* These are the polygons that are fetched from the database */}
+          {polygons &&
+            polygons.map((polgon) => <LeafletMapPolygon polygon={polgon} />)}
         </RL.MapContainer>
       )
     }
