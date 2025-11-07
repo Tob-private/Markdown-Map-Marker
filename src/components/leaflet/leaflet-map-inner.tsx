@@ -7,6 +7,7 @@ import { Session } from '@supabase/supabase-js'
 import { getBrowserSupabase } from '@/lib/db/supabase/client'
 import { MapMarkerData, Polygon, PolygonCoords } from '@/lib/types/leaflet'
 import { LeafletMapMarker } from './map-elements/map-marker'
+import { LeafletMapPolygon } from './map-elements/map-polygon'
 
 export const LeafletMapInner = dynamic(
   async () => {
@@ -82,6 +83,7 @@ export const LeafletMapInner = dynamic(
           )}
           <RL.ImageOverlay url={imageUrl} bounds={bounds} />
           {mapMarkers &&
+            mapMarkers.length > 0 &&
             mapMarkers.map((marker, index) => (
               <LeafletMapMarker
                 key={index}
@@ -92,6 +94,11 @@ export const LeafletMapInner = dynamic(
                 setMarkerData={setMarkerData}
               />
             ))}
+          {polygonCoords && polygonCoords.length > 0 && (
+            <LeafletMapPolygon
+              polygon={{ title: 'Testing', positions: polygonCoords }}
+            />
+          )}
         </RL.MapContainer>
       )
     }

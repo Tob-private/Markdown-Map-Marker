@@ -46,6 +46,7 @@ export default function LeafletMap({
       .sort((a, b) => b.index - a.index)
     setPolygonsCoords(polygonCoordsIndexed)
     console.log(polygonCoords)
+
     // Disabling this next lint for eslint since the warning tells me to create an infinite loop,
     // which i dont feel like doing.
     // eslint-disable-next-line react-hooks/exhaustive-deps
