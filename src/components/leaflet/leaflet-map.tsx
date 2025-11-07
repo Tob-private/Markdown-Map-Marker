@@ -39,20 +39,6 @@ export default function LeafletMap({
   const [polygons, setPolygons] = useState<Polygon[]>([])
 
   useEffect(() => {
-    const polygonCoordsIndexed = polygonCoords
-      .map((pc, index) => {
-        return { lat: pc.lat, lng: pc.lng, index }
-      })
-      .sort((a, b) => b.index - a.index)
-    setPolygonsCoords(polygonCoordsIndexed)
-    console.log(polygonCoords)
-
-    // Disabling this next lint for eslint since the warning tells me to create an infinite loop,
-    // which i dont feel like doing.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [polygonCoords.length])
-
-  useEffect(() => {
     const [, srcRight] = imgElement.split(`src="`)
     const [src] = srcRight.split(`"`)
     const url = `/${src}`
