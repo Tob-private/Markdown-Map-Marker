@@ -39,7 +39,5 @@ export async function pushPolygonDetails(
     lng: polygonData.lng,
     index: polygonCoords.length
   }
-  console.log('polygon double click')
-  console.log(polygonData)
   setPolygonsCoords([...polygonCoords, polygonCoordObj])
 }

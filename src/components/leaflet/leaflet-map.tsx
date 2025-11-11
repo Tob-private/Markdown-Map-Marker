@@ -69,10 +69,13 @@ export default function LeafletMap({
   }
 
   const handleTogglePolygonCreation = () => {
-    setIsCreatingPolygon(!isCreatingPolygon)
-    if (!isCreatingPolygon) {
-      setPolygons([])
-    }
+    setIsCreatingPolygon((prev) => {
+      const newVal = !prev
+      if (!newVal) {
+        setPolygonsCoords([])
+      }
+      return newVal
+    })
   }
 
   const initialState: MarkerFormState = {
