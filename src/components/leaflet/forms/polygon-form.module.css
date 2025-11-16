@@ -1,0 +1,21 @@
+.table_layout {
+  margin: 1em 0;
+  overflow-y: auto;
+  height: 200px;
+
+  table {
+    margin: 0 !important;
+  }
+}
+.table_layout thead th {
+  position: sticky;
+  top: 0px;
+}
+.polygon_coords {
+  border-collapse: collapse;
+}
+
+.polygon_coords_label {
+  display: flex;
+  justify-content: space-around;
+}

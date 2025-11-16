@@ -34,9 +34,10 @@ export async function pushPolygonDetails(
   polygonCoords: PolygonCoords[],
   setPolygonsCoords: React.Dispatch<React.SetStateAction<PolygonCoords[]>>
 ) {
+  const decimals = 5
   const polygonCoordObj = {
-    lat: polygonData.lat,
-    lng: polygonData.lng,
+    lat: Math.round(polygonData.lat * 10 ** decimals) / 10 ** decimals,
+    lng: Math.round(polygonData.lng * 10 ** decimals) / 10 ** decimals,
     index: polygonCoords.length
   }
   setPolygonsCoords([...polygonCoords, polygonCoordObj])
