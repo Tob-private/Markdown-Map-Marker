@@ -1,13 +1,13 @@
 'use client'
 import styles from './marker-form.module.css'
 import { useActionState, useState } from 'react'
-import { MapElementFormState, MapMarkerData } from '@/lib/types/leaflet'
+import { MapMarkerData, MarkerFormState } from '@/lib/types/leaflet'
 import { createMarker, updateMarker } from '@/lib/actions/marker-form'
 import { usePathname } from 'next/navigation'
 import { AutocompleteSearch } from './autocomplete-search'
 import { MdFileLight } from '@/lib/types/supabase'
 
-export default function MapElementForm({
+export default function MarkerForm({
   mdFiles,
   markerData,
   initialState = {
@@ -25,7 +25,7 @@ export default function MapElementForm({
 }: {
   mdFiles: MdFileLight[]
   markerData: MapMarkerData
-  initialState: MapElementFormState
+  initialState: MarkerFormState
   type: string
   showFormToggle: React.Dispatch<
     React.SetStateAction<{
@@ -46,7 +46,7 @@ export default function MapElementForm({
     id: markerData.id
   })
 
-  const [, formAction] = useActionState<MapElementFormState, FormData>(
+  const [, formAction] = useActionState<MarkerFormState, FormData>(
     createMarkerWithImgPath,
     initialState
   )

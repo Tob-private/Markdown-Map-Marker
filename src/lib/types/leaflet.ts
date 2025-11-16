@@ -1,7 +1,7 @@
 import type { PathOptions } from 'leaflet'
 import z from 'zod'
 
-export type MapElementFormState =
+export type MarkerFormState =
   | {
       success: true
       data: {
@@ -25,7 +25,7 @@ export type MapElementFormState =
       path: string
     }
 
-export const mapElementFormSchema = z.object({
+export const markerFormSchema = z.object({
   lat: z.float64('Lat needs to be a float64').min(0, 'Lat is smaller than 0'),
   lng: z.float64('Lng needs to be a float64').min(0, 'Lng is smaller than 0'),
   title: z

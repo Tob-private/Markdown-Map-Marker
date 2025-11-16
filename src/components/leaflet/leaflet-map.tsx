@@ -4,12 +4,12 @@ import { useEffect, useState } from 'react'
 import { LeafletMapInner } from './leaflet-map-inner'
 import { getImageDimensions } from '@/lib/helpers/helpers'
 import { MapMarker, MdFileLight } from '@/lib/types/supabase'
-import MapElementForm from './map-element-form'
+import MarkerForm from './marker-form'
 import { getBrowserSupabase } from '@/lib/db/supabase/client'
 import { Session } from '@supabase/supabase-js'
 import {
   MapMarkerData,
-  MapElementFormState,
+  MarkerFormState,
   Polygon,
   PolygonCoords
 } from '@/lib/types/leaflet'
@@ -78,7 +78,7 @@ export default function LeafletMap({
     })
   }
 
-  const initialState: MapElementFormState = {
+  const initialState: MarkerFormState = {
     success: true,
     data: {
       lat: markerData?.lat ?? 0,
@@ -108,7 +108,7 @@ export default function LeafletMap({
         setPolygonsCoords={setPolygonsCoords}
       />
       {supabaseSession && showMarkerForm.show && markerData && (
-        <MapElementForm
+        <MarkerForm
           markerData={markerData}
           mdFiles={mdFiles}
           initialState={initialState}
