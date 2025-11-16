@@ -1,7 +1,7 @@
 'use server'
 import { createServerSupabaseFromCookies } from '@/lib/db/supabase/server'
 import { MapMarkerForm } from '@/lib/types/api/leaflet'
-import { markerFormSchema, MarkerFormState } from '@/lib/types/leaflet'
+import { mapElementFormSchema, MapElementFormState } from '@/lib/types/leaflet'
 import { revalidatePath } from 'next/cache'
 import z from 'zod'
 
@@ -12,9 +12,9 @@ interface BoundData {
 
 export async function createMarker(
   { img_path }: BoundData,
-  currentState: MarkerFormState,
+  currentState: MapElementFormState,
   formData: FormData
-): Promise<MarkerFormState> {
+): Promise<MapElementFormState> {
   const supabase = await createServerSupabaseFromCookies()
 
   const validationResult = getMarkerFormData(formData, currentState)
@@ -59,9 +59,9 @@ export async function createMarker(
 
 export async function updateMarker(
   { img_path, id }: BoundData,
-  currentState: MarkerFormState,
+  currentState: MapElementFormState,
   formData: FormData
-): Promise<MarkerFormState> {
+): Promise<MapElementFormState> {
   const supabase = await createServerSupabaseFromCookies()
 
   const validationResult = getMarkerFormData(formData, currentState)
@@ -108,8 +108,8 @@ export async function updateMarker(
 
 function getMarkerFormData(
   formData: FormData,
-  currentState: MarkerFormState
-): MarkerFormState {
+  currentState: MapElementFormState
+): MapElementFormState {
   const rawFormData = {
     lat: Number(formData.get('lat')),
     lng: Number(formData.get('lng')),
@@ -117,7 +117,7 @@ function getMarkerFormData(
     desc: formData.get('desc'),
     note_id: formData.get('note_id')
   }
-  const validationResult = markerFormSchema.safeParse(rawFormData)
+  const validationResult = mapElementFormSchema.safeParse(rawFormData)
 
   if (!validationResult.success) {
     const errors = z.flattenError(validationResult.error).fieldErrors
