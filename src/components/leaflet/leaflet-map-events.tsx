@@ -1,5 +1,5 @@
 import { openMarkerForm, pushPolygonDetails } from '@/lib/leaflet/leaflet'
-import { PolygonCoords } from '@/lib/types/leaflet'
+import { Polygon } from '@/lib/types/leaflet'
 import { LeafletEventHandlerFnMap, Map } from 'leaflet'
 
 export default function LeafletMapEvents({
@@ -7,30 +7,30 @@ export default function LeafletMapEvents({
   imgPath,
   markerFormToggle,
   setMarkerData,
-  isCreatingPolygon,
-  polygonCoords,
-  setPolygonsCoords
+  showPolygonForm,
+  polygonState,
+  setPolygonState
 }: {
   useMapEvents: (handlers: LeafletEventHandlerFnMap) => Map
   imgPath: string
   markerFormToggle: (bool: boolean, type: 'insert' | 'update') => void
   setMarkerData: (data: { lat: number; lng: number; img_path: string }) => void
-  isCreatingPolygon: boolean
-  polygonCoords: PolygonCoords[]
-  setPolygonsCoords: React.Dispatch<React.SetStateAction<PolygonCoords[]>>
+  showPolygonForm: boolean
+  polygonState: Polygon | undefined
+  setPolygonState: React.Dispatch<React.SetStateAction<Polygon | undefined>>
 }) {
   useMapEvents({
     // Create map marker
     dblclick: (e) =>
-      isCreatingPolygon
+      showPolygonForm
         ? pushPolygonDetails(
             {
               lat: e.latlng.lat,
               lng: e.latlng.lng,
               img_path: imgPath
             },
-            polygonCoords,
-            setPolygonsCoords
+            polygonState,
+            setPolygonState
           )
         : openMarkerForm(
             { lat: e.latlng.lat, lng: e.latlng.lng, img_path: imgPath },

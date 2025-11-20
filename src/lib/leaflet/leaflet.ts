@@ -1,5 +1,5 @@
 import { createServerSupabaseFromCookies } from '../db/supabase/server'
-import { MapElementData, MapMarkerData, PolygonCoords } from '../types/leaflet'
+import { MapElementData, MapMarkerData, Polygon } from '../types/leaflet'
 import { MapMarker } from '../types/supabase'
 
 export async function getMarkersFromImgPath(
@@ -31,14 +31,24 @@ export async function openMarkerForm(
 
 export async function pushPolygonDetails(
   polygonData: MapElementData,
-  polygonCoords: PolygonCoords[],
-  setPolygonsCoords: React.Dispatch<React.SetStateAction<PolygonCoords[]>>
+  polygonState: Polygon | undefined,
+  setPolygonState: React.Dispatch<React.SetStateAction<Polygon | undefined>>
 ) {
-  const decimals = 5
-  const polygonCoordObj = {
-    lat: Math.round(polygonData.lat * 10 ** decimals) / 10 ** decimals,
-    lng: Math.round(polygonData.lng * 10 ** decimals) / 10 ** decimals,
-    index: polygonCoords.length
+  if (polygonState) {
+    const decimals = 5
+    const polygonCoordObj = {
+      lat: Math.round(polygonData.lat * 10 ** decimals) / 10 ** decimals,
+      lng: Math.round(polygonData.lng * 10 ** decimals) / 10 ** decimals,
+      index: polygonState.positions.length
+    }
+    const newPolygon: Polygon = {
+      title: polygonState.title,
+      desc: polygonState.desc,
+      note_id: polygonState.note_id,
+      options: polygonState.options,
+      positions: [...polygonState.positions, polygonCoordObj]
+    }
+    setPolygonState(newPolygon)
   }
-  setPolygonsCoords([...polygonCoords, polygonCoordObj])
+  console.log(polygonState)
 }

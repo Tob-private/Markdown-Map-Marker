@@ -1,11 +1,31 @@
-import { PolygonCoords } from '@/lib/types/leaflet'
+import { Polygon, PolygonFormState } from '@/lib/types/leaflet'
 import styles from './polygon-form.module.css'
+import { AutocompleteSearch } from './autocomplete-search'
+import { MdFileLight } from '@/lib/types/supabase'
+import { useState } from 'react'
 
 export default function PolygonForm({
-  polygonCoords
+  polygonState,
+  initialState = {
+    success: true,
+    data: {
+      lat: [],
+      lng: [],
+      title: '',
+      desc: ''
+    },
+    path: ''
+  },
+  mdFiles,
+  formType
 }: {
-  polygonCoords: PolygonCoords[]
+  polygonState: Polygon | undefined
+  initialState: PolygonFormState
+  mdFiles: MdFileLight[]
+  formType: 'insert' | 'update'
 }) {
+  const [selectedFile, setSelectedFile] = useState<string>('')
+
   return (
     <form action="">
       <div className={styles.table_layout}>
@@ -18,7 +38,7 @@ export default function PolygonForm({
             </tr>
           </thead>
           <tbody>
-            {polygonCoords.map((pc, idx) => (
+            {polygonState?.positions.map((pc, idx) => (
               <tr key={`tablecoords${idx}`}>
                 <td>{idx}</td>
                 <td className={styles.polygon_coords_cell}>
@@ -48,6 +68,41 @@ export default function PolygonForm({
           </tbody>
         </table>
       </div>
+      <label htmlFor="title" className={styles.polygon_label}>
+        Polygon Title:
+        <input
+          className={styles.polygon_input}
+          type="text"
+          id="title"
+          name="title"
+          defaultValue={initialState.success ? initialState.data.title : ''}
+        />
+      </label>
+
+      <label htmlFor="desc" className={styles.polygon_label}>
+        Polygon Description:
+        <textarea
+          id="desc"
+          name="desc"
+          className={styles.polygon_textarea}
+          defaultValue={initialState.success ? initialState.data.desc : ''}
+        ></textarea>
+      </label>
+
+      <label htmlFor="md-file" className={styles.label}>
+        Select Markdown File
+      </label>
+      <AutocompleteSearch
+        options={mdFiles}
+        value={selectedFile}
+        onChange={setSelectedFile}
+        placeholder="Search files..."
+        name="note_id"
+      />
+
+      <button type="submit">
+        {formType === 'insert' ? 'Create' : 'Update'} Polygon
+      </button>
     </form>
   )
 }

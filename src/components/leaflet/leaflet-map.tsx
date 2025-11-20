@@ -10,7 +10,7 @@ import {
   MapMarkerData,
   MarkerFormState,
   Polygon,
-  PolygonCoords
+  PolygonFormState
 } from '@/lib/types/leaflet'
 import MarkerForm from './forms/marker-form'
 import PolygonForm from './forms/polygon-form'
@@ -34,9 +34,12 @@ export default function LeafletMap({
     show: boolean
     type: string
   }>({ show: false, type: '' })
-  const [isCreatingPolygon, setIsCreatingPolygon] = useState<boolean>(false)
+  const [showPolygonForm, setShowPolygonForm] = useState<{
+    show: boolean
+    type: 'insert' | 'update'
+  }>({ show: false, type: 'insert' })
   const [markerData, setMarkerData] = useState<MapMarkerData>()
-  const [polygonCoords, setPolygonsCoords] = useState<PolygonCoords[]>([])
+  const [polygonState, setPolygonState] = useState<Polygon>()
   const [polygons, setPolygons] = useState<Polygon[]>([])
 
   useEffect(() => {
@@ -70,16 +73,25 @@ export default function LeafletMap({
   }
 
   const handleTogglePolygonCreation = () => {
-    setIsCreatingPolygon((prev) => {
-      const newVal = !prev
-      if (!newVal) {
-        setPolygonsCoords([])
+    setShowPolygonForm((prev) => {
+      const newVal = { show: !prev.show, type: prev.type }
+      if (newVal) {
+        setMarkerData(undefined)
+
+        if (!polygonState) {
+          const boilerPlatePolygonData: Polygon = {
+            title: 'Testing',
+            desc: 'This is a new polygon',
+            positions: []
+          }
+          setPolygonState(boilerPlatePolygonData)
+        }
       }
       return newVal
     })
   }
 
-  const initialState: MarkerFormState = {
+  const initialMarkerFormState: MarkerFormState = {
     success: true,
     data: {
       lat: markerData?.lat ?? 0,
@@ -87,6 +99,18 @@ export default function LeafletMap({
       title: markerData?.title ?? '',
       desc: markerData?.desc ?? '',
       note_id: markerData?.note_id
+    },
+    path: ''
+  }
+  const initialPolygonFormState: PolygonFormState = {
+    success: true,
+    data: {
+      lat: polygonState?.positions.map((coord) => coord.lat) ?? [],
+      lng: polygonState?.positions.map((coord) => coord.lng) ?? [],
+      title: polygonState?.title ?? '',
+      desc: polygonState?.desc ?? '',
+      note_id: polygonState?.note_id,
+      options: polygonState?.options
     },
     path: ''
   }
@@ -103,22 +127,29 @@ export default function LeafletMap({
         mapMarkers={mapMarkers}
         markerFormToggle={handleShowMarkerForm}
         setMarkerData={setMarkerData}
-        isCreatingPolygon={isCreatingPolygon}
+        showPolygonForm={showPolygonForm}
         polygons={polygons}
-        polygonCoords={polygonCoords}
-        setPolygonsCoords={setPolygonsCoords}
+        polygonState={polygonState}
+        setPolygonState={setPolygonState}
       />
       {supabaseSession && showMarkerForm.show && markerData ? (
         <MarkerForm
           markerData={markerData}
           mdFiles={mdFiles}
-          initialState={initialState}
+          initialState={initialMarkerFormState}
           type={showMarkerForm.type}
           showFormToggle={setShowMarkerForm}
         />
       ) : (
         supabaseSession &&
-        isCreatingPolygon && <PolygonForm polygonCoords={polygonCoords} />
+        showPolygonForm.show && (
+          <PolygonForm
+            polygonState={polygonState}
+            initialState={initialPolygonFormState}
+            mdFiles={mdFiles}
+            formType={showPolygonForm.type}
+          />
+        )
       )}
     </>
   )

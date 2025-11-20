@@ -5,7 +5,7 @@ import { MapMarker } from '@/lib/types/supabase'
 import { useEffect, useState } from 'react'
 import { Session } from '@supabase/supabase-js'
 import { getBrowserSupabase } from '@/lib/db/supabase/client'
-import { MapMarkerData, Polygon, PolygonCoords } from '@/lib/types/leaflet'
+import { MapMarkerData, Polygon } from '@/lib/types/leaflet'
 import { LeafletMapMarker } from './map-elements/map-marker'
 import { LeafletMapPolygon } from './map-elements/map-polygon'
 
@@ -22,10 +22,10 @@ export const LeafletMapInner = dynamic(
       mapMarkers,
       markerFormToggle,
       setMarkerData,
-      isCreatingPolygon,
+      showPolygonForm,
       polygons,
-      polygonCoords,
-      setPolygonsCoords
+      polygonState,
+      setPolygonState
     }: {
       imageUrl: string
       argBounds: number[][]
@@ -35,10 +35,10 @@ export const LeafletMapInner = dynamic(
       setMarkerData: React.Dispatch<
         React.SetStateAction<MapMarkerData | undefined>
       >
-      isCreatingPolygon: boolean
+      showPolygonForm: { show: boolean; type: 'insert' | 'update' }
       polygons: Polygon[]
-      polygonCoords: PolygonCoords[]
-      setPolygonsCoords: React.Dispatch<React.SetStateAction<PolygonCoords[]>>
+      polygonState: Polygon | undefined
+      setPolygonState: React.Dispatch<React.SetStateAction<Polygon | undefined>>
     }) {
       const [supabaseSession, setSupabaseSession] = useState<Session | null>()
       const supabase = getBrowserSupabase()
@@ -76,9 +76,9 @@ export const LeafletMapInner = dynamic(
               imgPath={imageUrl}
               markerFormToggle={markerFormToggle}
               setMarkerData={setMarkerData}
-              isCreatingPolygon={isCreatingPolygon}
-              polygonCoords={polygonCoords}
-              setPolygonsCoords={setPolygonsCoords}
+              showPolygonForm={showPolygonForm.show}
+              polygonState={polygonState}
+              setPolygonState={setPolygonState}
             />
           )}
           <RL.ImageOverlay url={imageUrl} bounds={bounds} />
@@ -95,10 +95,8 @@ export const LeafletMapInner = dynamic(
               />
             ))}
           {/* This is the polygon that is currently being created, aka generated from a state, not db */}
-          {polygonCoords && polygonCoords.length > 0 && (
-            <LeafletMapPolygon
-              polygon={{ title: 'Testing', positions: polygonCoords }}
-            />
+          {polygonState && polygonState.positions.length > 0 && (
+            <LeafletMapPolygon polygon={polygonState} />
           )}
 
           {/* These are the polygons that are fetched from the database */}

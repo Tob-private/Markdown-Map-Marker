@@ -57,6 +57,7 @@ export interface Polygon {
   options?: PathOptions
   note_id?: string
   title: string
+  desc: string
   positions: PolygonCoords[]
 }
 
@@ -65,3 +66,41 @@ export interface PolygonCoords {
   lat: number
   lng: number
 }
+
+export const polygonFormSchema = z
+  .object({
+    success: z.literal(false),
+    errors: z.object({
+      lat: z.array(z.string()).optional(),
+      lng: z.array(z.string()).optional(),
+      title: z.array(z.string()).optional(),
+      desc: z.array(z.string()).optional(),
+      note_id: z.array(z.string()).optional(),
+      options: z.array(z.string()).optional()
+    }),
+    path: z.string()
+  })
+  .or(
+    z.object({
+      success: z.literal(true),
+      data: z.object({
+        lat: z.array(
+          z.float64('Lat needs to be a float64').min(0, 'Lat is smaller than 0')
+        ),
+        lng: z.array(
+          z.float64('Lng needs to be a float64').min(0, 'Lng is smaller than 0')
+        ),
+        title: z
+          .string('Title needs to be a string')
+          .min(3, 'Title needs to be at least 3 characters long'),
+        desc: z
+          .string('Desc needs to be a string')
+          .min(10, 'Desc needs to be at least 10 characters long'),
+        note_id: z.string('Note id link needs to be a string').optional(),
+        options: z.custom<PathOptions>().optional()
+      }),
+      path: z.string()
+    })
+  )
+
+export type PolygonFormState = z.infer<typeof polygonFormSchema>
