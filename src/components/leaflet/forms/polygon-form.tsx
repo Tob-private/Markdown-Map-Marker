@@ -1,8 +1,11 @@
+'use client'
 import { Polygon, PolygonFormState } from '@/lib/types/leaflet'
 import styles from './polygon-form.module.css'
 import { AutocompleteSearch } from './autocomplete-search'
 import { MdFileLight } from '@/lib/types/supabase'
-import { useState } from 'react'
+import { useActionState, useState } from 'react'
+import { usePathname } from 'next/navigation'
+import { createPolygon, updatePolygon } from '@/lib/actions/polygon-form'
 
 export default function PolygonForm({
   polygonState,
@@ -17,17 +20,47 @@ export default function PolygonForm({
     path: ''
   },
   mdFiles,
-  formType
+  formType,
+  showFormToggle
 }: {
   polygonState: Polygon | undefined
   initialState: PolygonFormState
   mdFiles: MdFileLight[]
   formType: 'insert' | 'update'
+  showFormToggle: React.Dispatch<
+    React.SetStateAction<{
+      show: boolean
+      type: 'insert' | 'update'
+    }>
+  >
 }) {
+  if (!polygonState) {
+    return <h3>PolygonState is undefined</h3>
+  }
   const [selectedFile, setSelectedFile] = useState<string>('')
 
+  const pathName = usePathname()
+
+  initialState.path = pathName
+
+  const polygonAction = formType === 'insert' ? createPolygon : updatePolygon
+
+  const polygonActionBoundData = polygonAction.bind(null, {
+    img_path: polygonState.img_path,
+    id: polygonState.id
+  })
+
+  const [, formAction] = useActionState<PolygonFormState, FormData>(
+    polygonActionBoundData,
+    initialState
+  )
+
+  const handleSubmit = () => {
+    showFormToggle({ show: false, type: formType })
+  }
+
   return (
-    <form action="">
+    <form action={formAction} onSubmit={handleSubmit}>
       <div className={styles.table_layout}>
         <table className={styles.polygon_coords}>
           <thead>
@@ -52,7 +85,7 @@ export default function PolygonForm({
                     />
                   </label>
                 </td>
-                <td>
+                <td className={styles.polygon_coords_cell}>
                   <label htmlFor={`lng${idx}`}>
                     <input
                       className={styles.polygon_coords_input}
@@ -68,6 +101,7 @@ export default function PolygonForm({
           </tbody>
         </table>
       </div>
+
       <label htmlFor="title" className={styles.polygon_label}>
         Polygon Title:
         <input
@@ -92,6 +126,7 @@ export default function PolygonForm({
       <label htmlFor="md-file" className={styles.label}>
         Select Markdown File
       </label>
+
       <AutocompleteSearch
         options={mdFiles}
         value={selectedFile}

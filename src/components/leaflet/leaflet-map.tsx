@@ -82,6 +82,7 @@ export default function LeafletMap({
           const boilerPlatePolygonData: Polygon = {
             title: 'Testing',
             desc: 'This is a new polygon',
+            img_path: imageUrl,
             positions: []
           }
           setPolygonState(boilerPlatePolygonData)
@@ -148,6 +149,7 @@ export default function LeafletMap({
             initialState={initialPolygonFormState}
             mdFiles={mdFiles}
             formType={showPolygonForm.type}
+            showFormToggle={setShowPolygonForm}
           />
         )
       )}

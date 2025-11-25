@@ -54,10 +54,12 @@ export interface MapMarkerData {
 }
 
 export interface Polygon {
+  id?: string
   options?: PathOptions
   note_id?: string
   title: string
   desc: string
+  img_path: string
   positions: PolygonCoords[]
 }
 
@@ -104,3 +106,49 @@ export const polygonFormSchema = z
   )
 
 export type PolygonFormState = z.infer<typeof polygonFormSchema>
+
+export const polygonPayloadData = z
+  .object({
+    payload: z.literal('create'),
+    data: z.object({
+      options: z.custom<PathOptions>().optional(),
+      title: z
+        .string('Title needs to be a string')
+        .min(3, 'Title needs to be at least 3 characters long'),
+      desc: z
+        .string('Desc needs to be a string')
+        .min(10, 'Desc needs to be at least 10 characters long'),
+      note_id: z.string('Note id link needs to be a string').optional(),
+      positions: z.array(
+        z.object({
+          index: z.number(),
+          lat: z.number(),
+          lng: z.number()
+        })
+      )
+    })
+  })
+  .or(
+    z.object({
+      payload: z.literal('update'),
+      data: z.object({
+        id: z.string(),
+        options: z.custom<PathOptions>().optional(),
+        title: z
+          .string('Title needs to be a string')
+          .min(3, 'Title needs to be at least 3 characters long'),
+        desc: z
+          .string('Desc needs to be a string')
+          .min(10, 'Desc needs to be at least 10 characters long'),
+        note_id: z.string('Note id link needs to be a string').optional(),
+        positions: z.array(
+          z.object({
+            index: z.number(),
+            lat: z.number(),
+            lng: z.number()
+          })
+        )
+      })
+    })
+  )
+export type PolygonPayloadData = z.infer<typeof polygonPayloadData>

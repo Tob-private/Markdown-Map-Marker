@@ -9,16 +9,18 @@
 }
 .table_layout thead th {
   position: sticky;
-  top: 0px;
+  top: -1px;
 }
 .polygon_coords {
   border-collapse: collapse;
+  text-align: center;
 }
 
-.polygon_coords_label {
+.polygon_coords_cell label {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
 }
+
 .polygon_label {
   display: flex;
   justify-content: space-between;
