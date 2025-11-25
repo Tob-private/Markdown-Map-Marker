@@ -143,7 +143,8 @@ export default function LeafletMap({
         />
       ) : (
         supabaseSession &&
-        showPolygonForm.show && (
+        showPolygonForm.show &&
+        polygonState && (
           <PolygonForm
             polygonState={polygonState}
             initialState={initialPolygonFormState}

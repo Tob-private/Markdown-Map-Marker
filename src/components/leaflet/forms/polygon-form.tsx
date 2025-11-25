@@ -23,7 +23,7 @@ export default function PolygonForm({
   formType,
   showFormToggle
 }: {
-  polygonState: Polygon | undefined
+  polygonState: Polygon
   initialState: PolygonFormState
   mdFiles: MdFileLight[]
   formType: 'insert' | 'update'
@@ -34,9 +34,6 @@ export default function PolygonForm({
     }>
   >
 }) {
-  if (!polygonState) {
-    return <h3>PolygonState is undefined</h3>
-  }
   const [selectedFile, setSelectedFile] = useState<string>('')
 
   const pathName = usePathname()
