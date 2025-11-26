@@ -5,7 +5,10 @@ import wikiLinks from 'markdown-it-wikilinks'
 import sanitizeHtml from 'sanitize-html'
 import { parseObsidianSyntax } from '@/lib/helpers/md-helpers'
 import LeafletMap from './leaflet/leaflet-map'
-import { getMarkersFromImgPath } from '@/lib/leaflet/leaflet'
+import {
+  getMarkersFromImgPath,
+  getPolygonFromImgPath
+} from '@/lib/leaflet/leaflet'
 import { getMdFilesLight } from '@/lib/leaflet/md-files'
 import styles from './md-wrapper.module.css'
 
@@ -51,6 +54,14 @@ export default async function MdWrapper({ rawMd }: { rawMd: string }) {
       return getMarkersFromImgPath(url)
     })
   )
+  const mapPolygons = await Promise.all(
+    mapImgs.map((mapImg) => {
+      const [, srcRight] = mapImg.split(`src="`)
+      const [src] = srcRight.split(`"`)
+      const url = `/${src}`
+      return getPolygonFromImgPath(url)
+    })
+  )
 
   const mdFiles = await getMdFilesLight()
   return (
@@ -61,6 +72,7 @@ export default async function MdWrapper({ rawMd }: { rawMd: string }) {
           <LeafletMap
             imgElement={mapImg}
             mapMarkers={mapMarkers[0]}
+            mapPolygons={mapPolygons[0]}
             key={idx}
             mdFiles={mdFiles}
           />

@@ -18,10 +18,12 @@ import PolygonForm from './forms/polygon-form'
 export default function LeafletMap({
   imgElement,
   mapMarkers,
+  mapPolygons,
   mdFiles
 }: {
   imgElement: string
   mapMarkers: MapMarker[]
+  mapPolygons: Polygon[]
   mdFiles: MdFileLight[]
 }) {
   const supabase = getBrowserSupabase()
@@ -65,6 +67,12 @@ export default function LeafletMap({
       setSupabaseSession(session.data.session)
     })
   }, [imgElement, supabase.auth])
+
+  useEffect(() => {
+    console.log(mapPolygons)
+
+    setPolygons(mapPolygons)
+  }, [mapPolygons])
 
   if (!bounds || !imageUrl || !maxBounds) return <div>Loading map...</div>
 

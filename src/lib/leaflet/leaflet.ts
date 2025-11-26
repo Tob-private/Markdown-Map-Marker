@@ -19,6 +19,24 @@ export async function getMarkersFromImgPath(
   }
 }
 
+export async function getPolygonFromImgPath(
+  imgPath: string
+): Promise<Polygon[]> {
+  const supabase = await createServerSupabaseFromCookies()
+  const { data, error } = await supabase
+    .from('map_polygons')
+    .select('*, positions:polygon_positions(*)')
+    .like('img_path', imgPath)
+
+  if (error) {
+    console.dir({ error })
+    throw new Error('Error fetching markers from img path')
+  } else {
+    console.dir({ data }, { depth: null })
+    return data
+  }
+}
+
 export async function openMarkerForm(
   markerData: MapMarkerData,
   type: 'insert' | 'update',
@@ -46,9 +64,9 @@ export async function pushPolygonDetails(
       desc: polygonState.desc,
       note_id: polygonState.note_id,
       options: polygonState.options,
-      positions: [...polygonState.positions, polygonCoordObj]
+      positions: [...polygonState.positions, polygonCoordObj],
+      img_path: polygonData.img_path
     }
     setPolygonState(newPolygon)
   }
-  console.log(polygonState)
 }

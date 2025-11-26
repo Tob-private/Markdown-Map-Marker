@@ -77,7 +77,7 @@ export default function PolygonForm({
                       className={styles.polygon_coords_input}
                       type="text"
                       id={`lat${idx}`}
-                      name={`lat${idx}`}
+                      name={`lat`}
                       defaultValue={Number(pc.lat)}
                     />
                   </label>
@@ -88,7 +88,7 @@ export default function PolygonForm({
                       className={styles.polygon_coords_input}
                       type="text"
                       id={`lng${idx}`}
-                      name={`lng${idx}`}
+                      name={`lng`}
                       defaultValue={Number(pc.lng)}
                     />
                   </label>

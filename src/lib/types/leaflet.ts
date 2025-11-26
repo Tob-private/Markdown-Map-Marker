@@ -69,6 +69,29 @@ export interface PolygonCoords {
   lng: number
 }
 
+export const polygonFormDataSchema = z.object({
+  lat: z
+    .array(
+      z.float64('Lat needs to be a float64').min(0, 'Lat is smaller than 0')
+    )
+    .min(2),
+  lng: z
+    .array(
+      z.float64('Lng needs to be a float64').min(0, 'Lng is smaller than 0')
+    )
+    .min(2),
+  title: z
+    .string('Title needs to be a string')
+    .min(3, 'Title needs to be at least 3 characters long'),
+  desc: z
+    .string('Desc needs to be a string')
+    .min(10, 'Desc needs to be at least 10 characters long'),
+  note_id: z.string('Note id link needs to be a string').optional(),
+  options: z.custom<PathOptions>().optional()
+})
+
+export type PolygonFormDataState = z.infer<typeof polygonFormDataSchema>
+
 export const polygonFormSchema = z
   .object({
     success: z.literal(false),
@@ -109,29 +132,26 @@ export type PolygonFormState = z.infer<typeof polygonFormSchema>
 
 export const polygonPayloadData = z
   .object({
-    payload: z.literal('create'),
-    data: z.object({
-      options: z.custom<PathOptions>().optional(),
+    type: z.literal('create'),
+    payload: z.object({
       title: z
         .string('Title needs to be a string')
         .min(3, 'Title needs to be at least 3 characters long'),
       desc: z
         .string('Desc needs to be a string')
         .min(10, 'Desc needs to be at least 10 characters long'),
-      note_id: z.string('Note id link needs to be a string').optional(),
-      positions: z.array(
-        z.object({
-          index: z.number(),
-          lat: z.number(),
-          lng: z.number()
-        })
-      )
+      note_id: z
+        .uuid('Note id link needs to be a string')
+        .nullable()
+        .optional(),
+      options: z.custom<PathOptions>().optional(),
+      img_path: z.string()
     })
   })
   .or(
     z.object({
-      payload: z.literal('update'),
-      data: z.object({
+      type: z.literal('update'),
+      payload: z.object({
         id: z.string(),
         options: z.custom<PathOptions>().optional(),
         title: z
@@ -140,14 +160,10 @@ export const polygonPayloadData = z
         desc: z
           .string('Desc needs to be a string')
           .min(10, 'Desc needs to be at least 10 characters long'),
-        note_id: z.string('Note id link needs to be a string').optional(),
-        positions: z.array(
-          z.object({
-            index: z.number(),
-            lat: z.number(),
-            lng: z.number()
-          })
-        )
+        note_id: z
+          .string('Note id link needs to be a string')
+          .nullable()
+          .optional()
       })
     })
   )

@@ -101,11 +101,8 @@ export const LeafletMapInner = dynamic(
 
           {/* These are the polygons that are fetched from the database */}
           {polygons &&
-            polygons.map((polgon) => (
-              <LeafletMapPolygon
-                polygon={polgon}
-                key={`${polgon.positions[0].lat + polgon.positions[0].lng}`}
-              />
+            polygons.map((polygon) => (
+              <LeafletMapPolygon polygon={polygon} key={polygon.id} />
             ))}
         </RL.MapContainer>
       )
