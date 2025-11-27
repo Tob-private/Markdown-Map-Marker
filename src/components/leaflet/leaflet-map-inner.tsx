@@ -96,13 +96,20 @@ export const LeafletMapInner = dynamic(
             ))}
           {/* This is the polygon that is currently being created, aka generated from a state, not db */}
           {polygonState && polygonState.positions.length > 0 && (
-            <LeafletMapPolygon polygon={polygonState} />
+            <LeafletMapPolygon
+              polygon={polygonState}
+              supabaseSession={supabaseSession}
+            />
           )}
 
           {/* These are the polygons that are fetched from the database */}
           {polygons &&
             polygons.map((polygon) => (
-              <LeafletMapPolygon polygon={polygon} key={polygon.id} />
+              <LeafletMapPolygon
+                key={polygon.id}
+                polygon={polygon}
+                supabaseSession={supabaseSession}
+              />
             ))}
         </RL.MapContainer>
       )
