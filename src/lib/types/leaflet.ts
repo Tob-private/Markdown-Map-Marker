@@ -96,6 +96,7 @@ export const polygonFormSchema = z
   .object({
     success: z.literal(false),
     errors: z.object({
+      id: z.array(z.string()).optional(),
       lat: z.array(z.string()).optional(),
       lng: z.array(z.string()).optional(),
       title: z.array(z.string()).optional(),
@@ -163,7 +164,8 @@ export const polygonPayloadData = z
         note_id: z
           .string('Note id link needs to be a string')
           .nullable()
-          .optional()
+          .optional(),
+        img_path: z.string()
       })
     })
   )

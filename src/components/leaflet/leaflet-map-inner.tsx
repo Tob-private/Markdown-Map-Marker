@@ -8,6 +8,7 @@ import { getBrowserSupabase } from '@/lib/db/supabase/client'
 import { MapMarkerData, Polygon } from '@/lib/types/leaflet'
 import { LeafletMapMarker } from './map-elements/map-marker'
 import { LeafletMapPolygon } from './map-elements/map-polygon'
+import { TempLeafletMapPolygon } from './map-elements/temp-map-polygon'
 
 export const LeafletMapInner = dynamic(
   async () => {
@@ -23,6 +24,7 @@ export const LeafletMapInner = dynamic(
       markerFormToggle,
       setMarkerData,
       showPolygonForm,
+      setShowPolygonForm,
       polygons,
       polygonState,
       setPolygonState
@@ -36,6 +38,12 @@ export const LeafletMapInner = dynamic(
         React.SetStateAction<MapMarkerData | undefined>
       >
       showPolygonForm: { show: boolean; type: 'insert' | 'update' }
+      setShowPolygonForm: React.Dispatch<
+        React.SetStateAction<{
+          show: boolean
+          type: 'insert' | 'update'
+        }>
+      >
       polygons: Polygon[]
       polygonState: Polygon | undefined
       setPolygonState: React.Dispatch<React.SetStateAction<Polygon | undefined>>
@@ -96,10 +104,7 @@ export const LeafletMapInner = dynamic(
             ))}
           {/* This is the polygon that is currently being created, aka generated from a state, not db */}
           {polygonState && polygonState.positions.length > 0 && (
-            <LeafletMapPolygon
-              polygon={polygonState}
-              supabaseSession={supabaseSession}
-            />
+            <TempLeafletMapPolygon polygon={polygonState} />
           )}
 
           {/* These are the polygons that are fetched from the database */}
@@ -109,6 +114,8 @@ export const LeafletMapInner = dynamic(
                 key={polygon.id}
                 polygon={polygon}
                 supabaseSession={supabaseSession}
+                setPolygonState={setPolygonState}
+                setShowPolygonForm={setShowPolygonForm}
               />
             ))}
         </RL.MapContainer>

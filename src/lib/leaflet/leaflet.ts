@@ -32,7 +32,6 @@ export async function getPolygonFromImgPath(
     console.dir({ error })
     throw new Error('Error fetching markers from img path')
   } else {
-    console.dir({ data }, { depth: null })
     return data
   }
 }
@@ -60,6 +59,7 @@ export async function pushPolygonDetails(
       index: polygonState.positions.length
     }
     const newPolygon: Polygon = {
+      id: polygonState.id ?? undefined,
       title: polygonState.title,
       desc: polygonState.desc,
       note_id: polygonState.note_id,

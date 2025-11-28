@@ -15,22 +15,32 @@ import {
   PopoverTrigger
 } from '@/components/ui/popover'
 import { Session } from '@supabase/supabase-js'
+import type { LatLngExpression } from 'leaflet'
 
 export const LeafletMapPolygon = dynamic(
   async () => {
-    const L = await import('leaflet')
     const RL = await import('react-leaflet')
 
     return function LeafletMapPolygon({
       polygon,
-      supabaseSession
+      supabaseSession,
+      setPolygonState,
+      setShowPolygonForm
     }: {
       polygon: Polygon
       supabaseSession: Session | null | undefined
+      setPolygonState: React.Dispatch<React.SetStateAction<Polygon | undefined>>
+      setShowPolygonForm: React.Dispatch<
+        React.SetStateAction<{
+          show: boolean
+          type: 'insert' | 'update'
+        }>
+      >
     }) {
-      const polygonCoords: L.LatLngExpression[] = polygon.positions
+      const polygonCoords: LatLngExpression[] = polygon.positions
         .sort((a, b) => a.index - b.index)
         .map((p) => [p.lat, p.lng])
+      console.log(polygon)
 
       return (
         <RL.Polygon positions={polygonCoords} pathOptions={polygon.options}>
@@ -57,7 +67,10 @@ export const LeafletMapPolygon = dynamic(
                       width={20}
                       color="var(--color-purple)"
                       className={styles.popup_edit}
-                      onClick={() => console.log('update')} // Open polygon form
+                      onClick={() => {
+                        setShowPolygonForm({ show: true, type: 'update' })
+                        setPolygonState(polygon)
+                      }} // Open polygon form
                     />
                     <Trash2
                       color="var(--color-red)"

@@ -69,8 +69,6 @@ export default function LeafletMap({
   }, [imgElement, supabase.auth])
 
   useEffect(() => {
-    console.log(mapPolygons)
-
     setPolygons(mapPolygons)
   }, [mapPolygons])
 
@@ -137,6 +135,7 @@ export default function LeafletMap({
         markerFormToggle={handleShowMarkerForm}
         setMarkerData={setMarkerData}
         showPolygonForm={showPolygonForm}
+        setShowPolygonForm={setShowPolygonForm}
         polygons={polygons}
         polygonState={polygonState}
         setPolygonState={setPolygonState}

@@ -41,6 +41,7 @@ export default function PolygonForm({
   initialState.path = pathName
 
   const polygonAction = formType === 'insert' ? createPolygon : updatePolygon
+  console.log(polygonState.id)
 
   const polygonActionBoundData = polygonAction.bind(null, {
     img_path: polygonState.img_path,

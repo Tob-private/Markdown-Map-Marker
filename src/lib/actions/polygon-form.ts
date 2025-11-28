@@ -40,18 +40,6 @@ export async function createPolygon(
     }
   }
 
-  const { data: selectData, error: selectError } = await supabase
-    .from('map_polygons')
-    .select()
-
-  if (selectError) {
-    console.dir({ selectError })
-    console.dir({ selectData })
-    throw new Error('Error creating polygon entry in map_polygons')
-  } else {
-    // console.dir({ selectData })
-  }
-
   const { data: polygonData, error: polygonError } = await supabase
     .from('map_polygons')
     .insert(polygonObj.payload)
@@ -59,7 +47,6 @@ export async function createPolygon(
 
   if (polygonError) {
     console.dir({ polygonError })
-    console.dir({ polygonData })
     throw new Error('Error creating polygon entry in map_polygons')
   } else {
     // console.dir({ polygonData })
@@ -88,7 +75,7 @@ export async function createPolygon(
     positions.push(position)
   }
 
-  const { data: coordsData, error: coordsError } = await supabase
+  const { error: coordsError } = await supabase
     .from('polygon_positions')
     .insert(positions)
     .select()
@@ -96,8 +83,6 @@ export async function createPolygon(
   if (coordsError) {
     console.dir({ coordsError })
     throw new Error('Error creating polygon entry in map_polygons')
-  } else {
-    // console.dir({ coordsData })
   }
 
   revalidatePath(currentState.path)
@@ -109,7 +94,107 @@ export async function updatePolygon(
   { img_path, id }: BoundData,
   currentState: PolygonFormState,
   formData: FormData
-): Promise<PolygonFormState> {}
+): Promise<PolygonFormState> {
+  if (!id) {
+    return {
+      success: false,
+      errors: { id: ['Id is undefined'] },
+      path: img_path
+    }
+  }
+
+  const supabase = await createServerSupabaseFromCookies()
+
+  const validationResult = getPolygonFormData(formData, currentState)
+  if (validationResult.success == false) {
+    return validationResult
+  }
+
+  const polygonObj: PolygonPayloadData = {
+    type: 'update',
+    payload: {
+      id: id,
+      title: validationResult.data.title,
+      desc: validationResult.data.desc,
+      img_path: img_path,
+      options: validationResult.data.options,
+      note_id:
+        validationResult.data.note_id !== ''
+          ? validationResult.data.note_id
+          : null
+    }
+  }
+
+  const { data: polygonData, error: polygonError } = await supabase
+    .from('map_polygons')
+    .update(polygonObj.payload)
+    .eq('id', polygonObj.payload.id)
+    .select()
+
+  if (polygonError) {
+    console.dir({ polygonError })
+    throw new Error('Error creating polygon entry in map_polygons')
+  } else {
+    // console.dir({ polygonData })
+  }
+
+  const { data: supabasePositions, error: supabasePositionsError } =
+    await supabase
+      .from('polygon_positions')
+      .select('id')
+      .eq('polygon_id', polygonObj.payload.id)
+
+  if (supabasePositionsError) {
+    console.dir({ supabasePositionsError })
+    throw new Error('Error selecting polygon positions in polygon_positions')
+  }
+
+  const decimals = 5
+
+  for (let i = 0; i < validationResult.data.lat.length; i++) {
+    const position: {
+      id: string
+      index: number
+      lat: number
+      lng: number
+      polygon_id: string
+    } = {
+      id: supabasePositions[i] ? supabasePositions[i].id : undefined,
+      index: i,
+      lat:
+        Math.round(validationResult.data.lat[i] * 10 ** decimals) /
+        10 ** decimals,
+      lng:
+        Math.round(validationResult.data.lng[i] * 10 ** decimals) /
+        10 ** decimals,
+      polygon_id: polygonData[0].id
+    }
+    if (position.id) {
+      const { error: coordsError } = await supabase
+        .from('polygon_positions')
+        .update(position)
+        .eq('id', position.id)
+
+      if (coordsError) {
+        console.dir({ coordsError })
+        throw new Error('Error update position entry in polygon_position')
+      }
+    } else {
+      const { error: coordsError } = await supabase
+        .from('polygon_positions')
+        .insert(position)
+
+      if (coordsError) {
+        console.dir({ coordsError })
+        throw new Error('Error creating polygon entry in polygon_position')
+      }
+    }
+  }
+
+  revalidatePath(currentState.path)
+
+  return { data: validationResult.data, success: true, path: currentState.path }
+}
 
 function getPolygonFormData(
   formData: FormData,
@@ -123,7 +208,6 @@ function getPolygonFormData(
     note_id: formData.get('note_id'),
     options: formData.get('options')
   }
-  console.dir({ rawFormData })
   const validationResult = polygonFormDataSchema.safeParse(rawFormData)
 
   if (!validationResult.success) {
